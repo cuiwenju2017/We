@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="180dp"
+        android:orientation="vertical">
+
+        <yanzhikai.textpath.SyncTextPathView
+            android:id="@+id/stpv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:duration="3000"
+            app:paintStrokeColor="@color/colorYello"
+            app:pathStrokeColor="@android:color/holo_red_light"
+            app:showPainter="true"
+            app:text="只属于你"
+            app:textInCenter="true"
+            app:textSize="60sp" />
+
+    </LinearLayout>
+
+
+    <com.cwj.love_lhh.view.BeatingHeartView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>
