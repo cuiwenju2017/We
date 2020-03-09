@@ -9,7 +9,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
-import com.cwj.love_lhh.MoreActivity;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;

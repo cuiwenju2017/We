@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.WebViewActivity;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
