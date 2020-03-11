@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                startActivity(new Intent(SplashActivity.this, SetTimeActivity.class));
                 finish();
             }
         }, 3333);//n秒后执行Runnable中的run方法

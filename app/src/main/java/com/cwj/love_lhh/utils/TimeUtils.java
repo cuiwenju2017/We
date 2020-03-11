@@ -45,7 +45,7 @@ public class TimeUtils {
         return date;
     }
 
-    /*
+    /**
      * 将时间转换为时间戳
      */
     public static String dateToStamp(String s) throws ParseException {

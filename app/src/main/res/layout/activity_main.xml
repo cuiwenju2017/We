@@ -99,7 +99,7 @@
         android:background="@drawable/ripple_water"
         android:clickable="true"
         android:padding="15dp"
-        android:text="更多→"
+        android:text="小游戏→"
         android:textColor="@color/colorWhite" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
