@@ -1,8 +1,11 @@
 package com.cwj.love_lhh.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +23,8 @@ public class SplashActivity extends AppCompatActivity {
 
     @BindView(R.id.stpv)
     SyncTextPathView stpv;
+    SharedPreferences sprfMain;
+    private String togetherTime, getMarriedTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +32,23 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
         initView();
+
+        //取出上个页面保存的值（取数据）
+        sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+        togetherTime = sprfMain.getString("togetherTime", "");
+        getMarriedTime = sprfMain.getString("getMarriedTime", "");
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, SetTimeActivity.class));
-                finish();
+                if (!TextUtils.isEmpty(togetherTime) && !TextUtils.isEmpty(getMarriedTime)) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    finish();
+                } else {
+                    startActivity(new Intent(SplashActivity.this, SetTimeActivity.class));
+                    finish();
+                }
             }
         }, 3333);//n秒后执行Runnable中的run方法
     }

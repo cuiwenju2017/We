@@ -1,7 +1,11 @@
 package com.cwj.love_lhh.activity;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -26,10 +30,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static java.lang.Long.parseLong;
 
 public class SetTimeActivity extends AppCompatActivity {
 
@@ -41,6 +48,8 @@ public class SetTimeActivity extends AppCompatActivity {
     TextView tvConfirm;
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
+    private String togetherTime;
+    private ChinaDate lunar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,20 +62,22 @@ public class SetTimeActivity extends AppCompatActivity {
     private void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         long nowTime = TimeUtils.getTimeStame();
-        tvTogetherTime.setText(TimeUtils.dateToString(nowTime));
+        togetherTime = TimeUtils.dateToString(nowTime);
+        tvTogetherTime.setText(togetherTime);
         selectedDate = Calendar.getInstance();//系统当前时间
 
-        try {
-            tvGetMarriedTime.setText(ChinaDate.solarToLunar("2020-03-11", true));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        lunar = new ChinaDate(selectedDate);
+        tvGetMarriedTime.setText("" + lunar);
     }
+
+
+    SharedPreferences sprfMain;
+    SharedPreferences.Editor editorMain;
 
     @OnClick({R.id.tv_together_time, R.id.tv_get_married_time, R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_together_time:
+            case R.id.tv_together_time://在一起日子的选择
                 Calendar startDate = Calendar.getInstance();
 //                Calendar endDate = Calendar.getInstance();
                 //正确设置方式 原因：注意事项有说明
@@ -76,16 +87,20 @@ public class SetTimeActivity extends AppCompatActivity {
                 pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
-                        tvTogetherTime.setText(getTime(date));
+                        togetherTime = getTime(date);
+                        tvTogetherTime.setText(togetherTime);
                     }
                 })
                         .setType(new boolean[]{true, true, true, true, true, true})// 默认全部显示
                         .setRangDate(startDate, selectedDate)//起始终止年月日设定
+                        .setDividerColor(Color.RED)//当前选中日期线条颜色
+                        .setSubmitColor(Color.RED)//确定按钮文字颜色
+                        .setCancelColor(Color.RED)//取消按钮文字颜色
                         .build();
                 pvTime.setDate(selectedDate);// 如果不设置的话，默认是系统时间*/
                 pvTime.show();
                 break;
-            case R.id.tv_get_married_time:
+            case R.id.tv_get_married_time://结婚日子的选择
                 Calendar startDate2 = Calendar.getInstance();
                 startDate2.set(1900, 0, 1);
                 Calendar endDate = Calendar.getInstance();
@@ -94,7 +109,15 @@ public class SetTimeActivity extends AppCompatActivity {
                 pvCustomLunar = new TimePickerBuilder(this, new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {//选中事件回调
-                        Toast.makeText(SetTimeActivity.this, getTime(date), Toast.LENGTH_SHORT).show();
+                        try {
+                            Calendar setMarriedTime = Calendar.getInstance();
+                            SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            setMarriedTime.setTime(chineseDateFormat.parse(getTime2(date)));
+                            lunar = new ChinaDate(setMarriedTime);
+                            tvGetMarriedTime.setText("" + lunar);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 })
                         .setDate(selectedDate)
@@ -120,6 +143,7 @@ public class SetTimeActivity extends AppCompatActivity {
                                 });
                                 //公农历切换
                                 CheckBox cb_lunar = (CheckBox) v.findViewById(R.id.cb_lunar);
+
                                 cb_lunar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                     @Override
                                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -159,13 +183,26 @@ public class SetTimeActivity extends AppCompatActivity {
                 pvCustomLunar.show();
 
                 break;
-            case R.id.tv_confirm:
+            case R.id.tv_confirm://设置好了
+                Intent intent = new Intent(this, MainActivity.class);
+                sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+                editorMain = sprfMain.edit();
+                editorMain.putString("togetherTime", togetherTime);
+                editorMain.putString("getMarriedTime", "" + lunar);
+                editorMain.commit();
+                setResult(RESULT_OK, intent);
+                finish();
                 break;
         }
     }
 
     private String getTime(Date date) {//可根据需要自行截取数据显示
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(date);
+    }
+
+    private String getTime2(Date date) {//可根据需要自行截取数据显示
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
     }
 }

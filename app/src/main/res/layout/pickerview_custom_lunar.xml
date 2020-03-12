@@ -30,7 +30,7 @@
             android:layout_centerInParent="true"
             android:layout_marginRight="17dp"
             android:text="农历"
-            android:textColor="#24AD9D"
+            android:textColor="#FF0000"
             android:textSize="18sp" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:layout_marginRight="17dp"
             android:padding="8dp"
             android:text="完成"
-            android:textColor="#24AD9D"
+            android:textColor="#FF0000"
             android:textSize="18sp" />
 
         <View
