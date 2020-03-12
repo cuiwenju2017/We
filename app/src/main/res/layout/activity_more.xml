@@ -49,6 +49,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_dafeizi"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -59,7 +60,19 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="10dp">
 
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_fangkuaiyingxiong" />
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="20dp"
+                        android:text="方块英雄"
+                        android:textColor="@color/colorWhite" />
                 </RelativeLayout>
             </LinearLayout>
 
