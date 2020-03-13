@@ -3,13 +3,17 @@ package com.cwj.love_lhh.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
+import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

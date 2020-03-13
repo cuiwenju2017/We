@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public class SetTimeActivity extends AppCompatActivity {
 
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
+    private String togetherT, getMarriedT;
 
     @OnClick({R.id.tv_together_time, R.id.tv_get_married_time, R.id.tv_confirm})
     public void onViewClicked(View view) {
@@ -184,14 +186,29 @@ public class SetTimeActivity extends AppCompatActivity {
 
                 break;
             case R.id.tv_confirm://设置好了
-                Intent intent = new Intent(this, MainActivity.class);
+                //取出上个页面保存的值（取数据）
                 sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-                editorMain = sprfMain.edit();
-                editorMain.putString("togetherTime", togetherTime);
-                editorMain.putString("getMarriedTime", "" + lunar);
-                editorMain.commit();
-                setResult(RESULT_OK, intent);
-                finish();
+                togetherT = sprfMain.getString("togetherTime", "");
+                getMarriedT = sprfMain.getString("getMarriedTime", "");
+                if (!TextUtils.isEmpty(togetherT) && !TextUtils.isEmpty(getMarriedT)) {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+                    editorMain = sprfMain.edit();
+                    editorMain.putString("togetherTime", togetherTime);
+                    editorMain.putString("getMarriedTime", "" + lunar);
+                    editorMain.commit();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+                    editorMain = sprfMain.edit();
+                    editorMain.putString("togetherTime", togetherTime);
+                    editorMain.putString("getMarriedTime", "" + lunar);
+                    editorMain.commit();
+                    startActivity(intent);
+                    finish();
+                }
                 break;
         }
     }
