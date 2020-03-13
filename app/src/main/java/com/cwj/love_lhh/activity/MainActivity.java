@@ -102,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     private void update() {
         long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond;
         int inHarnessYear, getMarriedYear, setTogetherTime, setGetMarriedTime;
-
         try {
             nowTime = TimeUtils.getTimeStame();//现在时间
             startTime = Long.parseLong(TimeUtils.dateToStamp(togetherTime));//起始时间
