@@ -2,19 +2,32 @@ package com.cwj.love_lhh.activity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.baidu.autoupdatesdk.AppUpdateInfo;
+import com.baidu.autoupdatesdk.AppUpdateInfoForInstall;
+import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
+import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
+import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;
 
@@ -51,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initView();
+        BDAutoUpdateSDK.cpUpdateCheck(this, new MyCPCheckUpdateCallback());
     }
 
     private void initView() {
@@ -136,5 +150,100 @@ public class MainActivity extends AppCompatActivity {
                 tvTime.setText(togetherTime + "我们在一起" + "\n" + getMarriedTime + "我们结婚");
             }
         }
+    }
+
+    private class MyCPCheckUpdateCallback implements CPCheckUpdateCallback {
+
+        @Override
+        public void onCheckUpdateCallback(final AppUpdateInfo info, AppUpdateInfoForInstall infoForInstall) {
+            if (infoForInstall != null && !TextUtils.isEmpty(infoForInstall.getInstallPath())) {
+               /* tv.setText(tv.getText() + "\n install info: " + infoForInstall.getAppSName() + ", \nverion="
+                        + infoForInstall.getAppVersionName() + ", \nchange log=" + infoForInstall.getAppChangeLog());
+                tv.setText(tv.getText() + "\n we can install the apk file in: "
+                        + infoForInstall.getInstallPath());*/
+                BDAutoUpdateSDK.cpUpdateInstall(getApplicationContext(), infoForInstall.getInstallPath());
+            } else if (info != null) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                long size = info.getAppPathSize() > 0 ? info.getAppPathSize() : info.getAppSize();
+                builder.setTitle("新版大小：" + byteToMb(size))
+                        .setMessage(Html.fromHtml(info.getAppChangeLog()))
+                        .setNeutralButton("普通升级", null)
+                        .setPositiveButton("智能升级", null)
+                        .setCancelable(info.getForceUpdate() != 1)
+                        .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                            @Override
+                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                    return true;
+                                }
+                                return false;
+                            }
+                        });
+                if (info.getForceUpdate() != 1) {
+                    builder.setNegativeButton("暂不升级", null);
+                }
+                AlertDialog dialog = builder.show();
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+                        new View.OnClickListener() {
+
+                            @Override
+                            public void onClick(View v) {
+                                BDAutoUpdateSDK.cpUpdateDownloadByAs(MainActivity.this);
+                                dialog.dismiss();
+                            }
+                        });
+                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BDAutoUpdateSDK.cpUpdateDownload(MainActivity.this, info, new UpdateDownloadCallback());
+                        dialog.dismiss();
+                    }
+                });
+            } else {
+//                tv.setText(tv.getText() + "\n no update.");
+            }
+        }
+
+        private String byteToMb(long fileSize) {
+            float size = ((float) fileSize) / (1024f * 1024f);
+            return String.format("%.2fMB", size);
+        }
+
+    }
+
+    private class UpdateDownloadCallback implements CPUpdateDownloadCallback {
+
+        @Override
+        public void onDownloadComplete(String apkPath) {
+//            tv.setText(tv.getText() + "\n onDownloadComplete: " + apkPath);
+            BDAutoUpdateSDK.cpUpdateInstall(getApplicationContext(), apkPath);
+        }
+
+        @Override
+        public void onStart() {
+//            tv.setText(tv.getText() + "\n Download onStart");
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.O)
+        @Override
+        public void onPercent(int percent, long rcvLen, long fileSize) {
+//            tv.setText(tv.getText() + "\n Download onPercent: " + percent + "%");
+            if (percent < 100) {
+                NotificationUtils.showNotification("下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
+            } else {
+                NotificationUtils.cancleNotification(0);
+            }
+        }
+
+        @Override
+        public void onFail(Throwable error, String content) {
+//            tv.setText(tv.getText() + "\n Download onFail: " + content);
+        }
+
+        @Override
+        public void onStop() {
+//            tv.setText(tv.getText() + "\n Download onStop");
+        }
+
     }
 }
