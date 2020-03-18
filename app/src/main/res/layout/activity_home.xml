@@ -19,14 +19,14 @@
         android:padding="8dp">
 
         <com.cwj.love_lhh.view.TabView
-            android:id="@+id/tab_tool"
+            android:id="@+id/tab_us"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             bxll:tabColor="@color/colorAccent"
-            bxll:tabImage="@drawable/tool_list_normal"
-            bxll:tabSelectedImage="@drawable/tool_list_pressed"
-            bxll:tabTitle="工具" />
+            bxll:tabImage="@drawable/us_list_normal"
+            bxll:tabSelectedImage="@drawable/us_list_pressed"
+            bxll:tabTitle="我们" />
 
         <com.cwj.love_lhh.view.TabView
             android:id="@+id/tab_games"
@@ -39,14 +39,14 @@
             bxll:tabTitle="小游戏" />
 
         <com.cwj.love_lhh.view.TabView
-            android:id="@+id/tab_us"
+            android:id="@+id/tab_tool"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             bxll:tabColor="@color/colorAccent"
-            bxll:tabImage="@drawable/us_list_normal"
-            bxll:tabSelectedImage="@drawable/us_list_pressed"
-            bxll:tabTitle="我们" />
+            bxll:tabImage="@drawable/tool_list_normal"
+            bxll:tabSelectedImage="@drawable/tool_list_pressed"
+            bxll:tabTitle="工具" />
     </LinearLayout>
 
 </LinearLayout>

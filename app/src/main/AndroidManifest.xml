@@ -16,7 +16,6 @@
         <activity android:name=".activity.HomeActivity"></activity>
         <activity android:name=".activity.SetTimeActivity" />
         <activity android:name=".activity.WebViewActivity" />
-        <activity android:name=".activity.MoreActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,9 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.MainActivity"
-            android:launchMode="singleTask" /> <!-- 百度自动更新 -->
+        <!-- 百度自动更新 -->
         <meta-data
             android:name="BDAPPID"
             android:value="18703239" />

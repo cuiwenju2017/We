@@ -35,12 +35,12 @@ public class HomeActivity extends AppCompatActivity {
     TabView tabUs;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
-    private List<TabView> mTabViews = new ArrayList<>();
 
-    private static final int INDEX_TOOL = 0;
+    private static final int INDEX_US = 0;
     private static final int INDEX_GAMES = 1;
-    private static final int INDEX_US = 2;
+    private static final int INDEX_TOOL = 2;
 
+    private List<TabView> mTabViews = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
 
     @Override
@@ -52,17 +52,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
-        ToolFragment toolFragment = new ToolFragment();
-        GamesFragment gamesFragment = new GamesFragment();
         UsFragment usFragment = new UsFragment();
-        fragments.add(toolFragment);
-        fragments.add(gamesFragment);
-        fragments.add(usFragment);
+        GamesFragment gamesFragment = new GamesFragment();
+        ToolFragment toolFragment = new ToolFragment();
 
-        mTabViews.add(tabTool);
-        mTabViews.add(tabGames);
+        fragments.add(usFragment);
+        fragments.add(gamesFragment);
+        fragments.add(toolFragment);
+
         mTabViews.add(tabUs);
+        mTabViews.add(tabGames);
+        mTabViews.add(tabTool);
 
         viewpager.setOffscreenPageLimit(fragments.size() - 1);
         viewpager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragments));

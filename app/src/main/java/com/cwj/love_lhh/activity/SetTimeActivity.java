@@ -191,7 +191,7 @@ public class SetTimeActivity extends AppCompatActivity {
                 togetherT = sprfMain.getString("togetherTime", "");
                 getMarriedT = sprfMain.getString("getMarriedTime", "");
                 if (!TextUtils.isEmpty(togetherT) && !TextUtils.isEmpty(getMarriedT)) {
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, HomeActivity.class);
                     sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                     editorMain = sprfMain.edit();
                     editorMain.putString("togetherTime", togetherTime);
@@ -200,7 +200,7 @@ public class SetTimeActivity extends AppCompatActivity {
                     setResult(RESULT_OK, intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, HomeActivity.class);
                     sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                     editorMain = sprfMain.edit();
                     editorMain.putString("togetherTime", togetherTime);
