@@ -12,8 +12,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -182,6 +186,18 @@ public class MainActivity extends AppCompatActivity {
                     builder.setNegativeButton("暂不升级", null);
                 }
                 AlertDialog dialog = builder.show();
+
+                //放在show()之后，不然有些属性是没有效果的，比如height和width
+                Window dialogWindow = dialog.getWindow();
+                WindowManager m = getWindowManager();
+                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
+                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+                // 设置宽度
+                p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
+                p.gravity = Gravity.CENTER;//设置位置
+                //p.alpha = 0.8f;//设置透明度
+                dialogWindow.setAttributes(p);
+
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
                         new View.OnClickListener() {
 

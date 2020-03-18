@@ -20,7 +20,7 @@
             android:layout_gravity="center"
             app:duration="3000"
             app:paintStrokeColor="@color/colorYello"
-            app:pathStrokeColor="@android:color/holo_red_light"
+            app:pathStrokeColor="@color/colorAccent"
             app:showPainter="true"
             app:text="只属于你"
             app:textInCenter="true"

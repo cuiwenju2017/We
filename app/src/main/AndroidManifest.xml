@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.SetTimeActivity"></activity>
+        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".activity.SetTimeActivity" />
         <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".activity.MoreActivity" />
         <activity android:name=".activity.SplashActivity">
@@ -25,9 +26,7 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask" />
-
-        <!-- 百度自动更新-->
+            android:launchMode="singleTask" /> <!-- 百度自动更新 -->
         <meta-data
             android:name="BDAPPID"
             android:value="18703239" />

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bxll="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffeeeeee"
+        android:padding="8dp">
+
+        <com.cwj.love_lhh.view.TabView
+            android:id="@+id/tab_tool"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            bxll:tabColor="@color/colorAccent"
+            bxll:tabImage="@drawable/tool_list_normal"
+            bxll:tabSelectedImage="@drawable/tool_list_pressed"
+            bxll:tabTitle="工具" />
+
+        <com.cwj.love_lhh.view.TabView
+            android:id="@+id/tab_games"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            bxll:tabColor="@color/colorAccent"
+            bxll:tabImage="@drawable/mini_games_list_normal"
+            bxll:tabSelectedImage="@drawable/mini_games_list_pressed"
+            bxll:tabTitle="小游戏" />
+
+        <com.cwj.love_lhh.view.TabView
+            android:id="@+id/tab_us"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            bxll:tabColor="@color/colorAccent"
+            bxll:tabImage="@drawable/us_list_normal"
+            bxll:tabSelectedImage="@drawable/us_list_pressed"
+            bxll:tabTitle="我们" />
+    </LinearLayout>
+
+</LinearLayout>
