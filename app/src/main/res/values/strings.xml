@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">我们</string>
+    <string name="base_dialog_loading">加载中...</string>
 </resources>

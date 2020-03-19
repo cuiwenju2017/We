@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.AboutActivity"></activity>
         <activity
             android:name=".activity.ClockActivity"
             android:screenOrientation="portrait"
@@ -55,10 +56,10 @@
         </activity> <!-- 百度自动更新 -->
         <meta-data
             android:name="BDAPPID"
-            android:value="18703239" />
+            android:value="18927095" />
         <meta-data
             android:name="BDAPPKEY"
-            android:value="VtGyzlz9gqFPk82t9FGHLXmf4Acp569Y" />
+            android:value="YMmwdxPpRLuVun8TguvY46QSboAq2XoZ" />
     </application>
 
 </manifest>

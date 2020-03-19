@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -20,6 +18,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.activity.AboutActivity;
 import com.cwj.love_lhh.activity.SetTimeActivity;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;
@@ -34,25 +33,26 @@ import butterknife.Unbinder;
 //我们
 public class UsFragment extends Fragment {
 
+    Unbinder unbinder;
     @BindView(R.id.wv)
     WebView wv;
-    @BindView(R.id.cl_view)
-    CoordinatorLayout clView;
     @BindView(R.id.tv)
     TextView tv;
+    @BindView(R.id.tv_time)
+    TextView tvTime;
     @BindView(R.id.tv_in_harness_year)
     TextView tvInHarnessYear;
     @BindView(R.id.tv_get_married_year)
     TextView tvGetMarriedYear;
-    SharedPreferences sprfMain;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
     @BindView(R.id.tv_change_date)
     TextView tvChangeDate;
-    @BindView(R.id.tv_version_number)
-    TextView tvVersionNumber;
+    @BindView(R.id.tv_about)
+    TextView tvAbout;
+    @BindView(R.id.cl_view)
+    CoordinatorLayout clView;
+
     private String togetherTime, getMarriedTime;
-    Unbinder unbinder;
+    SharedPreferences sprfMain;
 
     @Nullable
     @Override
@@ -85,23 +85,6 @@ public class UsFragment extends Fragment {
         handler.postDelayed(runnable, 1000);
         //停止计时
 //        handler.removeCallbacks(runnable);
-        tvVersionNumber.setText("V" + getLocalVersionName(getActivity()));
-    }
-
-    /**
-     * 获取本地软件版本号名称
-     */
-    public static String getLocalVersionName(Context ctx) {
-        String localVersion = "";
-        try {
-            PackageInfo packageInfo = ctx.getApplicationContext()
-                    .getPackageManager()
-                    .getPackageInfo(ctx.getPackageName(), 0);
-            localVersion = packageInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return localVersion;
     }
 
     private Handler handler = new Handler();
@@ -114,12 +97,15 @@ public class UsFragment extends Fragment {
 
     public static final int REQUEST_SEARCH = 100;
 
-    @OnClick({R.id.tv_change_date})
+    @OnClick({R.id.tv_change_date, R.id.tv_about})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.tv_change_date:
+            case R.id.tv_change_date://日期修改
                 Intent intent = new Intent(getActivity(), SetTimeActivity.class);
                 startActivityForResult(intent, REQUEST_SEARCH);
+                break;
+            case R.id.tv_about://关于
+                startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
         }
     }
@@ -159,5 +145,4 @@ public class UsFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
 }
