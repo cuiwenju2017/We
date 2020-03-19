@@ -43,7 +43,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         wv.getSettings().setJavaScriptEnabled(true);
         //使网页用WebView打开
-        wv.setWebViewClient(new WebViewClient(){
+        wv.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 //返回值是true的时候控制去WebView打开，为false调用系统浏览器或第三方浏览器
@@ -55,8 +55,26 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (wv != null) {
+            wv.onResume();
+        }
+    }
+
+    @Override
     protected void onPause() {
-        wv.reload();//关闭页面清除背景音效
         super.onPause();
+        if (wv != null) {
+            wv.onPause();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (wv != null) {
+            wv.destroy();
+        }
     }
 }
