@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.CalculatorActivity;
+import com.cwj.love_lhh.activity.ClockActivity;
 import com.cwj.love_lhh.activity.CompassActivity;
 
 import butterknife.BindView;
@@ -27,6 +28,8 @@ public class ToolFragment extends Fragment {
     LinearLayout llCalculator;
     @BindView(R.id.ll_compass)
     LinearLayout llCompass;
+    @BindView(R.id.ll_clock)
+    LinearLayout llClock;
 
     @Nullable
     @Override
@@ -36,7 +39,7 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_calculator, R.id.ll_compass})
+    @OnClick({R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_calculator://计算器
@@ -45,7 +48,9 @@ public class ToolFragment extends Fragment {
             case R.id.ll_compass://指南针
                 startActivity(new Intent(getActivity(), CompassActivity.class));
                 break;
+            case R.id.ll_clock://时钟
+                startActivity(new Intent(getActivity(), ClockActivity.class));
+                break;
         }
     }
-
 }

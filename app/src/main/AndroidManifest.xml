@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cwj.love_lhh">
-
     <!-- 连接互联网Internet权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -15,9 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.CompassActivity"></activity>
-        <activity android:name=".activity.GameActivity" />
-        <activity android:name=".activity.AircraftBattleActivity" />
+        <activity
+            android:name=".activity.ClockActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.CompassActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.GameActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.AircraftBattleActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".activity.CalculatorActivity"
             android:screenOrientation="portrait"
@@ -27,8 +39,14 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity android:name=".activity.SetTimeActivity" />
-        <activity android:name=".activity.WebViewActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity
+            android:name=".activity.WebViewActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
