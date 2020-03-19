@@ -122,13 +122,12 @@
 
     <TextView
         android:id="@+id/tv_version_number"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:padding="15dp"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:text="V1.0"
         android:textColor="@color/colorWhite"
         android:textSize="10sp" />
 
