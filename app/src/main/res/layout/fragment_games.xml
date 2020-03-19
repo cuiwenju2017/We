@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="#ffeeeeee"
     android:orientation="vertical">
 
     <TextView
@@ -20,7 +20,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -28,109 +27,91 @@
                 android:layout_height="160dp"
                 android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:id="@+id/rl_ball"
+                <LinearLayout
+                    android:id="@+id/ll_ball"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginRight="1dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_water_more"
                     android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="5dp">
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/loader" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:background="#99000000"
-                        android:padding="5dp"
-                        android:text="滚动的球球"
-                        android:textColor="@color/colorWhite" />
-                </RelativeLayout>
+                        android:layout_marginTop="10dp"
+                        android:text="滚动的球球" />
+                </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/rl_hero"
+                <LinearLayout
+                    android:id="@+id/ll_hero"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginLeft="1dp"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_water_more"
                     android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp">
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/icon_fangkuaiyingxiong" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:background="#99000000"
-                        android:padding="5dp"
-                        android:text="方块英雄"
-                        android:textColor="@color/colorWhite" />
-                </RelativeLayout>
+                        android:layout_marginTop="10dp"
+                        android:text="方块英雄" />
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 android:orientation="horizontal">
 
-                <RelativeLayout
-                    android:id="@+id/rl_aircraft_battle"
+                <LinearLayout
+                    android:id="@+id/ll_aircraft_battle"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/ripple_water_more"
                     android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="5dp">
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:src="@drawable/plane" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginTop="20dp"
-                        android:background="#99000000"
+                        android:layout_marginTop="10dp"
                         android:padding="5dp"
-                        android:text="飞机大战"
-                        android:textColor="@color/colorWhite" />
-                </RelativeLayout>
+                        android:text="飞机大战" />
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@drawable/ripple_water_more"
                     android:clickable="true"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="10dp">
+                    android:orientation="vertical">
 
-                </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

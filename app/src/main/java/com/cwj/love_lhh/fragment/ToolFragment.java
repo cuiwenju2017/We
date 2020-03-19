@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,9 +21,9 @@ import butterknife.Unbinder;
 
 public class ToolFragment extends Fragment {
 
-    @BindView(R.id.rl_calculator)
-    RelativeLayout rlCalculator;
     Unbinder unbinder;
+    @BindView(R.id.ll_calculator)
+    LinearLayout llCalculator;
 
     @Nullable
     @Override
@@ -33,10 +33,10 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.rl_calculator, R.id.rl_hero})
+    @OnClick({R.id.ll_calculator})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.rl_calculator:
+            case R.id.ll_calculator:
                 startActivity(new Intent(getActivity(), CalculatorActivity.class));
                 break;
         }
