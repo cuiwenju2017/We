@@ -2,5 +2,5 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/colorTranslucenceBlack"><!--点击时波纹的颜色-->
 
-    <item android:drawable="@color/colorTranslucenceWhite" /> <!--未点击时控件的背景（可以是图片，可以是颜色，也可以是drawable里的xml背景（比如圆角））-->
+    <item android:drawable="@color/colorTranslucenceBlack" /> <!--未点击时控件的背景（可以是图片，可以是颜色，也可以是drawable里的xml背景（比如圆角））-->
 </ripple>

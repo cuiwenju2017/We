@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.cwj.love_lhh">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -15,8 +16,14 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activity.GameActivity" />
         <activity android:name=".activity.AircraftBattleActivity" />
-        <activity android:name=".activity.CalculatorActivity" />
-        <activity android:name=".activity.HomeActivity" />
+        <activity
+            android:name=".activity.CalculatorActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity android:name=".activity.SetTimeActivity" />
         <activity android:name=".activity.WebViewActivity" />
         <activity android:name=".activity.SplashActivity">
@@ -25,7 +32,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- 百度自动更新 -->
+        </activity>
+        <!-- 百度自动更新 -->
         <meta-data
             android:name="BDAPPID"
             android:value="18703239" />

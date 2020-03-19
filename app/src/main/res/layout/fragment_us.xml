@@ -11,38 +11,53 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="80dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
             android:text="这是我们在一起的"
             android:textColor="@color/colorWhite" />
 
         <TextView
             android:id="@+id/tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ripple_water"
+            android:clickable="true"
+            android:gravity="center"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
             android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ripple_water"
+            android:gravity="center"
             android:textColor="@color/colorWhite" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/ripple_water"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
@@ -83,35 +98,35 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="end"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:text="感谢一直有你，永远爱你！"
             android:textColor="@color/colorWhite" />
     </LinearLayout>
 
-
     <TextView
         android:id="@+id/tv_change_date"
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/tv_version_number"
+        android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginRight="10dp"
         android:background="@drawable/ripple_water"
         android:clickable="true"
         android:gravity="center"
         android:padding="15dp"
-        android:text="日期修改→"
+        android:text="日期修改"
         android:textColor="@color/colorWhite" />
 
     <TextView
         android:id="@+id/tv_version_number"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:gravity="center"
         android:padding="15dp"
         android:textColor="@color/colorWhite"
