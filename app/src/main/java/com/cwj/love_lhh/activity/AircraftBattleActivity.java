@@ -1,25 +1,33 @@
 package com.cwj.love_lhh.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.cwj.love_lhh.R;
 import com.jaeger.library.StatusBarUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 飞机大战
  */
 public class AircraftBattleActivity extends AppCompatActivity implements Button.OnClickListener {
 
+    @BindView(R.id.cl_view)
+    CoordinatorLayout clView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_aircraft_battle);
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ButterKnife.bind(this);
+        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
     }
 
     @Override

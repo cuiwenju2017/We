@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.CalculatorActivity;
+import com.cwj.love_lhh.activity.CompassActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +25,8 @@ public class ToolFragment extends Fragment {
     Unbinder unbinder;
     @BindView(R.id.ll_calculator)
     LinearLayout llCalculator;
+    @BindView(R.id.ll_compass)
+    LinearLayout llCompass;
 
     @Nullable
     @Override
@@ -33,12 +36,16 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_calculator})
+    @OnClick({R.id.ll_calculator, R.id.ll_compass})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.ll_calculator:
+            case R.id.ll_calculator://计算器
                 startActivity(new Intent(getActivity(), CalculatorActivity.class));
+                break;
+            case R.id.ll_compass://指南针
+                startActivity(new Intent(getActivity(), CompassActivity.class));
                 break;
         }
     }
+
 }

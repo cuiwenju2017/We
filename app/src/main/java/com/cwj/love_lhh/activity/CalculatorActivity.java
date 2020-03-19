@@ -1,23 +1,30 @@
 package com.cwj.love_lhh.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.love_lhh.R;
 import com.jaeger.library.StatusBarUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * 计算器
  */
 public class CalculatorActivity extends AppCompatActivity implements View.OnClickListener {
 
+    @BindView(R.id.cl_view)
+    CoordinatorLayout clView;
     /**
      * 数字
      */
@@ -74,7 +81,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
      */
     private boolean noStartWithOperator = false;
     private TextView tv_dian;
-    private LinearLayout ll_bg;
+    private RelativeLayout rl_bg;
     // 将所有图片、资源储存到数组中
     int[] imgId = {R.drawable.a1, R.drawable.a2, R.drawable.a3,
             R.drawable.a4, R.drawable.a5, R.drawable.a6, R.drawable.a7};
@@ -84,7 +91,8 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ButterKnife.bind(this);
+        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
         initView();
         initEvent();
     }
@@ -107,7 +115,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
         num8 = findViewById(R.id.num_eight);//8
         num9 = findViewById(R.id.num_nine);//9
         tv_dian = findViewById(R.id.tv_dian);//点我
-        ll_bg = findViewById(R.id.ll_bg);//背景
+        rl_bg = findViewById(R.id.rl_bg);//背景
         /**
          * 运算符
          */
@@ -470,7 +478,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
                 if (p == imgId.length) {
                     p = 0;
                 }
-                ll_bg.setBackgroundResource(imgId[p]);
+                rl_bg.setBackgroundResource(imgId[p]);
                 break;
         }
         /**

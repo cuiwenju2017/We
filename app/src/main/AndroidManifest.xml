@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cwj.love_lhh">
 
+    <!-- 连接互联网Internet权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -14,6 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activity.CompassActivity"></activity>
         <activity android:name=".activity.GameActivity" />
         <activity android:name=".activity.AircraftBattleActivity" />
         <activity
@@ -32,8 +34,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- 百度自动更新 -->
+        </activity> <!-- 百度自动更新 -->
         <meta-data
             android:name="BDAPPID"
             android:value="18703239" />
