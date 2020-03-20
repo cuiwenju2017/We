@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">我们</string>
     <string name="base_dialog_loading">加载中...</string>
+    <string name="score">分数：</string>
+    <string name="bestscore">最高分：</string>
+    <string name="newgame">重新开始</string>
 </resources>

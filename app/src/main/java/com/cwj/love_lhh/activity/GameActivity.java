@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.game.GameView;
+import com.cwj.love_lhh.game.aircraftbattle.GameView;
 import com.jaeger.library.StatusBarUtil;
 
 import java.util.Timer;
