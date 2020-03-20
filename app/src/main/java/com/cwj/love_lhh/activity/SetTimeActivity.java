@@ -1,5 +1,6 @@
 package com.cwj.love_lhh.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -47,10 +49,13 @@ public class SetTimeActivity extends AppCompatActivity {
     TextView tvGetMarriedTime;
     @BindView(R.id.tv_confirm)
     TextView tvConfirm;
+
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
-    private String togetherTime;
+    private String togetherTime, getMarriedTime, togetherT, tT, gT;
     private ChinaDate lunar;
+    SharedPreferences sprfMain;
+    SharedPreferences.Editor editorMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +69,15 @@ public class SetTimeActivity extends AppCompatActivity {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         long nowTime = TimeUtils.getTimeStame();
         togetherTime = TimeUtils.dateToString(nowTime);
+        togetherT = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
         tvTogetherTime.setText(togetherTime);
+
         selectedDate = Calendar.getInstance();//系统当前时间
 
+        getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
         lunar = new ChinaDate(selectedDate);
         tvGetMarriedTime.setText("" + lunar);
     }
-
-
-    SharedPreferences sprfMain;
-    SharedPreferences.Editor editorMain;
-    private String togetherT, getMarriedT;
 
     @OnClick({R.id.tv_together_time, R.id.tv_get_married_time, R.id.tv_confirm})
     public void onViewClicked(View view) {
@@ -90,6 +93,7 @@ public class SetTimeActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSelect(Date date, View v) {
                         togetherTime = getTime(date);
+                        togetherT = getTime2(date);
                         tvTogetherTime.setText(togetherTime);
                     }
                 })
@@ -111,6 +115,7 @@ public class SetTimeActivity extends AppCompatActivity {
                 pvCustomLunar = new TimePickerBuilder(this, new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {//选中事件回调
+                        getMarriedTime = getTime2(date);
                         try {
                             Calendar setMarriedTime = Calendar.getInstance();
                             SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -186,28 +191,38 @@ public class SetTimeActivity extends AppCompatActivity {
 
                 break;
             case R.id.tv_confirm://设置好了
-                //取出上个页面保存的值（取数据）
-                sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-                togetherT = sprfMain.getString("togetherTime", "");
-                getMarriedT = sprfMain.getString("getMarriedTime", "");
-                if (!TextUtils.isEmpty(togetherT) && !TextUtils.isEmpty(getMarriedT)) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-                    editorMain = sprfMain.edit();
-                    editorMain.putString("togetherTime", togetherTime);
-                    editorMain.putString("getMarriedTime", "" + lunar);
-                    editorMain.commit();
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-                    editorMain = sprfMain.edit();
-                    editorMain.putString("togetherTime", togetherTime);
-                    editorMain.putString("getMarriedTime", "" + lunar);
-                    editorMain.commit();
-                    startActivity(intent);
-                    finish();
+                long startTime, getMarried;
+                try {
+                    startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherT));//起始时间戳
+                    getMarried = Long.parseLong(TimeUtils.dateToStamp2(getMarriedTime));//结婚时间戳
+                    if (startTime > getMarried) {
+                        Toast.makeText(this, "结婚时间不能早于在一起的时间", Toast.LENGTH_SHORT).show();
+                    } else {
+                        sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
+                        tT = sprfMain.getString("togetherTime", "");
+                        gT = sprfMain.getString("getMarriedTime", "");
+                        if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
+                            Intent intent = new Intent(this, HomeActivity.class);
+                            sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+                            editorMain = sprfMain.edit();
+                            editorMain.putString("togetherTime", togetherTime);
+                            editorMain.putString("getMarriedTime", "" + lunar);
+                            editorMain.commit();
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent();
+                            sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+                            editorMain = sprfMain.edit();
+                            editorMain.putString("togetherTime", togetherTime);
+                            editorMain.putString("getMarriedTime", "" + lunar);
+                            editorMain.commit();
+                            setResult(RESULT_OK, intent);
+                            finish();
+                        }
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
                 }
                 break;
         }

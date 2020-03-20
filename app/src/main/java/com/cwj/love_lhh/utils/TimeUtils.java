@@ -56,7 +56,17 @@ public class TimeUtils {
         res = String.valueOf(ts);
         return res;
     }
-
+    /**
+     * 将时间转换为时间戳
+     */
+    public static String dateToStamp2(String s) throws ParseException {
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        res = String.valueOf(ts);
+        return res;
+    }
     /**
      * 获取当前的时间戳
      *

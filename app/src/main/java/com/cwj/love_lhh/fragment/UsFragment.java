@@ -50,6 +50,10 @@ public class UsFragment extends Fragment {
     TextView tvAbout;
     @BindView(R.id.cl_view)
     CoordinatorLayout clView;
+    @BindView(R.id.tv_jh)
+    TextView tvJh;
+    @BindView(R.id.tv_y)
+    TextView tvY;
 
     private String togetherTime, getMarriedTime;
     SharedPreferences sprfMain;
@@ -77,7 +81,7 @@ public class UsFragment extends Fragment {
         togetherTime = sprfMain.getString("togetherTime", "");
         getMarriedTime = sprfMain.getString("getMarriedTime", "");
 
-        tvTime.setText(togetherTime + "我们在一起" + "\n" + getMarriedTime + "我们结婚");
+        tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
 
         update();//显示数据
 
@@ -117,7 +121,7 @@ public class UsFragment extends Fragment {
             if (requestCode == REQUEST_SEARCH) {//判断来自哪个Activity
                 togetherTime = sprfMain.getString("togetherTime", "");
                 getMarriedTime = sprfMain.getString("getMarriedTime", "");
-                tvTime.setText(togetherTime + "我们在一起" + "\n" + getMarriedTime + "我们结婚");
+                tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
             }
         }
     }
@@ -140,7 +144,13 @@ public class UsFragment extends Fragment {
             inHarnessYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setTogetherTime;//在一起年数
             getMarriedYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setGetMarriedTime;//结婚年数
             tvInHarnessYear.setText("" + inHarnessYear);
-            tvGetMarriedYear.setText("" + getMarriedYear);
+            if (getMarriedYear < 0) {
+                tvGetMarriedYear.setText("还有" + (setGetMarriedTime - Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy"))) + "年我们就结婚啦");
+                tvJh.setVisibility(View.GONE);
+                tvY.setVisibility(View.GONE);
+            } else {
+                tvGetMarriedYear.setText("" + getMarriedYear);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
