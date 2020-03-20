@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.AircraftBattleActivity;
+import com.cwj.love_lhh.activity.GobangActivity;
 import com.cwj.love_lhh.activity.PuzzleActivity;
 import com.cwj.love_lhh.activity.WebViewActivity;
 
@@ -30,9 +31,10 @@ public class GamesFragment extends Fragment {
     @BindView(R.id.ll_aircraft_battle)
     LinearLayout llAircraftBattle;
     Unbinder unbinder;
-    @BindView(R.id.ll_2048)
-    LinearLayout ll2048;
-
+    @BindView(R.id.ll_puzzle)
+    LinearLayout ll_puzzle;
+    @BindView(R.id.ll_gobang)
+    LinearLayout llGobang;
     private Intent intent;
 
     @Nullable
@@ -43,7 +45,7 @@ public class GamesFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_ball, R.id.ll_hero, R.id.ll_aircraft_battle, R.id.ll_2048})
+    @OnClick({R.id.ll_ball, R.id.ll_hero, R.id.ll_aircraft_battle, R.id.ll_puzzle, R.id.ll_gobang})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_ball://滚动的球球
@@ -60,8 +62,11 @@ public class GamesFragment extends Fragment {
             case R.id.ll_aircraft_battle://飞机大战
                 startActivity(new Intent(getActivity(), AircraftBattleActivity.class));
                 break;
-            case R.id.ll_2048://拼图
+            case R.id.ll_puzzle://拼图
                 startActivity(new Intent(getActivity(), PuzzleActivity.class));
+                break;
+            case R.id.ll_gobang://五子棋
+                startActivity(new Intent(getActivity(), GobangActivity.class));
                 break;
 
         }
