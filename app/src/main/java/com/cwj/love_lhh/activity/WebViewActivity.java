@@ -1,6 +1,7 @@
 package com.cwj.love_lhh.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -42,6 +43,9 @@ public class WebViewActivity extends AppCompatActivity {
         wv.loadUrl(url);*/
 
         wv.getSettings().setJavaScriptEnabled(true);
+
+        wv.getSettings().setDomStorageEnabled(true);//腾讯兔小巢反馈加入
+
         //使网页用WebView打开
         wv.setWebViewClient(new WebViewClient() {
             @Override
@@ -52,7 +56,32 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
         wv.loadUrl(url);
+
+        //腾讯兔小巢反馈允许其拉起微信。
+        WebViewClient webViewClient = new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                super.shouldOverrideUrlLoading(view, url);
+
+                if (url == null) {
+                    return  false;
+                }
+                try {
+                    if (url.startsWith("weixin://")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        view.getContext().startActivity(intent);
+                        return true;
+                    }
+                } catch (Exception e) {
+                    return false;
+                }
+                view.loadUrl(url);
+                return true;
+            }
+        };
+        wv.setWebViewClient(webViewClient);
     }
+
 
     @Override
     protected void onResume() {

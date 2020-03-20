@@ -3,6 +3,7 @@ package com.cwj.love_lhh.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -47,6 +48,8 @@ public class AboutActivity extends AppCompatActivity {
     RelativeLayout rlCheckUpdates;
     @BindView(R.id.rl_share)
     RelativeLayout rlShare;
+    @BindView(R.id.rl_feedback)
+    RelativeLayout rlFeedback;
     private LoadingDialog loadingDialog;
 
     @Override
@@ -79,7 +82,7 @@ public class AboutActivity extends AppCompatActivity {
         return localVersion;
     }
 
-    @OnClick({R.id.rl_check_updates, R.id.rl_share})
+    @OnClick({R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_check_updates://检查更新、
@@ -98,6 +101,11 @@ public class AboutActivity extends AppCompatActivity {
                 break;
             case R.id.rl_share://分享
                 Toast.makeText(this, "敬请期待...", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.rl_feedback://用户反馈
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", "https://support.qq.com/product/136399");
+                startActivity(intent);
                 break;
         }
     }
