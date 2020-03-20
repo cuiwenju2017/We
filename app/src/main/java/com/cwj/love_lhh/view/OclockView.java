@@ -91,12 +91,13 @@ public class OclockView extends View {
     /* 秒针路径 */
     private Path mSecondHandPath;
     private RectF mCircleRectF;
+
     public OclockView(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public OclockView(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public OclockView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -114,7 +115,7 @@ public class OclockView extends View {
         time_paint.setColor(Color.parseColor("#88ffffff"));
         time_paint.setStyle(Paint.Style.STROKE);
         time_paint.setAntiAlias(true);
-        DashPathEffect dashPathEffect = new DashPathEffect(new float[]{5,5},0);
+        DashPathEffect dashPathEffect = new DashPathEffect(new float[]{5, 5}, 0);
         time_paint.setPathEffect(dashPathEffect);
 
         mCameraMatrix = new Matrix();
@@ -137,7 +138,7 @@ public class OclockView extends View {
         change_paint = new Paint();
         change_paint.setStyle(Paint.Style.STROKE);
         change_paint.setAntiAlias(true);
-        DashPathEffect dashPathEffect2 = new DashPathEffect(new float[]{5,5},0);
+        DashPathEffect dashPathEffect2 = new DashPathEffect(new float[]{5, 5}, 0);
         change_paint.setPathEffect(dashPathEffect2);
 
         mCircleRectF = new RectF();
@@ -157,22 +158,22 @@ public class OclockView extends View {
         //毫秒
         float milliSecond = calendar.get(Calendar.MILLISECOND);
         //秒
-        float second = calendar.get(Calendar.SECOND)+milliSecond/1000;
+        float second = calendar.get(Calendar.SECOND) + milliSecond / 1000;
         //分
-        float minute = calendar.get(Calendar.MINUTE)+second/60;
+        float minute = calendar.get(Calendar.MINUTE) + second / 60;
         //时
-        float hour = calendar.get(Calendar.HOUR)+minute/60;
+        float hour = calendar.get(Calendar.HOUR) + minute / 60;
         //求出三个指针的角度
-        mSecondDegree = second*6;
-        mMinuteDegree = 6*minute;
-        mHourDegree = 30*hour;
+        mSecondDegree = second * 6;
+        mMinuteDegree = 6 * minute;
+        mHourDegree = 30 * hour;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mCanvas=canvas;
+        mCanvas = canvas;
         //Camera实现3D效果
         mCameraMatrix.reset();
         mCamera.save();
@@ -180,26 +181,33 @@ public class OclockView extends View {
         mCamera.rotateY(mCameraRotateY);
         mCamera.getMatrix(mCameraMatrix);
         mCamera.restore();
-        mCameraMatrix.preTranslate(-getWidth()/2,-getHeight()/2);
-        mCameraMatrix.postTranslate(getWidth()/2,getHeight()/2);
+        mCameraMatrix.preTranslate(-getWidth() / 2, -getHeight() / 2);
+        mCameraMatrix.postTranslate(getWidth() / 2, getHeight() / 2);
         canvas.concat(mCameraMatrix);
 
         //获取系统时间
         getTime();
 
-
         //1、先把3,6,9,12四大刻度文字写出来，涉及到文字基准线和字体长度，所以微调一下
         paint.setTextSize(30);
-        canvas.drawText("12",width/2-20,distance+10,paint);
-        canvas.drawText("3",width-distance-10,distance+10+radius,paint);
-        canvas.drawText("6",width/2-10,width-distance+10,paint);
-        canvas.drawText("9",distance-10,distance+radius+10,paint);
+        canvas.drawText("12", width / 2 - 20, distance + 10, paint);
+        canvas.drawText("1", width / 2 - 20 + (width / 2 - distance) / 3, distance + radius - (width / 2 - distance) / 3 * 2, paint);
+        canvas.drawText("2", width / 2 - 20 + (width / 2 - distance) / 3 * 2, distance + radius - (width / 2 - distance) / 3, paint);
+        canvas.drawText("3", width - distance - 10, distance + 10 + radius, paint);
+        canvas.drawText("4", width - distance - 10 - (width / 2 - distance) / 3, distance + 10 + radius + (width / 2 - distance) / 3, paint);
+        canvas.drawText("5", width - distance - 10 - (width / 2 - distance) / 3 * 2, distance + 10 + radius + (width / 2 - distance) / 3 * 2, paint);
+        canvas.drawText("6", width / 2 - 10, width - distance + 10, paint);
+        canvas.drawText("7", width / 2 - 10 - (width / 2 - distance) / 3, width - distance + 10 - (width / 2 - distance) / 3, paint);
+        canvas.drawText("8", width / 2 - 10 - (width / 2 - distance) / 3 * 2, width - distance + 10 - (width / 2 - distance) / 3 * 2, paint);
+        canvas.drawText("9", distance - 10, distance + radius + 10, paint);
+        canvas.drawText("10", distance - 10 + (width / 2 - distance) / 3, distance + radius + 10 - (width / 2 - distance) / 3, paint);
+        canvas.drawText("11", distance - 10 + (width / 2 - distance) / 3 * 2, distance + radius + 10 - (width / 2 - distance) / 3 * 2, paint);
 
         //2、把时钟外层轮廓 补全,注意留下一点间距(给圆心角流出5度的宽余),也就是画圆弧,
-        canvas.drawArc(distance,distance,distance+radius*2,distance+radius*2,-85,80,false,paint);
-        canvas.drawArc(distance,distance,distance+radius*2,distance+radius*2,5,80,false,paint);
-        canvas.drawArc(distance,distance,distance+radius*2,distance+radius*2,95,80,false,paint);
-        canvas.drawArc(distance,distance,distance+radius*2,distance+radius*2,185,80,false,paint);
+        canvas.drawArc(distance, distance, distance + radius * 2, distance + radius * 2, -85, 80, false, paint);
+        canvas.drawArc(distance, distance, distance + radius * 2, distance + radius * 2, 5, 80, false, paint);
+        canvas.drawArc(distance, distance, distance + radius * 2, distance + radius * 2, 95, 80, false, paint);
+        canvas.drawArc(distance, distance, distance + radius * 2, distance + radius * 2, 185, 80, false, paint);
 
         //确定圆心圆环
 //        canvas.drawCircle(mCenterPoint,mCenterPoint,20,center_paint);
@@ -207,14 +215,14 @@ public class OclockView extends View {
 
         //外弧到刻度的距离,
         canvas.save();
-        canvas.translate(mCanvasTranslateX,mCanvasTranslateY);
+        canvas.translate(mCanvasTranslateX, mCanvasTranslateY);
         //处理颜色渐变
-        mGradientMatrix.setRotate(mSecondDegree-90,mCenterPoint,mCenterPoint);
+        mGradientMatrix.setRotate(mSecondDegree - 90, mCenterPoint, mCenterPoint);
         mSweepGradient.setLocalMatrix(mGradientMatrix);
         change_paint.setShader(mSweepGradient);
-        int innerdistance = radius/8;
+        int innerdistance = radius / 8;
         change_paint.setStrokeWidth(30);
-        canvas.drawCircle(mCenterPoint,mCenterPoint,radius-innerdistance,change_paint);
+        canvas.drawCircle(mCenterPoint, mCenterPoint, radius - innerdistance, change_paint);
         canvas.restore();
 
         //画秒针
@@ -255,7 +263,7 @@ public class OclockView extends View {
         mCanvas.translate(mCanvasTranslateX * 2f, mCanvasTranslateY * 2f);
         mCanvas.rotate(mMinuteDegree, getWidth() / 2, getHeight() / 2);
         mMinuteHandPath.reset();
-        float offset = distance-30;
+        float offset = distance - 30;
         mMinuteHandPath.moveTo(getWidth() / 2 - 0.01f * radius, getHeight() / 2 - 0.03f * radius);
         mMinuteHandPath.lineTo(getWidth() / 2 - 0.008f * radius, offset + 0.365f * radius);
         mMinuteHandPath.quadTo(getWidth() / 2, offset + 0.345f * radius,
@@ -275,16 +283,15 @@ public class OclockView extends View {
 
     private void drawSPointer() {
         mCanvas.save();
-        mCanvas.translate(mCanvasTranslateX,mCanvasTranslateY);
-        mCanvas.rotate(mSecondDegree,mCenterPoint,mCenterPoint);
+        mCanvas.translate(mCanvasTranslateX, mCanvasTranslateY);
+        mCanvas.rotate(mSecondDegree, mCenterPoint, mCenterPoint);
         mSecondHandPath.reset();
-        mSecondHandPath.moveTo(mCenterPoint,distance-20+0.26f*radius);
-        mSecondHandPath.lineTo(mCenterPoint - 0.05f * radius, distance-20+0.34f * radius);
-        mSecondHandPath.lineTo(mCenterPoint+ 0.05f * radius, distance-20 + 0.34f * radius);
+        mSecondHandPath.moveTo(mCenterPoint, distance - 20 + 0.26f * radius);
+        mSecondHandPath.lineTo(mCenterPoint - 0.05f * radius, distance - 20 + 0.34f * radius);
+        mSecondHandPath.lineTo(mCenterPoint + 0.05f * radius, distance - 20 + 0.34f * radius);
         mSecondHandPath.close();
         mCanvas.drawPath(mSecondHandPath, sPaint);
         mCanvas.restore();
-
 
 
     }
@@ -303,24 +310,24 @@ public class OclockView extends View {
             width = widthSize;
         }
         //圆心坐标
-        mCenterPoint = width/2;
+        mCenterPoint = width / 2;
         //圆半径
-        radius = width/3;
+        radius = width / 3;
         //圆环距屏幕边缘距离,都会算吧  哈哈哈
-        distance = width/6;
+        distance = width / 6;
         mMaxCanvasTranslate = 0.02f * radius;
 
         mSweepGradient = new SweepGradient(mCenterPoint, mCenterPoint,
                 new int[]{grayColor, weithColor}, new float[]{0.75f, 1});
-        setMeasuredDimension(width, width );
+        setMeasuredDimension(width, width);
     }
 
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (valueAnimator!=null&&valueAnimator.isRunning()){
+                if (valueAnimator != null && valueAnimator.isRunning()) {
                     valueAnimator.cancel();
                 }
                 getViewRotate(event);
@@ -350,7 +357,7 @@ public class OclockView extends View {
                 PropertyValuesHolder.ofFloat(canvasTranslateXName, mCanvasTranslateX, 0);
         PropertyValuesHolder canvasTranslateYHolder =
                 PropertyValuesHolder.ofFloat(canvasTranslateYName, mCanvasTranslateY, 0);
-        valueAnimator= ValueAnimator.ofPropertyValuesHolder(cameraRotateXHolder,
+        valueAnimator = ValueAnimator.ofPropertyValuesHolder(cameraRotateXHolder,
                 cameraRotateYHolder, canvasTranslateXHolder, canvasTranslateYHolder);
 
         valueAnimator.setInterpolator(new TimeInterpolator() {
@@ -387,12 +394,12 @@ public class OclockView extends View {
 
     //获取camera旋转角度
     private void getViewRotate(MotionEvent event) {
-        float retateX = -(event.getY()-getHeight()/2);
-        float retateY = -(event.getX()-getWidth()/2);
+        float retateX = -(event.getY() - getHeight() / 2);
+        float retateY = -(event.getX() - getWidth() / 2);
         //求出自旋转大小与半径比
-        float[] precentArc = getPercent(retateX,retateY);
-        mCameraRotateX = precentArc[0]*mMaxCameraRotate;
-        mCameraRotateY = precentArc[1]*mMaxCameraRotate;
+        float[] precentArc = getPercent(retateX, retateY);
+        mCameraRotateX = precentArc[0] * mMaxCameraRotate;
+        mCameraRotateY = precentArc[1] * mMaxCameraRotate;
 
     }
 
