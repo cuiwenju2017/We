@@ -60,7 +60,7 @@ public class GamesFragment extends Fragment {
             case R.id.ll_aircraft_battle://飞机大战
                 startActivity(new Intent(getActivity(), AircraftBattleActivity.class));
                 break;
-            case R.id.ll_2048://2048
+            case R.id.ll_2048://拼图
                 startActivity(new Intent(getActivity(), PuzzleActivity.class));
                 break;
 
