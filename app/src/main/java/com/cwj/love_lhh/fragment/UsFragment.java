@@ -1,28 +1,39 @@
 package com.cwj.love_lhh.fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.AboutActivity;
 import com.cwj.love_lhh.activity.SetTimeActivity;
+import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;
 
+import java.io.File;
 import java.text.ParseException;
 
 import butterknife.BindView;
@@ -54,6 +65,12 @@ public class UsFragment extends Fragment {
     TextView tvJh;
     @BindView(R.id.tv_y)
     TextView tvY;
+    @BindView(R.id.tv_set_backgground)
+    TextView tvSetBackgground;
+    @BindView(R.id.iv_bg)
+    ImageView ivBg;
+    @BindView(R.id.tv_reset)
+    TextView tvReset;
 
     private String togetherTime, getMarriedTime;
     SharedPreferences sprfMain;
@@ -89,6 +106,14 @@ public class UsFragment extends Fragment {
         handler.postDelayed(runnable, 1000);
         //停止计时
 //        handler.removeCallbacks(runnable);
+
+        //设置背景
+        if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
+            wv.setVisibility(View.VISIBLE);
+        } else {
+            wv.setVisibility(View.GONE);
+            Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
+        }
     }
 
     private Handler handler = new Handler();
@@ -98,33 +123,6 @@ public class UsFragment extends Fragment {
             handler.postDelayed(this, 1000); //n秒刷新一次
         }
     };
-
-    public static final int REQUEST_SEARCH = 100;
-
-    @OnClick({R.id.tv_change_date, R.id.tv_about})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_change_date://日期修改
-                Intent intent = new Intent(getActivity(), SetTimeActivity.class);
-                startActivityForResult(intent, REQUEST_SEARCH);
-                break;
-            case R.id.tv_about://关于
-                startActivity(new Intent(getActivity(), AboutActivity.class));
-                break;
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {//判断是否返回成功
-            if (requestCode == REQUEST_SEARCH) {//判断来自哪个Activity
-                togetherTime = sprfMain.getString("togetherTime", "");
-                getMarriedTime = sprfMain.getString("getMarriedTime", "");
-                tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
-            }
-        }
-    }
 
     private void update() {
         long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond;
@@ -155,6 +153,92 @@ public class UsFragment extends Fragment {
             }
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void doCode() {
+        PictureSelectorUtils.ofImage(this, REQUEST_CODE_SELECT_USER_ICON);
+    }
+
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //执行代码,这里是已经申请权限成功了,可以不用做处理
+                    doCode();
+                } else {
+                    Toast.makeText(getActivity(), "权限申请失败", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
+    }
+
+    SharedPreferences.Editor editorMain;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {//判断是否返回成功
+            if (requestCode == REQUEST_SEARCH) {//判断来自哪个Activity
+                togetherTime = sprfMain.getString("togetherTime", "");
+                getMarriedTime = sprfMain.getString("getMarriedTime", "");
+                tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
+            }
+        }
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_SELECT_USER_ICON) {
+                String userIconPath = PictureSelectorUtils.forResult(resultCode, data);
+                if (userIconPath == null) {
+                } else {
+                    Glide.with(this).load(Uri.fromFile(new File(userIconPath))).into(ivBg);
+                    wv.setVisibility(View.GONE);
+                    ivBg.setVisibility(View.VISIBLE);
+                    sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
+                    editorMain = sprfMain.edit();
+                    editorMain.putString("path", userIconPath);
+                    editorMain.commit();
+                }
+            }
+        }
+    }
+
+    public static final int REQUEST_SEARCH = 100;
+    private static final int REQUEST_CODE_SELECT_USER_ICON = 100;
+
+    @OnClick({R.id.tv_change_date, R.id.tv_about, R.id.tv_set_backgground, R.id.tv_reset})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.tv_change_date://日期修改
+                Intent intent = new Intent(getActivity(), SetTimeActivity.class);
+                startActivityForResult(intent, REQUEST_SEARCH);
+                break;
+            case R.id.tv_about://关于
+                startActivity(new Intent(getActivity(), AboutActivity.class));
+                break;
+            case R.id.tv_set_backgground://设置背景
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                        //没有权限则申请权限
+                        this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    } else {
+                        //有权限直接执行,docode()不用做处理
+                        doCode();
+                    }
+                } else {
+                    //小于6.0，不用申请权限，直接执行
+                    doCode();
+                }
+                break;
+            case R.id.tv_reset://重置背景
+                wv.setVisibility(View.VISIBLE);
+                ivBg.setVisibility(View.GONE);
+                editorMain = sprfMain.edit();
+                editorMain.putString("path", "");
+                editorMain.commit();
+                break;
         }
     }
 }

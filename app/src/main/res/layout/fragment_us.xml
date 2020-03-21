@@ -10,6 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,41 +131,71 @@
             android:textColor="@color/colorWhite" />
     </LinearLayout>
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/tv_change_date"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/ripple_water"
-            android:clickable="true"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="日期修改"
-            android:textColor="@color/colorWhite" />
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
 
-        <TextView
-            android:id="@+id/tv_about"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/ripple_water"
-            android:clickable="true"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="关于"
-            android:textColor="@color/colorWhite" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_change_date"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ripple_water"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="日期修改"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/tv_set_backgground"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ripple_water"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="设置背景"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/tv_reset"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ripple_water"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="重置背景"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/ripple_water"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="关于"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cl_view"

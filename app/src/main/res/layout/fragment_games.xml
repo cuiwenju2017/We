@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffeeeeee"
+    android:background="@color/colorBg"
     android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/colorTranslucenceBlack" />
+        android:layout_height="60dp"
+        android:background="@color/colorAccent"
+        android:gravity="center|bottom"
+        android:paddingBottom="10dp"
+        android:text="小游戏"
+        android:textColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

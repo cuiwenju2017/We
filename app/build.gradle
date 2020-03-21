@@ -65,4 +65,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //gson库
     implementation 'com.google.code.gson:gson:2.7'
+    //图片选择框架
+    implementation 'com.github.goweii:PictureSelector:v2.3.1'
+    //图片加载框架
+    implementation 'com.github.bumptech.glide:glide:4.6.1'
 }
