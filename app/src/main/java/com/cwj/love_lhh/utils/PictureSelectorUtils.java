@@ -30,8 +30,9 @@ public class PictureSelectorUtils {
                 .enableCrop(false)//是否裁剪
                 .isDragFrame(false)// 是否可拖动裁剪框(固定)
                 .withAspectRatio(3, 4)// int 裁剪比例 如16:9 3:2 3:4 1:1 可自定义
-                .isCamera(true)
+                .isCamera(true)//是否显示拍照按钮 true or false
                 .isGif(true)//是否显示gif图片 true or false
+                .previewImage(true)// 是否可预览图片 true or false
                 .forResult(requestCode);
     }
 
