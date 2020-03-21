@@ -11,7 +11,7 @@ public class ChinaDate {
     private int month;
     private int day;
     private boolean leap;
-    final static String chineseNumber[] = {"正", "二", "三", "四", "五", "六", "七", "八", "九", "十", "冬", "腊"};
+    final static String chineseNumber[] = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "冬", "腊"};
     static SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
     final static long[] lunarInfo = new long[]
             {0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2,

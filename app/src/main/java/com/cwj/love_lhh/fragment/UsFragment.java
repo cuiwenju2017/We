@@ -130,8 +130,8 @@ public class UsFragment extends Fragment {
         long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond;
         int inHarnessYear, getMarriedYear, setTogetherTime, setGetMarriedTime;
         try {
-            nowTime = TimeUtils.getTimeStame();//现在时间
-            startTime = Long.parseLong(TimeUtils.dateToStamp(togetherTime));//起始时间
+            nowTime = TimeUtils.getTimeStame();//当前时间
+            startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherTime));//在一起的时间
             apartTime = (nowTime - startTime) / 1000 / 60 / 60 / 24;//天数
             remainderHour = (nowTime - startTime) / 1000 / 60 / 60 % 24;//小时
             remainderMinute = (nowTime - startTime) / 1000 / 60 % 60;//分钟
@@ -150,6 +150,8 @@ public class UsFragment extends Fragment {
                 tvY.setVisibility(View.GONE);
             } else {
                 tvGetMarriedYear.setText("" + getMarriedYear);
+                tvJh.setVisibility(View.VISIBLE);
+                tvY.setVisibility(View.VISIBLE);
             }
         } catch (ParseException e) {
             e.printStackTrace();

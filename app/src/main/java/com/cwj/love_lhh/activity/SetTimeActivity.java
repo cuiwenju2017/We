@@ -52,7 +52,7 @@ public class SetTimeActivity extends AppCompatActivity {
 
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
-    private String togetherTime, getMarriedTime, togetherT, tT, gT;
+    private String togetherTime, getMarriedTime, tT, gT, gT2;
     private ChinaDate lunar;
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
@@ -67,15 +67,34 @@ public class SetTimeActivity extends AppCompatActivity {
 
     private void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
+        tT = sprfMain.getString("togetherTime", "");
+        gT = sprfMain.getString("getMarriedTime", "");
+        gT2 = sprfMain.getString("getMarriedTime2", "");
+
         long nowTime = TimeUtils.getTimeStame();
-        togetherTime = TimeUtils.dateToString(nowTime);
-        togetherT = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+        if (TextUtils.isEmpty(tT)) {
+            togetherTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+        } else {
+            togetherTime = tT;
+        }
         tvTogetherTime.setText(togetherTime);
 
         selectedDate = Calendar.getInstance();//系统当前时间
-
-        getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
-        lunar = new ChinaDate(selectedDate);
+        if (TextUtils.isEmpty(gT)) {
+            lunar = new ChinaDate(selectedDate);
+            getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+        } else {
+            try {
+                Calendar setMarriedTime = Calendar.getInstance();
+                SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                setMarriedTime.setTime(chineseDateFormat.parse(gT2));
+                lunar = new ChinaDate(setMarriedTime);
+                getMarriedTime = gT2;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         tvGetMarriedTime.setText("" + lunar);
     }
 
@@ -92,12 +111,11 @@ public class SetTimeActivity extends AppCompatActivity {
                 pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
                     @Override
                     public void onTimeSelect(Date date, View v) {
-                        togetherTime = getTime(date);
-                        togetherT = getTime2(date);
+                        togetherTime = getTime2(date);
                         tvTogetherTime.setText(togetherTime);
                     }
                 })
-                        .setType(new boolean[]{true, true, true, true, true, true})// 默认全部显示
+                        .setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
                         .setRangDate(startDate, selectedDate)//起始终止年月日设定
                         .setDividerColor(Color.RED)//当前选中日期线条颜色
                         .setSubmitColor(Color.RED)//确定按钮文字颜色
@@ -193,19 +211,17 @@ public class SetTimeActivity extends AppCompatActivity {
             case R.id.tv_confirm://设置好了
                 long startTime, getMarried;
                 try {
-                    startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherT));//起始时间戳
+                    startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherTime));//在一起时间戳
                     getMarried = Long.parseLong(TimeUtils.dateToStamp2(getMarriedTime));//结婚时间戳
                     if (startTime > getMarried) {
                         Toast.makeText(this, "结婚时间不能早于在一起的时间", Toast.LENGTH_SHORT).show();
                     } else {
-                        sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
-                        tT = sprfMain.getString("togetherTime", "");
-                        gT = sprfMain.getString("getMarriedTime", "");
                         if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
                             Intent intent = new Intent(this, HomeActivity.class);
                             sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                             editorMain = sprfMain.edit();
                             editorMain.putString("togetherTime", togetherTime);
+                            editorMain.putString("getMarriedTime2", getMarriedTime);
                             editorMain.putString("getMarriedTime", "" + lunar);
                             editorMain.commit();
                             startActivity(intent);
@@ -215,6 +231,7 @@ public class SetTimeActivity extends AppCompatActivity {
                             sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                             editorMain = sprfMain.edit();
                             editorMain.putString("togetherTime", togetherTime);
+                            editorMain.putString("getMarriedTime2", getMarriedTime);
                             editorMain.putString("getMarriedTime", "" + lunar);
                             editorMain.commit();
                             setResult(RESULT_OK, intent);
