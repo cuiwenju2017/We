@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.cwj.love_lhh">
+
     <!-- 连接互联网Internet权限 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -71,6 +72,16 @@
         <meta-data
             android:name="BDAPPKEY"
             android:value="YMmwdxPpRLuVun8TguvY46QSboAq2XoZ" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cwj.love_lhh.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/bdp_update_filepaths" />
+        </provider>
     </application>
 
 </manifest>

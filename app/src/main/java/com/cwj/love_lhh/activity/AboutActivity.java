@@ -1,13 +1,18 @@
 package com.cwj.love_lhh.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.Display;
@@ -22,6 +27,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.baidu.autoupdatesdk.AppUpdateInfo;
 import com.baidu.autoupdatesdk.AppUpdateInfoForInstall;
@@ -100,13 +107,50 @@ public class AboutActivity extends AppCompatActivity {
                 });
                 break;
             case R.id.rl_share://分享
-                Toast.makeText(this, "敬请期待...", Toast.LENGTH_SHORT).show();
+                share();
                 break;
             case R.id.rl_feedback://用户反馈
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra("url", "https://support.qq.com/product/136399");
                 startActivity(intent);
                 break;
+        }
+    }
+
+    private void share() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            shareImg(BitmapFactory.decodeResource(getResources(), R.drawable.icon_qr_code));
+        }
+    }
+
+    /**
+     * 分享图片(直接将bitamp转换为Uri)
+     *
+     * @param bitmap
+     */
+    private void shareImg(Bitmap bitmap) {
+        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, null, null));
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");//设置分享内容的类型
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent = Intent.createChooser(intent, getResources().getString(R.string.app_name));
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    shareImg(BitmapFactory.decodeResource(getResources(), R.drawable.icon_qr_code));
+                } else {
+                    Toast.makeText(this, "你拒绝了权限申请，可能无法进行下面的操作哦", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
         }
     }
 

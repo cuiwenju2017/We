@@ -3,19 +3,25 @@ package com.cwj.love_lhh.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -32,7 +38,6 @@ import com.cwj.love_lhh.fragment.ToolFragment;
 import com.cwj.love_lhh.fragment.UsFragment;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.view.TabView;
-import com.jaeger.library.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +105,53 @@ public class HomeActivity extends AppCompatActivity {
                 }
             }
         });
+
+        //通知用户开启通知
+        NotificationManagerCompat notification = NotificationManagerCompat.from(this);
+        boolean isEnabled = notification.areNotificationsEnabled();
+        if (!isEnabled) {
+            //未打开通知
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage("请在“通知”中打开通知权限以便观察应用更新进度")
+                    .setCancelable(false)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    })
+                    .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Intent intent = new Intent();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                                intent.putExtra("android.provider.extra.APP_PACKAGE", HomeActivity.this.getPackageName());
+                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //5.0
+                                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                                intent.putExtra("app_package", HomeActivity.this.getPackageName());
+                                intent.putExtra("app_uid", HomeActivity.this.getApplicationInfo().uid);
+                                startActivity(intent);
+                            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {  //4.4
+                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                intent.addCategory(Intent.CATEGORY_DEFAULT);
+                                intent.setData(Uri.parse("package:" + HomeActivity.this.getPackageName()));
+                            } else if (Build.VERSION.SDK_INT >= 15) {
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                                intent.setData(Uri.fromParts("package", HomeActivity.this.getPackageName(), null));
+                            }
+                            startActivity(intent);
+
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -227,19 +279,19 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public void onDownloadComplete(String apkPath) {
-//            tv.setText(tv.getText() + "\n onDownloadComplete: " + apkPath);
+            Log.i("aaa", "\n onDownloadComplete: " + apkPath);
             BDAutoUpdateSDK.cpUpdateInstall(getApplicationContext(), apkPath);
         }
 
         @Override
         public void onStart() {
-//            tv.setText(tv.getText() + "\n Download onStart");
+            Log.i("aaa", "\n Download onStart");
         }
 
         @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void onPercent(int percent, long rcvLen, long fileSize) {
-//            tv.setText(tv.getText() + "\n Download onPercent: " + percent + "%");
+            Log.i("aaa", "onPercent: " + percent);
             if (percent < 100) {
                 NotificationUtils.showNotification("下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
             } else {
@@ -249,12 +301,12 @@ public class HomeActivity extends AppCompatActivity {
 
         @Override
         public void onFail(Throwable error, String content) {
-//            tv.setText(tv.getText() + "\n Download onFail: " + content);
+            Log.i("aaa", "\n Download onFail: " + content);
         }
 
         @Override
         public void onStop() {
-//            tv.setText(tv.getText() + "\n Download onStop");
+            Log.i("aaa", "\n Download onStop");
         }
 
     }
