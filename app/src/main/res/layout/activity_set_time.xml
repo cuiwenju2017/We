@@ -62,5 +62,5 @@
         android:background="@drawable/ripple_water_more"
         android:clickable="true"
         android:padding="15dp"
-        android:text="设置好了→" />
+        android:text="设置好了" />
 </LinearLayout>
