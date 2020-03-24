@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.LoginFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,9 @@ import com.bumptech.glide.Glide;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.AboutActivity;
 import com.cwj.love_lhh.activity.SetTimeActivity;
+import com.cwj.love_lhh.utils.ChinaDate;
+import com.cwj.love_lhh.utils.ChinaDate2;
+import com.cwj.love_lhh.utils.LunarUtils;
 import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;
@@ -71,8 +76,12 @@ public class UsFragment extends Fragment {
     ImageView ivBg;
     @BindView(R.id.tv_reset)
     TextView tvReset;
+    @BindView(R.id.tv_wedding_day)
+    TextView tvWeddingDay;
+    @BindView(R.id.tv_fall_in_love)
+    TextView tvFallInLove;
 
-    private String togetherTime, getMarriedTime;
+    private String togetherTime, getMarriedTime, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, getMarriedTime4;
     SharedPreferences sprfMain;
 
     @Nullable
@@ -97,6 +106,7 @@ public class UsFragment extends Fragment {
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
         togetherTime = sprfMain.getString("togetherTime", "");
         getMarriedTime = sprfMain.getString("getMarriedTime", "");
+        getMarriedTime3 = sprfMain.getString("getMarriedTime3", "");
 
         tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
 
@@ -124,11 +134,18 @@ public class UsFragment extends Fragment {
         }
     };
 
+    private ChinaDate lunar;
+
     private void update() {
-        long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond;
+        long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond, thisYearTogetherTimestamp,
+                nextyearTogetherTimestamp, thisYearGetMarriedTimestamp, nextyearGetMarriedTimestamp, getLunarTimestamp = 0, thisYearTimestamp;
         int inHarnessYear, getMarriedYear, setTogetherTime, setGetMarriedTime;
+        String setTogetherDate, thisYearTogetherDate, nextyearTogetherDate, setGetMarriedDate, thisYearGetMarriedDate,
+                nextyearGetMarriedDate, getLunarnowTime = null, thisYearDate;
+
         try {
-            nowTime = TimeUtils.getTimeStame();//当前时间
+            nowTime = TimeUtils.getTimeStame();//当前时间戳
+
             startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherTime));//在一起的时间
             apartTime = (nowTime - startTime) / 1000 / 60 / 60 / 24;//天数
             remainderHour = (nowTime - startTime) / 1000 / 60 / 60 % 24;//小时
@@ -136,8 +153,62 @@ public class UsFragment extends Fragment {
             remainderSecond = (nowTime - startTime) / 1000 % 60;//秒
             tv.setText(apartTime + "天" + remainderHour + "小时" + remainderMinute + "分" + remainderSecond + "秒");
 
-            setTogetherTime = Integer.parseInt(togetherTime.substring(0, 4));
-            setGetMarriedTime = Integer.parseInt(getMarriedTime.substring(3, 7));
+            setTogetherTime = Integer.parseInt(togetherTime.substring(0, 4));//取出在一起年
+            setGetMarriedTime = Integer.parseInt(getMarriedTime.substring(3, 7));//取出结婚年
+
+            setTogetherDate = togetherTime.substring(4, 10);//取出在一起月日
+            thisYearDate = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");//当前年月日
+            thisYearTogetherDate = TimeUtils.dateToString(nowTime, "yyyy") + setTogetherDate;//取出今年在一起的年月日
+            nextyearTogetherDate = (Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) + 1) + setTogetherDate;//取出下一年在一起的年月日
+            thisYearTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearDate));//当前年月日的时间戳转天数
+            thisYearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearTogetherDate));//今年在一起的年月日的时间戳转天数
+            nextyearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyearTogetherDate));//下一年在一起的年月日的时间戳转天数
+            if ((thisYearTogetherTimestamp - thisYearTimestamp) >= 0) {
+                tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
+            } else {
+                tvFallInLove.setText("" + (nextyearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
+            }
+
+            try {
+                getLunarnowTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+                getLunarTimestamp = Long.parseLong(TimeUtils.dateToStamp2(getLunarnowTime));//得到当前的时间戳
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if ("闰".equals(getMarriedTime3.substring(5, 6))) {//2020-闰04-01
+                thisYearGetMarriedDate = TimeUtils.dateToString(nowTime, "yyyy") + "-" + getMarriedTime3.substring(6, 11);//取出今年结婚的年月日
+                nextyearGetMarriedDate = (Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) + 1) + "-" + getMarriedTime3.substring(6, 11);//取出下一年结婚的年月日
+
+                int year = Integer.parseInt(thisYearGetMarriedDate.substring(0, 4));
+                int month = Integer.parseInt(thisYearGetMarriedDate.substring(5, 7));
+                int monthDay = Integer.parseInt(thisYearGetMarriedDate.substring(8, 10));
+                thisyeargetMarriedTime = LunarUtils.getTranslateSolarString(year, -month, monthDay);
+
+                int nextyear = Integer.parseInt(nextyearGetMarriedDate.substring(0, 4));
+                int nextmonth = Integer.parseInt(nextyearGetMarriedDate.substring(5, 7));
+                int nextmonthDay = Integer.parseInt(nextyearGetMarriedDate.substring(8, 10));
+                nextyeargetMarriedTime = LunarUtils.getTranslateSolarString(nextyear, nextmonth, nextmonthDay);
+            } else {//2020-04-01
+                thisYearGetMarriedDate = TimeUtils.dateToString(nowTime, "yyyy") + getMarriedTime3.substring(4, 10);//取出今年结婚的年月日
+                nextyearGetMarriedDate = (Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) + 1) + getMarriedTime3.substring(4, 10);//取出下一年结婚的年月日
+
+                int year = Integer.parseInt(thisYearGetMarriedDate.substring(0, 4));
+                int month = Integer.parseInt(thisYearGetMarriedDate.substring(5, 7));
+                int monthDay = Integer.parseInt(thisYearGetMarriedDate.substring(8, 10));
+                thisyeargetMarriedTime = LunarUtils.getTranslateSolarString(year, month, monthDay);
+
+                int nextyear = Integer.parseInt(nextyearGetMarriedDate.substring(0, 4));
+                int nextmonth = Integer.parseInt(nextyearGetMarriedDate.substring(5, 7));
+                int nextmonthDay = Integer.parseInt(nextyearGetMarriedDate.substring(8, 10));
+                nextyeargetMarriedTime = LunarUtils.getTranslateSolarString(nextyear, nextmonth, nextmonthDay);
+            }
+            thisYearGetMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisyeargetMarriedTime));//今年结婚的年月日的时间戳
+            nextyearGetMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyeargetMarriedTime));//下一年结婚的年月日的时间戳
+            if ((thisYearGetMarriedTimestamp - getLunarTimestamp) >= 0) {
+                tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
+            } else {
+                tvWeddingDay.setText("" + (nextyearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
+            }
 
             inHarnessYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setTogetherTime;//在一起年数
             getMarriedYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setGetMarriedTime;//结婚年数
@@ -182,9 +253,7 @@ public class UsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {//判断是否返回成功
             if (requestCode == REQUEST_SEARCH) {//判断来自哪个Activity
-                togetherTime = sprfMain.getString("togetherTime", "");
-                getMarriedTime = sprfMain.getString("getMarriedTime", "");
-                tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
+                initView();
             }
         }
 

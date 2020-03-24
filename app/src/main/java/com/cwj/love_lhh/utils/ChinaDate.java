@@ -178,6 +178,10 @@ public class ChinaDate {
             return "";
         if (day == 10)
             return "初十";
+        if (day == 20)
+            return "廿";
+        if (day == 30)
+            return "卅";
         else
             return chineseTen[day / 10] + chineseNumber[n];
     }

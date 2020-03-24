@@ -26,6 +26,7 @@ import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.utils.ChinaDate;
+import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;
 
@@ -52,7 +53,7 @@ public class SetTimeActivity extends AppCompatActivity {
 
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
-    private String togetherTime, getMarriedTime, tT, gT, gT2;
+    private String togetherTime, getMarriedTime, tT, gT, gT2,getMarriedLunarTime,getMarriedTime3;
     private ChinaDate lunar;
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
@@ -84,6 +85,11 @@ public class SetTimeActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(gT)) {
             lunar = new ChinaDate(selectedDate);
             getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+            try {
+                getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else {
             try {
                 Calendar setMarriedTime = Calendar.getInstance();
@@ -91,6 +97,11 @@ public class SetTimeActivity extends AppCompatActivity {
                 setMarriedTime.setTime(chineseDateFormat.parse(gT2));
                 lunar = new ChinaDate(setMarriedTime);
                 getMarriedTime = gT2;
+                try {
+                    getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -134,6 +145,11 @@ public class SetTimeActivity extends AppCompatActivity {
                     @Override
                     public void onTimeSelect(Date date, View v) {//选中事件回调
                         getMarriedTime = getTime2(date);
+                        try {
+                            getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         try {
                             Calendar setMarriedTime = Calendar.getInstance();
                             SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -221,8 +237,9 @@ public class SetTimeActivity extends AppCompatActivity {
                             sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                             editorMain = sprfMain.edit();
                             editorMain.putString("togetherTime", togetherTime);
-                            editorMain.putString("getMarriedTime2", getMarriedTime);
                             editorMain.putString("getMarriedTime", "" + lunar);
+                            editorMain.putString("getMarriedTime2", getMarriedTime);
+                            editorMain.putString("getMarriedTime3", getMarriedTime3);
                             editorMain.commit();
                             startActivity(intent);
                             finish();
@@ -231,8 +248,9 @@ public class SetTimeActivity extends AppCompatActivity {
                             sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                             editorMain = sprfMain.edit();
                             editorMain.putString("togetherTime", togetherTime);
-                            editorMain.putString("getMarriedTime2", getMarriedTime);
                             editorMain.putString("getMarriedTime", "" + lunar);
+                            editorMain.putString("getMarriedTime2", getMarriedTime);
+                            editorMain.putString("getMarriedTime3", getMarriedTime3);
                             editorMain.commit();
                             setResult(RESULT_OK, intent);
                             finish();
