@@ -2,14 +2,18 @@ package com.cwj.love_lhh.fragment;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
@@ -31,6 +35,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.AboutActivity;
+import com.cwj.love_lhh.activity.HomeActivity;
 import com.cwj.love_lhh.activity.SetTimeActivity;
 import com.cwj.love_lhh.utils.ChinaDate;
 import com.cwj.love_lhh.utils.ChinaDate2;
@@ -83,7 +88,7 @@ public class UsFragment extends Fragment {
     @BindView(R.id.tv_fall_in_love)
     TextView tvFallInLove;
 
-    private String togetherTime, getMarriedTime, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, getMarriedTime4;
+    private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
     SharedPreferences sprfMain;
     private boolean isFrist = true;
 
@@ -111,6 +116,7 @@ public class UsFragment extends Fragment {
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
         togetherTime = sprfMain.getString("togetherTime", "");
         getMarriedTime = sprfMain.getString("getMarriedTime", "");
+        getMarriedTime2 = sprfMain.getString("getMarriedTime2", "");
         getMarriedTime3 = sprfMain.getString("getMarriedTime3", "");
 
         tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
@@ -168,9 +174,9 @@ public class UsFragment extends Fragment {
             thisYearDate = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");//当前年月日
             thisYearTogetherDate = TimeUtils.dateToString(nowTime, "yyyy") + setTogetherDate;//取出今年在一起的年月日
             nextyearTogetherDate = (Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) + 1) + setTogetherDate;//取出下一年在一起的年月日
-            thisYearTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearDate));//当前年月日的时间戳转天数
-            thisYearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearTogetherDate));//今年在一起的年月日的时间戳转天数
-            nextyearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyearTogetherDate));//下一年在一起的年月日的时间戳转天数
+            thisYearTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearDate));//当前年月日的时间戳
+            thisYearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearTogetherDate));//今年在一起的年月日的时间戳
+            nextyearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyearTogetherDate));//下一年在一起的年月日的时间戳
             if ((thisYearTogetherTimestamp - thisYearTimestamp) > 0) {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
             } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
@@ -233,14 +239,15 @@ public class UsFragment extends Fragment {
             inHarnessYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setTogetherTime;//在一起年数
             getMarriedYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setGetMarriedTime;//结婚年数
             tvInHarnessYear.setText("" + inHarnessYear);
-            if (getMarriedYear < 0) {
-                tvGetMarriedYear.setText("还有" + (setGetMarriedTime - Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy"))) + "年我们就结婚啦");
-                tvJh.setVisibility(View.GONE);
-                tvY.setVisibility(View.GONE);
-            } else {
+            long getMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(getMarriedTime2));//阳历结婚时间毫秒数
+            if ((thisYearTimestamp - getMarriedTimestamp) >= 0) {
                 tvGetMarriedYear.setText("" + getMarriedYear);
                 tvJh.setVisibility(View.VISIBLE);
                 tvY.setVisibility(View.VISIBLE);
+            } else {
+                tvGetMarriedYear.setText("还有" + (getMarriedTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天我们就结婚啦");
+                tvJh.setVisibility(View.GONE);
+                tvY.setVisibility(View.GONE);
             }
         } catch (ParseException e) {
             e.printStackTrace();
@@ -323,11 +330,36 @@ public class UsFragment extends Fragment {
                 }
                 break;
             case R.id.tv_reset://重置背景
-                wv.setVisibility(View.VISIBLE);
-                ivBg.setVisibility(View.GONE);
-                editorMain = sprfMain.edit();
-                editorMain.putString("path", "");
-                editorMain.commit();
+                if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
+                    Toast.makeText(getActivity(), "已经是原始背景,请勿重试！", Toast.LENGTH_SHORT).show();
+                } else {
+                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
+                            .setTitle("提示")
+                            .setMessage("确定重置当前背景吗？")
+                            .setCancelable(true)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    wv.setVisibility(View.VISIBLE);
+                                    ivBg.setVisibility(View.GONE);
+                                    editorMain = sprfMain.edit();
+                                    editorMain.putString("path", "");
+                                    editorMain.commit();
+                                }
+                            })
+                            .create();
+                    alertDialog.show();
+                    //设置颜色和弹窗宽度一定要放在show之下，要不然会报错或者不生效
+                    alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                }
                 break;
         }
     }
