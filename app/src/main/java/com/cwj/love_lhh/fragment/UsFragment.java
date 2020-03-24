@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -34,6 +35,7 @@ import com.cwj.love_lhh.activity.SetTimeActivity;
 import com.cwj.love_lhh.utils.ChinaDate;
 import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.LunarUtils;
+import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.jaeger.library.StatusBarUtil;
@@ -83,7 +85,9 @@ public class UsFragment extends Fragment {
 
     private String togetherTime, getMarriedTime, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, getMarriedTime4;
     SharedPreferences sprfMain;
+    private boolean isFrist = true;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -93,6 +97,7 @@ public class UsFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initView() {
         StatusBarUtil.setTranslucentForImageView(getActivity(), 0, clView);//沉浸状态栏
         // 设置WebView属性，能够执行Javascript脚本
@@ -124,10 +129,13 @@ public class UsFragment extends Fragment {
             wv.setVisibility(View.GONE);
             Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
         }
+
+        isFrist = true;
     }
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         public void run() {
             update();//获取新数据
             handler.postDelayed(this, 1000); //n秒刷新一次
@@ -136,13 +144,13 @@ public class UsFragment extends Fragment {
 
     private ChinaDate lunar;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void update() {
         long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond, thisYearTogetherTimestamp,
                 nextyearTogetherTimestamp, thisYearGetMarriedTimestamp, nextyearGetMarriedTimestamp, getLunarTimestamp = 0, thisYearTimestamp;
         int inHarnessYear, getMarriedYear, setTogetherTime, setGetMarriedTime;
         String setTogetherDate, thisYearTogetherDate, nextyearTogetherDate, setGetMarriedDate, thisYearGetMarriedDate,
                 nextyearGetMarriedDate, getLunarnowTime = null, thisYearDate;
-
         try {
             nowTime = TimeUtils.getTimeStame();//当前时间戳
 
@@ -163,8 +171,14 @@ public class UsFragment extends Fragment {
             thisYearTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearDate));//当前年月日的时间戳转天数
             thisYearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearTogetherDate));//今年在一起的年月日的时间戳转天数
             nextyearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyearTogetherDate));//下一年在一起的年月日的时间戳转天数
-            if ((thisYearTogetherTimestamp - thisYearTimestamp) >= 0) {
+            if ((thisYearTogetherTimestamp - thisYearTimestamp) > 0) {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
+            } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
+                tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
+                if (isFrist) {
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的相恋日，问候ta一下吧!", 0, "", 0, 0);
+                    isFrist = false;
+                }
             } else {
                 tvFallInLove.setText("" + (nextyearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
             }
@@ -204,8 +218,14 @@ public class UsFragment extends Fragment {
             }
             thisYearGetMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisyeargetMarriedTime));//今年结婚的年月日的时间戳
             nextyearGetMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyeargetMarriedTime));//下一年结婚的年月日的时间戳
-            if ((thisYearGetMarriedTimestamp - getLunarTimestamp) >= 0) {
+            if ((thisYearGetMarriedTimestamp - getLunarTimestamp) > 0) {
                 tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
+            } else if ((thisYearGetMarriedTimestamp - getLunarTimestamp) == 0) {
+                tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
+                if (isFrist) {
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的结婚纪念日，记得给ta一个惊喜哦!", 0, "", 0, 0);
+                    isFrist = false;
+                }
             } else {
                 tvWeddingDay.setText("" + (nextyearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
             }
@@ -248,6 +268,7 @@ public class UsFragment extends Fragment {
 
     SharedPreferences.Editor editorMain;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

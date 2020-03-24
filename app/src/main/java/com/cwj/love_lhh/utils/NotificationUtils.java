@@ -3,10 +3,16 @@ package com.cwj.love_lhh.utils;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+
 import androidx.annotation.RequiresApi;
+
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.activity.HomeActivity;
 import com.cwj.love_lhh.app.App;
 
 import static android.app.Notification.VISIBILITY_SECRET;
@@ -50,11 +56,13 @@ public class NotificationUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public static void showNotification(String title, String content, int manageId, String channelId, int progress, int maxProgress) {
+    public static void showNotification(Context context, String title, String content, int manageId, String channelId, int progress, int maxProgress) {
         final Notification.Builder builder = getNotificationBuilder(title, content, channelId);
-       /* Intent intent = new Intent(this, SecondeActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-        builder.setContentIntent(pendingIntent);*/
+
+        Intent intent = new Intent(context, HomeActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        builder.setContentIntent(pendingIntent);
+
         builder.setOnlyAlertOnce(true);
         builder.setDefaults(Notification.FLAG_ONLY_ALERT_ONCE);
         builder.setProgress(maxProgress, progress, false);

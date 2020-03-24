@@ -293,7 +293,7 @@ public class HomeActivity extends AppCompatActivity {
         public void onPercent(int percent, long rcvLen, long fileSize) {
             Log.i("aaa", "onPercent: " + percent);
             if (percent < 100) {
-                NotificationUtils.showNotification("下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
+                NotificationUtils.showNotification(HomeActivity.this, "下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
             } else {
                 NotificationUtils.cancleNotification(0);
             }

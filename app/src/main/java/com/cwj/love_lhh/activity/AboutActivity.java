@@ -248,7 +248,7 @@ public class AboutActivity extends AppCompatActivity {
         public void onPercent(int percent, long rcvLen, long fileSize) {
 //            tv.setText(tv.getText() + "\n Download onPercent: " + percent + "%");
             if (percent < 100) {
-                NotificationUtils.showNotification("下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
+                NotificationUtils.showNotification(AboutActivity.this, "下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
             } else {
                 NotificationUtils.cancleNotification(0);
             }
