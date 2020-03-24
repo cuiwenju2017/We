@@ -53,7 +53,7 @@ public class SetTimeActivity extends AppCompatActivity {
 
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
-    private String togetherTime, getMarriedTime, tT, gT, gT2,getMarriedLunarTime,getMarriedTime3;
+    private String togetherTime, getMarriedTime, tT, gT, gT2, getMarriedLunarTime, getMarriedTime3;
     private ChinaDate lunar;
     SharedPreferences sprfMain;
     SharedPreferences.Editor editorMain;
@@ -109,6 +109,8 @@ public class SetTimeActivity extends AppCompatActivity {
         tvGetMarriedTime.setText("" + lunar);
     }
 
+    private SimpleDateFormat chineseDateFormat;
+
     @OnClick({R.id.tv_together_time, R.id.tv_get_married_time, R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -132,7 +134,15 @@ public class SetTimeActivity extends AppCompatActivity {
                         .setSubmitColor(Color.RED)//确定按钮文字颜色
                         .setCancelColor(Color.RED)//取消按钮文字颜色
                         .build();
-                pvTime.setDate(selectedDate);// 如果不设置的话，默认是系统时间*/
+
+                Calendar settTTime = Calendar.getInstance();
+                chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    settTTime.setTime(chineseDateFormat.parse(tT));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                pvTime.setDate(TextUtils.isEmpty(tT) ? selectedDate : settTTime);// 如果不设置的话，默认是系统时间*/
                 pvTime.show();
                 break;
             case R.id.tv_get_married_time://结婚日子的选择
@@ -152,7 +162,7 @@ public class SetTimeActivity extends AppCompatActivity {
                         }
                         try {
                             Calendar setMarriedTime = Calendar.getInstance();
-                            SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                            chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                             setMarriedTime.setTime(chineseDateFormat.parse(getTime2(date)));
                             lunar = new ChinaDate(setMarriedTime);
                             tvGetMarriedTime.setText("" + lunar);
@@ -220,9 +230,17 @@ public class SetTimeActivity extends AppCompatActivity {
                         .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
                         .setDividerColor(Color.RED)
                         .build();
-                pvCustomLunar.setDate(selectedDate);// 如果不设置的话，默认是系统时间*/
-                pvCustomLunar.show();
 
+                Calendar setgTTime = Calendar.getInstance();
+                chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    setgTTime.setTime(chineseDateFormat.parse(gT2));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                pvCustomLunar.setDate(TextUtils.isEmpty(gT2) ? selectedDate : setgTTime);// 如果不设置的话，默认是系统时间*/
+                pvCustomLunar.show();
                 break;
             case R.id.tv_confirm://设置好了
                 long startTime, getMarried;

@@ -22,7 +22,7 @@
             app:paintStrokeColor="@color/colorYello"
             app:pathStrokeColor="@color/colorAccent"
             app:showPainter="true"
-            app:text="只属于你"
+            app:text="我们"
             app:textInCenter="true"
             app:textSize="60sp" />
 
