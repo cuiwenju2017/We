@@ -31,16 +31,6 @@ public class ToolFragment extends Fragment {
     LinearLayout llCompass;
     @BindView(R.id.ll_clock)
     LinearLayout llClock;
-    @BindView(R.id.ll_81ju)
-    LinearLayout ll81ju;
-    @BindView(R.id.ll_yy6029)
-    LinearLayout llYy6029;
-    @BindView(R.id.ll_niubabavip)
-    LinearLayout llNiubabavip;
-    @BindView(R.id.ll_goudidiao)
-    LinearLayout llGoudidiao;
-    @BindView(R.id.ll_nanshengdianying)
-    LinearLayout llNanshengdianying;
     private Intent intent;
     private Uri content_url;
 
@@ -52,7 +42,7 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock, R.id.ll_81ju, R.id.ll_yy6029, R.id.ll_niubabavip, R.id.ll_goudidiao, R.id.ll_nanshengdianying})
+    @OnClick({R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_calculator://计算器
@@ -64,41 +54,13 @@ public class ToolFragment extends Fragment {
             case R.id.ll_clock://时钟
                 startActivity(new Intent(getActivity(), ClockActivity.class));
                 break;
-            case R.id.ll_81ju://扒一剧
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("http://www.81ju.cn/");
-                intent.setData(content_url);
-                startActivity(intent);
-                break;
-            case R.id.ll_yy6029://YY66029视频
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                content_url = Uri.parse("https://www.yy6029.com/");
-                intent.setData(content_url);
-                startActivity(intent);
-                break;
-            case R.id.ll_niubabavip://牛巴巴vip解析
+           /* case R.id.ll_niubabavip://牛巴巴vip解析
                 intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 content_url = Uri.parse("http://mv.688ing.com/?qqdrsign=0378b");
                 intent.setData(content_url);
                 startActivity(intent);
-                break;
-            case R.id.ll_goudidiao://够低调解析
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                content_url = Uri.parse("http://www.gddyu.com/?movie/-----1.html");
-                intent.setData(content_url);
-                startActivity(intent);
-                break;
-            case R.id.ll_nanshengdianying://男生电影天堂
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                content_url = Uri.parse("http://www.nsdytt.com/");
-                intent.setData(content_url);
-                startActivity(intent);
-                break;
+                break;*/
         }
     }
 }

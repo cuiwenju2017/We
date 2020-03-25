@@ -91,6 +91,7 @@ public class UsFragment extends Fragment {
     private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
     SharedPreferences sprfMain;
     private boolean isFrist = true;
+    private boolean isFrist2 = true;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -228,9 +229,9 @@ public class UsFragment extends Fragment {
                 tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
             } else if ((thisYearGetMarriedTimestamp - getLunarTimestamp) == 0) {
                 tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
-                if (isFrist) {
-                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的结婚纪念日，记得给ta一个惊喜哦!", 0, "", 0, 0);
-                    isFrist = false;
+                if (isFrist2) {
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的结婚纪念日，记得给ta一个惊喜哦!", 1, "", 0, 0);
+                    isFrist2 = false;
                 }
             } else {
                 tvWeddingDay.setText("" + (nextyearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
