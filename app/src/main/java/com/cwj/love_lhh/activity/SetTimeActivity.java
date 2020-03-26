@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
@@ -25,20 +27,31 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.model.Day;
+import com.cwj.love_lhh.model.User;
 import com.cwj.love_lhh.utils.ChinaDate;
 import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.TimeUtils;
+import com.cwj.love_lhh.utils.ToastUtil;
+import com.google.android.material.snackbar.Snackbar;
 import com.jaeger.library.StatusBarUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static java.lang.Long.parseLong;
 
@@ -53,10 +66,8 @@ public class SetTimeActivity extends AppCompatActivity {
 
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
-    private String togetherTime, getMarriedTime, tT, gT, gT2, getMarriedLunarTime, getMarriedTime3;
+    private String togetherTime, getMarriedTime, tT, gT, gT2, getMarriedTime3, objectId, userObjectId;
     private ChinaDate lunar;
-    SharedPreferences sprfMain;
-    SharedPreferences.Editor editorMain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,45 +79,126 @@ public class SetTimeActivity extends AppCompatActivity {
 
     private void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
-        sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
-        tT = sprfMain.getString("togetherTime", "");
-        gT = sprfMain.getString("getMarriedTime", "");
-        gT2 = sprfMain.getString("getMarriedTime2", "");
-
-        long nowTime = TimeUtils.getTimeStame();
-        if (TextUtils.isEmpty(tT)) {
-            togetherTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
-        } else {
-            togetherTime = tT;
-        }
-        tvTogetherTime.setText(togetherTime);
-
         selectedDate = Calendar.getInstance();//系统当前时间
-        if (TextUtils.isEmpty(gT)) {
-            lunar = new ChinaDate(selectedDate);
-            getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
-            try {
-                getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            try {
-                Calendar setMarriedTime = Calendar.getInstance();
-                SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                setMarriedTime.setTime(chineseDateFormat.parse(gT2));
-                lunar = new ChinaDate(setMarriedTime);
-                getMarriedTime = gT2;
-                try {
-                    getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        queryPostAuthor();
+    }
+
+    /**
+     * 添加一对一关联，当前用户添加日期
+     */
+    private void savePost() {
+        if (BmobUser.isLogin()) {
+            Day day = new Day();
+            day.setTogetherTime(togetherTime);
+            day.setGetMarriedTime("" + lunar);
+            day.setGetMarriedTime2(getMarriedTime);
+            day.setGetMarriedTime3(getMarriedTime3);
+            //添加一对一关联，用户关联日期
+            day.setAuthor(BmobUser.getCurrentUser(User.class));
+            day.save(new SaveListener<String>() {
+                @Override
+                public void done(String s, BmobException e) {
+                    if (e == null) {
+//                        ToastUtil.showTextToast(SetTimeActivity.this, "添加成功");
+                    } else {
+                        ToastUtil.showTextToast(SetTimeActivity.this, e.getMessage());
+                    }
                 }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            });
+        } else {
+            ToastUtil.showTextToast(SetTimeActivity.this, "请先登录");
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
-        tvGetMarriedTime.setText("" + lunar);
+    }
+
+    /**
+     * 查询一对一关联，查询当前用户下的日期
+     */
+    private void queryPostAuthor() {
+        if (BmobUser.isLogin()) {
+            BmobQuery<Day> query = new BmobQuery<>();
+            query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
+            query.order("-updatedAt");
+            //包含作者信息
+            query.include("author");
+            query.findObjects(new FindListener<Day>() {
+
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void done(List<Day> object, BmobException e) {
+                    if (e == null) {
+                        objectId = object.get(0).getObjectId();
+                        tT = object.get(0).getTogetherTime();
+                        gT = object.get(0).getGetMarriedTime();
+                        gT2 = object.get(0).getGetMarriedTime2();
+                        togetherTime = tT;
+                        Calendar setMarriedTime = Calendar.getInstance();
+                        SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        try {
+                            setMarriedTime.setTime(chineseDateFormat.parse(gT2));
+                        } catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                        lunar = new ChinaDate(setMarriedTime);
+                        getMarriedTime = gT2;
+                        try {
+                            getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    } else {
+                        long nowTime = TimeUtils.getTimeStame();
+                        togetherTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+                        lunar = new ChinaDate(selectedDate);
+                        getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+                        try {
+                            getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        tT = togetherTime;
+                        gT2 = getMarriedTime3;
+                    }
+                    tvTogetherTime.setText(togetherTime);
+                    tvGetMarriedTime.setText("" + lunar);
+                }
+            });
+        } else {
+            ToastUtil.showTextToast(SetTimeActivity.this, "请先登录");
+            startActivity(new Intent(SetTimeActivity.this, LoginActivity.class));
+            finish();
+        }
+    }
+
+    SharedPreferences sprfMain;
+
+    /**
+     * 修改一对一关联，修改日期
+     */
+    private void updatePostAuthor() {
+        sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+        userObjectId = sprfMain.getString("userObjectId", "");
+        User user = new User();
+        user.setObjectId(userObjectId);
+        Day day = new Day();
+        day.setObjectId(objectId);
+        day.setTogetherTime(togetherTime);
+        day.setGetMarriedTime("" + lunar);
+        day.setGetMarriedTime2(getMarriedTime);
+        day.setGetMarriedTime3(getMarriedTime3);
+        //修改一对一关联，修改帖子和用户的关系
+        day.setAuthor(user);
+        day.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    ToastUtil.showTextToast(SetTimeActivity.this, "修改成功");
+                } else {
+                    ToastUtil.showTextToast(SetTimeActivity.this, e.getMessage());
+                }
+            }
+        });
     }
 
     private SimpleDateFormat chineseDateFormat;
@@ -252,24 +344,12 @@ public class SetTimeActivity extends AppCompatActivity {
                     } else {
                         if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
                             Intent intent = new Intent(this, HomeActivity.class);
-                            sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-                            editorMain = sprfMain.edit();
-                            editorMain.putString("togetherTime", togetherTime);
-                            editorMain.putString("getMarriedTime", "" + lunar);
-                            editorMain.putString("getMarriedTime2", getMarriedTime);
-                            editorMain.putString("getMarriedTime3", getMarriedTime3);
-                            editorMain.commit();
+                            savePost();//新增数据
                             startActivity(intent);
                             finish();
                         } else {
-                            Intent intent = new Intent();
-                            sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-                            editorMain = sprfMain.edit();
-                            editorMain.putString("togetherTime", togetherTime);
-                            editorMain.putString("getMarriedTime", "" + lunar);
-                            editorMain.putString("getMarriedTime2", getMarriedTime);
-                            editorMain.putString("getMarriedTime3", getMarriedTime3);
-                            editorMain.commit();
+                            Intent intent = new Intent(this, HomeActivity.class);
+                            updatePostAuthor();//修改数据
                             setResult(RESULT_OK, intent);
                             finish();
                         }

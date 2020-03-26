@@ -5,19 +5,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ProviderInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapRegionDecoder;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -28,7 +27,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -40,6 +38,7 @@ import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
 import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.app.App;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.jaeger.library.StatusBarUtil;
@@ -47,6 +46,7 @@ import com.jaeger.library.StatusBarUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobUser;
 
 /**
  * 关于
@@ -61,7 +61,16 @@ public class AboutActivity extends AppCompatActivity {
     RelativeLayout rlShare;
     @BindView(R.id.rl_feedback)
     RelativeLayout rlFeedback;
+    @BindView(R.id.rl_change_password)
+    RelativeLayout rlChangePassword;
+    @BindView(R.id.rl_logout)
+    RelativeLayout rlLogout;
+    @BindView(R.id.tv_username)
+    TextView tvUsername;
+
     private LoadingDialog loadingDialog;
+    SharedPreferences sprfMain;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +84,10 @@ public class AboutActivity extends AppCompatActivity {
     private void initView() {
         tvVersionNumber.setText("V" + getLocalVersionName(this));
         loadingDialog = new LoadingDialog(AboutActivity.this, "加载中...");
+        App.getInstance().addActivity(this);
+        sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+        username = sprfMain.getString("username", "");
+        tvUsername.setText(username);
     }
 
     /**
@@ -91,34 +104,6 @@ public class AboutActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return localVersion;
-    }
-
-    @OnClick({R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.rl_check_updates://检查更新、
-                loadingDialog.show();
-                BDAutoUpdateSDK.cpUpdateCheck(this, new CPCheckUpdateCallback() {
-                    @Override
-                    public void onCheckUpdateCallback(AppUpdateInfo appUpdateInfo, AppUpdateInfoForInstall appUpdateInfoForInstall) {
-                        if (appUpdateInfo == null && appUpdateInfoForInstall == null) {
-                            loadingDialog.dismiss();
-                            Toast.makeText(AboutActivity.this, "已是最新版本", Toast.LENGTH_SHORT).show();
-                        } else {
-                            BDAutoUpdateSDK.cpUpdateCheck(AboutActivity.this, new MyCPCheckUpdateCallback());
-                        }
-                    }
-                });
-                break;
-            case R.id.rl_share://分享
-                share();
-                break;
-            case R.id.rl_feedback://用户反馈
-                Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("url", "https://support.qq.com/product/136399");
-                startActivity(intent);
-                break;
-        }
     }
 
     private void share() {
@@ -155,6 +140,64 @@ public class AboutActivity extends AppCompatActivity {
                 }
                 break;
             default:
+        }
+    }
+
+    @OnClick({R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback, R.id.rl_change_password, R.id.rl_logout})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.rl_check_updates://检查更新、
+                loadingDialog.show();
+                BDAutoUpdateSDK.cpUpdateCheck(this, new CPCheckUpdateCallback() {
+                    @Override
+                    public void onCheckUpdateCallback(AppUpdateInfo appUpdateInfo, AppUpdateInfoForInstall appUpdateInfoForInstall) {
+                        if (appUpdateInfo == null && appUpdateInfoForInstall == null) {
+                            loadingDialog.dismiss();
+                            Toast.makeText(AboutActivity.this, "已是最新版本", Toast.LENGTH_SHORT).show();
+                        } else {
+                            BDAutoUpdateSDK.cpUpdateCheck(AboutActivity.this, new MyCPCheckUpdateCallback());
+                        }
+                    }
+                });
+                break;
+            case R.id.rl_share://分享
+                share();
+                break;
+            case R.id.rl_feedback://用户反馈
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", "https://support.qq.com/product/136399");
+                startActivity(intent);
+                break;
+            case R.id.rl_change_password://修改密码
+                startActivity(new Intent(this, ChangePasswordActivity.class));
+                break;
+            case R.id.rl_logout://退出登录
+                AlertDialog alertDialog = new AlertDialog.Builder(this)
+                        .setTitle("提示")
+                        .setMessage("确定退出登录吗？")
+                        .setCancelable(true)
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                                BmobUser.logOut();//退出登录，同时清除缓存用户对象。
+                                startActivity(new Intent(AboutActivity.this, LoginActivity.class));
+                                finish();
+                                App.getInstance().exit();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                //设置颜色和弹窗宽度一定要放在show之下，要不然会报错或者不生效
+                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                break;
         }
     }
 

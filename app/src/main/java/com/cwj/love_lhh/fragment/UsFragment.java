@@ -36,22 +36,34 @@ import com.bumptech.glide.Glide;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.activity.AboutActivity;
 import com.cwj.love_lhh.activity.HomeActivity;
+import com.cwj.love_lhh.activity.LoginActivity;
 import com.cwj.love_lhh.activity.SetTimeActivity;
+import com.cwj.love_lhh.activity.SplashActivity;
+import com.cwj.love_lhh.model.Day;
+import com.cwj.love_lhh.model.User;
 import com.cwj.love_lhh.utils.ChinaDate;
 import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.LunarUtils;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
+import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
 
 import java.io.File;
 import java.text.ParseException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobFile;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.UploadFileListener;
 
 //我们
 public class UsFragment extends Fragment {
@@ -88,7 +100,7 @@ public class UsFragment extends Fragment {
     @BindView(R.id.tv_fall_in_love)
     TextView tvFallInLove;
 
-    private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
+    private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, url;
     SharedPreferences sprfMain;
     private boolean isFrist = true;
     private boolean isFrist2 = true;
@@ -99,8 +111,49 @@ public class UsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_us, container, false);
         unbinder = ButterKnife.bind(this, view);
+        queryPostAuthor();
         initView();
         return view;
+    }
+
+    /**
+     * 查询一对一关联，查询当前用户下的日期
+     */
+    private void queryPostAuthor() {
+        if (BmobUser.isLogin()) {
+            BmobQuery<Day> query = new BmobQuery<>();
+            query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
+            query.order("-updatedAt");
+            //包含作者信息
+            query.include("author");
+            query.findObjects(new FindListener<Day>() {
+
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                @Override
+                public void done(List<Day> object, BmobException e) {
+                    if (e == null) {
+                        togetherTime = object.get(0).getTogetherTime();
+                        getMarriedTime = object.get(0).getGetMarriedTime();
+                        getMarriedTime2 = object.get(0).getGetMarriedTime2();
+                        getMarriedTime3 = object.get(0).getGetMarriedTime3();
+                        tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
+                        update();//显示数据
+                        //开始计时
+                        handler.postDelayed(runnable, 1000);
+                        //停止计时
+                        //handler.removeCallbacks(runnable);
+                    } else {
+                        startActivity(new Intent(getActivity(), SetTimeActivity.class));
+                        getActivity().finish();
+                    }
+                }
+
+            });
+        } else {
+            ToastUtil.showTextToast(getActivity(), "请先登录");
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            getActivity().finish();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -113,22 +166,7 @@ public class UsFragment extends Fragment {
         // 即asserts文件夹下有一个color2.html
         wv.loadUrl("file:///android_asset/index.html");
 
-        //取出上个页面保存的值（取数据）
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
-        togetherTime = sprfMain.getString("togetherTime", "");
-        getMarriedTime = sprfMain.getString("getMarriedTime", "");
-        getMarriedTime2 = sprfMain.getString("getMarriedTime2", "");
-        getMarriedTime3 = sprfMain.getString("getMarriedTime3", "");
-
-        tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
-
-        update();//显示数据
-
-        //开始计时
-        handler.postDelayed(runnable, 1000);
-        //停止计时
-//        handler.removeCallbacks(runnable);
-
         //设置背景
         if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
             wv.setVisibility(View.VISIBLE);
@@ -138,6 +176,7 @@ public class UsFragment extends Fragment {
         }
 
         isFrist = true;
+        isFrist2 = true;
     }
 
     private Handler handler = new Handler();
@@ -282,7 +321,7 @@ public class UsFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {//判断是否返回成功
             if (requestCode == REQUEST_SEARCH) {//判断来自哪个Activity
-                initView();
+                queryPostAuthor();//刷新数据
             }
         }
 
@@ -302,6 +341,7 @@ public class UsFragment extends Fragment {
             }
         }
     }
+
 
     public static final int REQUEST_SEARCH = 100;
     private static final int REQUEST_CODE_SELECT_USER_ICON = 100;
@@ -332,7 +372,7 @@ public class UsFragment extends Fragment {
                 break;
             case R.id.tv_reset://重置背景
                 if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
-                    Toast.makeText(getActivity(), "已经是原始背景,请勿重试！", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showTextToast(getActivity(), "已经是原始背景,请勿重试！");
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
                             .setTitle("提示")

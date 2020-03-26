@@ -33,6 +33,7 @@ import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
 import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.app.App;
 import com.cwj.love_lhh.fragment.GamesFragment;
 import com.cwj.love_lhh.fragment.ToolFragment;
 import com.cwj.love_lhh.fragment.UsFragment;
@@ -71,6 +72,7 @@ public class HomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initView();
         BDAutoUpdateSDK.cpUpdateCheck(HomeActivity.this, new MyCPCheckUpdateCallback());
+        App.getInstance().addActivity(this);
     }
 
     private void initView() {

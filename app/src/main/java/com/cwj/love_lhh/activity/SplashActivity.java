@@ -13,10 +13,20 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.model.Day;
+import com.cwj.love_lhh.model.User;
+import com.cwj.love_lhh.utils.ToastUtil;
+import com.google.android.material.snackbar.Snackbar;
 import com.jaeger.library.StatusBarUtil;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import yanzhikai.textpath.AsyncTextPathView;
 import yanzhikai.textpath.SyncTextPathView;
 import yanzhikai.textpath.painter.ArrowPainter;
@@ -46,11 +56,11 @@ public class SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!TextUtils.isEmpty(togetherTime) && !TextUtils.isEmpty(getMarriedTime)) {
+                if (BmobUser.isLogin()) {
                     startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                     finish();
                 } else {
-                    startActivity(new Intent(SplashActivity.this, SetTimeActivity.class));
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 }
             }
@@ -67,5 +77,6 @@ public class SplashActivity extends AppCompatActivity {
         //设置动画播放完后填充颜色
         stpv.setFillColor(true);
     }
+
 
 }
