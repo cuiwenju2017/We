@@ -47,7 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends BaseActivity {
 
     @BindView(R.id.tab_tool)
     TabView tabTool;
@@ -72,7 +72,6 @@ public class HomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initView();
         BDAutoUpdateSDK.cpUpdateCheck(HomeActivity.this, new MyCPCheckUpdateCallback());
-        App.getInstance().addActivity(this);
     }
 
     private void initView() {

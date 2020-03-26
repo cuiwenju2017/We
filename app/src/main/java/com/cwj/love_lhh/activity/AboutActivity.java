@@ -39,6 +39,7 @@ import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
 import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.app.App;
+import com.cwj.love_lhh.utils.ActivityCollector;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.jaeger.library.StatusBarUtil;
@@ -51,7 +52,7 @@ import cn.bmob.v3.BmobUser;
 /**
  * 关于
  */
-public class AboutActivity extends AppCompatActivity {
+public class AboutActivity extends BaseActivity {
 
     @BindView(R.id.tv_version_number)
     TextView tvVersionNumber;
@@ -84,7 +85,6 @@ public class AboutActivity extends AppCompatActivity {
     private void initView() {
         tvVersionNumber.setText("V" + getLocalVersionName(this));
         loadingDialog = new LoadingDialog(AboutActivity.this, "加载中...");
-        App.getInstance().addActivity(this);
         sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
         username = sprfMain.getString("username", "");
         tvUsername.setText(username);
@@ -189,7 +189,8 @@ public class AboutActivity extends AppCompatActivity {
                                 BmobUser.logOut();//退出登录，同时清除缓存用户对象。
                                 startActivity(new Intent(AboutActivity.this, LoginActivity.class));
                                 finish();
-                                App.getInstance().exit();
+                                //结束之前所有的Activity
+                                ActivityCollector.finishall();
                             }
                         })
                         .create();

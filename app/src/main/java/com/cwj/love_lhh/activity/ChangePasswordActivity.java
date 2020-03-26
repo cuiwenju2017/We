@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.app.App;
+import com.cwj.love_lhh.utils.ActivityCollector;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.google.android.material.snackbar.Snackbar;
@@ -70,7 +71,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     BmobUser.logOut();//退出登录，同时清除缓存用户对象。
                     startActivity(new Intent(ChangePasswordActivity.this, LoginActivity.class));
                     finish();
-                    App.getInstance().exit();
+                    //结束之前所有的Activity
+                    ActivityCollector.finishall();
                 } else {
                     loadingDialog.dismiss();
                     ToastUtil.showTextToast(ChangePasswordActivity.this, "原密码不正确");

@@ -142,6 +142,8 @@ public class UsFragment extends Fragment {
                         handler.postDelayed(runnable, 1000);
                         //停止计时
                         //handler.removeCallbacks(runnable);
+                        isFrist = true;
+                        isFrist2 = true;
                     } else {
                         startActivity(new Intent(getActivity(), SetTimeActivity.class));
                         getActivity().finish();
@@ -174,9 +176,6 @@ public class UsFragment extends Fragment {
             wv.setVisibility(View.GONE);
             Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
         }
-
-        isFrist = true;
-        isFrist2 = true;
     }
 
     private Handler handler = new Handler();
@@ -300,7 +299,6 @@ public class UsFragment extends Fragment {
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         switch (requestCode) {
             case 1:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

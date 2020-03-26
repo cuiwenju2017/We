@@ -13,9 +13,6 @@ import cn.bmob.v3.Bmob;
 public class App extends BaseApplication {
 
     private static Context context;
-    private static App mInstance;
-    private int speedGrade = 1;
-    private List<Activity> activityList = new LinkedList<Activity>();
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -31,23 +28,5 @@ public class App extends BaseApplication {
 
     public static Context getContext() {
         return context;
-    }
-
-
-    public static App getInstance() {
-        if (mInstance == null) {
-            mInstance = new App();
-        }
-        return mInstance;
-    }
-
-    public void addActivity(Activity activity) {
-        activityList.add(activity);
-    }
-
-    public void exit() {
-        for (Activity activity : activityList) {
-            activity.finish();
-        }
     }
 }
