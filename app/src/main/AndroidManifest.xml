@@ -9,7 +9,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取wifi网络状态的信息 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 获取sd卡写的权限，用于文件上传和下载 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /><!--允许程序访问电话状态-->
+    <!--集成百度自动更新安装必须权限-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /><!--读取设备外部存储空间（内置SDcard和外置SDCard）的文件-->
+    <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /><!-- 8.0必要权限  -->
 
     <application
         android:name=".app.App"
@@ -20,6 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".activity.ChangePasswordActivity"
             android:screenOrientation="portrait"
@@ -87,7 +92,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- 百度自动更新 -->
+        </activity>
+
         <meta-data
             android:name="BDAPPID"
             android:value="18927095" />
@@ -104,6 +110,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/bdp_update_filepaths" />
         </provider>
+
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.cwj.love_lhh.BmobContentProvider" />

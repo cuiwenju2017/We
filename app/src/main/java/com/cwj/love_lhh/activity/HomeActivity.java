@@ -71,7 +71,6 @@ public class HomeActivity extends BaseActivity {
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         initView();
-        BDAutoUpdateSDK.cpUpdateCheck(HomeActivity.this, new MyCPCheckUpdateCallback());
     }
 
     private void initView() {
@@ -145,7 +144,6 @@ public class HomeActivity extends BaseActivity {
                                 intent.setData(Uri.fromParts("package", HomeActivity.this.getPackageName(), null));
                             }
                             startActivity(intent);
-
                         }
                     })
                     .create();
@@ -153,6 +151,8 @@ public class HomeActivity extends BaseActivity {
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
         }
+
+        BDAutoUpdateSDK.cpUpdateCheck(HomeActivity.this, new MyCPCheckUpdateCallback());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
