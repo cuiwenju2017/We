@@ -35,6 +35,12 @@ public class GamesFragment extends Fragment {
     LinearLayout ll_puzzle;
     @BindView(R.id.ll_gobang)
     LinearLayout llGobang;
+    @BindView(R.id.ll_paopaolong)
+    LinearLayout llPaopaolong;
+    @BindView(R.id.ll_diefangzhi)
+    LinearLayout llDiefangzhi;
+    @BindView(R.id.ll_feixingqi)
+    LinearLayout llFeixingqi;
     private Intent intent;
 
     @Nullable
@@ -45,9 +51,24 @@ public class GamesFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_ball, R.id.ll_hero, R.id.ll_aircraft_battle, R.id.ll_puzzle, R.id.ll_gobang})
+    @OnClick({R.id.ll_feixingqi, R.id.ll_diefangzhi, R.id.ll_paopaolong, R.id.ll_ball, R.id.ll_hero, R.id.ll_aircraft_battle, R.id.ll_puzzle, R.id.ll_gobang})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_feixingqi:
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", "http://xcdn.php.cn/js/html5/HTML5+three%E5%AE%9E%E7%8E%B03D%E9%85%B7%E7%82%AB%E6%8B%BC%E9%AD%94%E6%96%B9%E6%B8%B8%E6%88%8F%E7%89%B9%E6%80%A7/index.html?sign=81af0d704fbd2e1602487e87af8e03f2&timestamp=1588848116");
+                startActivity(intent);
+                break;
+            case R.id.ll_diefangzhi://叠房子
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", "http://xcdn.php.cn/js/CSS3/JS%E5%8F%A0%E6%88%BF%E5%AD%90%E6%B6%88%E6%B6%88%E4%B9%90%E5%B0%8F%E6%B8%B8%E6%88%8F%E4%BB%A3%E7%A0%81/index.html?sign=abf273724af50f45227c4c4bd88633e4&timestamp=1588847018");
+                startActivity(intent);
+                break;
+            case R.id.ll_paopaolong://泡泡龙
+                intent = new Intent(getActivity(), WebViewActivity.class);
+                intent.putExtra("url", "http://xcdn.php.cn/js/html5/H5%E7%86%8A%E7%8C%AB%E5%BC%B9%E8%B7%B3%E5%B0%8F%E6%B8%B8%E6%88%8F%E6%BA%90%E7%A0%81/index.html?sign=0aaa46d743354d1483cb60b7b85973e3&timestamp=1588846357");
+                startActivity(intent);
+                break;
             case R.id.ll_ball://滚动的球球
                 intent = new Intent(getActivity(), WebViewActivity.class);
 //        intent.putExtra("url", "file:///android_asset/gunqiu.html");
