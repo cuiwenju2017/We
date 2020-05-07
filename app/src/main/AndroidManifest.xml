@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /><!--读取设备外部存储空间（内置SDcard和外置SDCard）的文件-->
     <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /><!-- 8.0必要权限  -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:name=".app.App"
@@ -97,6 +98,7 @@
         <meta-data
             android:name="BDAPPID"
             android:value="18927095" />
+
         <meta-data
             android:name="BDAPPKEY"
             android:value="YMmwdxPpRLuVun8TguvY46QSboAq2XoZ" />
@@ -114,6 +116,12 @@
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.cwj.love_lhh.BmobContentProvider" />
+
+        <!-- 设置BmobAppKey -->
+        <meta-data
+            android:name="Bmob_APP_KEY"
+            android:value="6b641f364905d608449772bae45f7b60"/>
+
     </application>
 
 </manifest>

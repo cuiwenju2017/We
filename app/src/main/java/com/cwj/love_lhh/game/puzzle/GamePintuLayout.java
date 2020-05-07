@@ -301,27 +301,31 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                String firstTag = (String) mFirst.getTag();
-                String secondTag = (String) mSecond.getTag();
+                if (mFirst == null || mSecond == null) {
+                    return;
+                } else {
+                    String firstTag = (String) mFirst.getTag();
+                    String secondTag = (String) mSecond.getTag();
 
-                String[] firstParams = firstTag.split("_");
-                String[] secondParams = secondTag.split("_");
+                    String[] firstParams = firstTag.split("_");
+                    String[] secondParams = secondTag.split("_");
 
-                mFirst.setImageBitmap(mItemBitmaps.get(Integer
-                        .parseInt(secondParams[0])).bitmap);
-                mSecond.setImageBitmap(mItemBitmaps.get(Integer
-                        .parseInt(firstParams[0])).bitmap);
+                    mFirst.setImageBitmap(mItemBitmaps.get(Integer
+                            .parseInt(secondParams[0])).bitmap);
+                    mSecond.setImageBitmap(mItemBitmaps.get(Integer
+                            .parseInt(firstParams[0])).bitmap);
 
-                mFirst.setTag(secondTag);
-                mSecond.setTag(firstTag);
-                mFirst.setVisibility(VISIBLE);
-                mSecond.setVisibility(VISIBLE);
-                mFirst = mSecond = null;
-                mAnimLayout.removeAllViews();
-                //checkSuccess();
-                isAniming = false;
-                //进行游戏胜利判断
-                checkSuccess();
+                    mFirst.setTag(secondTag);
+                    mSecond.setTag(firstTag);
+                    mFirst.setVisibility(VISIBLE);
+                    mSecond.setVisibility(VISIBLE);
+                    mFirst = mSecond = null;
+                    mAnimLayout.removeAllViews();
+                    //checkSuccess();
+                    isAniming = false;
+                    //进行游戏胜利判断
+                    checkSuccess();
+                }
             }
         });
     }
