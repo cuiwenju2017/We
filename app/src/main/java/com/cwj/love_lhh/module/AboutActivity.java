@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -38,10 +39,18 @@ import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
 import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
 import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
+import com.cwj.love_lhh.activity.ChangePasswordActivity;
+import com.cwj.love_lhh.activity.LoginActivity;
+import com.cwj.love_lhh.activity.WebViewActivity;
 import com.cwj.love_lhh.app.App;
+import com.cwj.love_lhh.base.BaseActivity;
+import com.cwj.love_lhh.base.BaseBean;
+import com.cwj.love_lhh.base.BasePresenter;
+import com.cwj.love_lhh.bean.LatestBean;
 import com.cwj.love_lhh.utils.ActivityCollector;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.NotificationUtils;
+import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
@@ -52,7 +61,7 @@ import cn.bmob.v3.BmobUser;
 /**
  * 关于
  */
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends BaseActivity<AboutPrensenter> implements AboutView {
 
     @BindView(R.id.tv_version_number)
     TextView tvVersionNumber;
@@ -74,20 +83,28 @@ public class AboutActivity extends BaseActivity {
     private String username;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
-        ButterKnife.bind(this);
-        initView();
+    protected AboutPrensenter createPresenter() {
+        return new AboutPrensenter(this);
     }
 
-    private void initView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_about;
+    }
+
+    @Override
+    protected void initView() {
+        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         tvVersionNumber.setText("V" + getLocalVersionName(this));
         loadingDialog = new LoadingDialog(AboutActivity.this, "加载中...");
         sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
         username = sprfMain.getString("username", "");
         tvUsername.setText(username);
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     /**
@@ -100,6 +117,22 @@ public class AboutActivity extends BaseActivity {
                     .getPackageManager()
                     .getPackageInfo(ctx.getPackageName(), 0);
             localVersion = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return localVersion;
+    }
+
+    /* 获取本地软件版本号​
+     */
+    public static int getLocalVersion(Context ctx) {
+        int localVersion = 0;
+        try {
+            PackageInfo packageInfo = ctx.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(ctx.getPackageName(), 0);
+            localVersion = packageInfo.versionCode;
+            Log.d("TAG", "当前版本号：" + localVersion);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -148,7 +181,7 @@ public class AboutActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.rl_check_updates://检查更新、
                 loadingDialog.show();
-                BDAutoUpdateSDK.cpUpdateCheck(this, new CPCheckUpdateCallback() {
+                /*BDAutoUpdateSDK.cpUpdateCheck(this, new CPCheckUpdateCallback() {
                     @Override
                     public void onCheckUpdateCallback(AppUpdateInfo appUpdateInfo, AppUpdateInfoForInstall appUpdateInfoForInstall) {
                         if (appUpdateInfo == null && appUpdateInfoForInstall == null) {
@@ -158,7 +191,8 @@ public class AboutActivity extends BaseActivity {
                             BDAutoUpdateSDK.cpUpdateCheck(AboutActivity.this, new MyCPCheckUpdateCallback());
                         }
                     }
-                });
+                });*/
+                presenter.getLatest("5e77278df9454809b991dfda", "6570963ae9a308ca993393518f865887");
                 break;
             case R.id.rl_share://分享
                 share();
@@ -200,6 +234,22 @@ public class AboutActivity extends BaseActivity {
                 alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
                 break;
         }
+    }
+
+    private int version;
+
+    @Override
+    public void getLatest(LatestBean bean) {
+        loadingDialog.dismiss();
+        version = Integer.parseInt(bean.getVersion());
+        if (getLocalVersion(this) != version) {
+            ToastUtil.showTextToast(this, "有新版本");
+        }
+    }
+
+    @Override
+    public void getLatestError(String msg) {
+
     }
 
     private class MyCPCheckUpdateCallback implements CPCheckUpdateCallback {

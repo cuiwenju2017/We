@@ -34,6 +34,8 @@ import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
 import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.app.App;
+import com.cwj.love_lhh.base.BaseActivity;
+import com.cwj.love_lhh.base.BasePresenter;
 import com.cwj.love_lhh.fragment.GamesFragment;
 import com.cwj.love_lhh.fragment.ToolFragment;
 import com.cwj.love_lhh.fragment.UsFragment;
@@ -66,14 +68,17 @@ public class HomeActivity extends BaseActivity {
     private List<Fragment> fragments = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        ButterKnife.bind(this);
-        initView();
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
-    private void initView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_home;
+    }
+
+    @Override
+    protected void initView() {
         UsFragment usFragment = new UsFragment();
         GamesFragment gamesFragment = new GamesFragment();
         ToolFragment toolFragment = new ToolFragment();
@@ -89,11 +94,6 @@ public class HomeActivity extends BaseActivity {
         viewpager.setOffscreenPageLimit(fragments.size() - 1);
         viewpager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragments));
         viewpager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            /**
-             * @param position 滑动的时候，position总是代表左边的View， position+1总是代表右边的View
-             * @param positionOffset 左边View位移的比例
-             * @param positionOffsetPixels 左边View位移的像素
-             */
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -151,8 +151,11 @@ public class HomeActivity extends BaseActivity {
             alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
             alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
         }
+    }
 
-        BDAutoUpdateSDK.cpUpdateCheck(HomeActivity.this, new MyCPCheckUpdateCallback());
+    @Override
+    protected void initData() {
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -203,112 +206,5 @@ public class HomeActivity extends BaseActivity {
         public int getCount() {
             return frags.size();
         }
-    }
-
-    private class MyCPCheckUpdateCallback implements CPCheckUpdateCallback {
-
-        @Override
-        public void onCheckUpdateCallback(final AppUpdateInfo info, AppUpdateInfoForInstall infoForInstall) {
-            if (infoForInstall != null && !TextUtils.isEmpty(infoForInstall.getInstallPath())) {
-               /* tv.setText(tv.getText() + "\n install info: " + infoForInstall.getAppSName() + ", \nverion="
-                        + infoForInstall.getAppVersionName() + ", \nchange log=" + infoForInstall.getAppChangeLog());
-                tv.setText(tv.getText() + "\n we can install the apk file in: "
-                        + infoForInstall.getInstallPath());*/
-                BDAutoUpdateSDK.cpUpdateInstall(getApplicationContext(), infoForInstall.getInstallPath());
-            } else if (info != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                long size = info.getAppPathSize() > 0 ? info.getAppPathSize() : info.getAppSize();
-                builder.setTitle("新版大小：" + byteToMb(size))
-                        .setMessage(Html.fromHtml(info.getAppChangeLog()))
-                        .setNeutralButton("普通升级", null)
-                        .setPositiveButton("智能升级", null)
-                        .setCancelable(info.getForceUpdate() != 1)
-                        .setOnKeyListener(new DialogInterface.OnKeyListener() {
-                            @Override
-                            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                                    return true;
-                                }
-                                return false;
-                            }
-                        });
-                if (info.getForceUpdate() != 1) {
-                    builder.setNegativeButton("暂不升级", null);
-                }
-                AlertDialog dialog = builder.show();
-
-                //放在show()之后，不然有些属性是没有效果的，比如height和width
-                Window dialogWindow = dialog.getWindow();
-                WindowManager m = getWindowManager();
-                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
-                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                // 设置宽度
-                p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
-                p.gravity = Gravity.CENTER;//设置位置
-                //p.alpha = 0.8f;//设置透明度
-                dialogWindow.setAttributes(p);
-
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
-                        new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                BDAutoUpdateSDK.cpUpdateDownloadByAs(HomeActivity.this);
-                                dialog.dismiss();
-                            }
-                        });
-                dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BDAutoUpdateSDK.cpUpdateDownload(HomeActivity.this, info, new UpdateDownloadCallback());
-                        dialog.dismiss();
-                    }
-                });
-            } else {
-//                tv.setText(tv.getText() + "\n no update.");
-            }
-        }
-
-        private String byteToMb(long fileSize) {
-            float size = ((float) fileSize) / (1024f * 1024f);
-            return String.format("%.2fMB", size);
-        }
-
-    }
-
-    private class UpdateDownloadCallback implements CPUpdateDownloadCallback {
-
-        @Override
-        public void onDownloadComplete(String apkPath) {
-            Log.i("aaa", "\n onDownloadComplete: " + apkPath);
-            BDAutoUpdateSDK.cpUpdateInstall(getApplicationContext(), apkPath);
-        }
-
-        @Override
-        public void onStart() {
-            Log.i("aaa", "\n Download onStart");
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.O)
-        @Override
-        public void onPercent(int percent, long rcvLen, long fileSize) {
-            Log.i("aaa", "onPercent: " + percent);
-            if (percent < 100) {
-                NotificationUtils.showNotification(HomeActivity.this, "下载中...", "下载进度：" + percent + "%", 0, "", percent, 100);
-            } else {
-                NotificationUtils.cancleNotification(0);
-            }
-        }
-
-        @Override
-        public void onFail(Throwable error, String content) {
-            Log.i("aaa", "\n Download onFail: " + content);
-        }
-
-        @Override
-        public void onStop() {
-            Log.i("aaa", "\n Download onStop");
-        }
-
     }
 }

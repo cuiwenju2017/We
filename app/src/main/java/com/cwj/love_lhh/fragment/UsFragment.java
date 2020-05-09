@@ -34,15 +34,12 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.activity.AboutActivity;
-import com.cwj.love_lhh.activity.HomeActivity;
 import com.cwj.love_lhh.activity.LoginActivity;
 import com.cwj.love_lhh.activity.SetTimeActivity;
-import com.cwj.love_lhh.activity.SplashActivity;
 import com.cwj.love_lhh.model.Day;
 import com.cwj.love_lhh.model.User;
+import com.cwj.love_lhh.module.AboutActivity;
 import com.cwj.love_lhh.utils.ChinaDate;
-import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.LunarUtils;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PictureSelectorUtils;
@@ -60,10 +57,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.datatype.BmobFile;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.UploadFileListener;
 
 //我们
 public class UsFragment extends Fragment {
