@@ -11,7 +11,7 @@ public class AboutPrensenter extends BasePresenter<AboutView> {
     }
 
     /**
-     * 广场列表数据
+     * 版本查询
      */
     public void getLatest(String id,String api_token) {
         addDisposable(apiServer.getLatest(id,api_token), new BaseObserver<LatestBean>(baseView,true) {
