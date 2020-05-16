@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,9 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.app.App;
 import com.cwj.love_lhh.utils.ActivityCollector;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.ToastUtil;
-import com.google.android.material.snackbar.Snackbar;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;

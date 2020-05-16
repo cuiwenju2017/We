@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -6,47 +6,24 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.provider.Settings;
-import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Display;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.TextView;
-
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-
-import com.baidu.autoupdatesdk.AppUpdateInfo;
-import com.baidu.autoupdatesdk.AppUpdateInfoForInstall;
-import com.baidu.autoupdatesdk.BDAutoUpdateSDK;
-import com.baidu.autoupdatesdk.CPCheckUpdateCallback;
-import com.baidu.autoupdatesdk.CPUpdateDownloadCallback;
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.app.App;
 import com.cwj.love_lhh.base.BaseActivity;
 import com.cwj.love_lhh.base.BasePresenter;
-import com.cwj.love_lhh.fragment.GamesFragment;
-import com.cwj.love_lhh.fragment.ToolFragment;
-import com.cwj.love_lhh.fragment.UsFragment;
-import com.cwj.love_lhh.utils.NotificationUtils;
+import com.cwj.love_lhh.module.fragment.GamesFragment;
+import com.cwj.love_lhh.module.fragment.ToolFragment;
+import com.cwj.love_lhh.module.fragment.UsFragment;
 import com.cwj.love_lhh.view.TabView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity {

@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -7,12 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.model.User;
+import com.cwj.love_lhh.bean.User;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;

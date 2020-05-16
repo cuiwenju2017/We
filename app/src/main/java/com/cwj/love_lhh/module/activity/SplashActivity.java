@@ -1,37 +1,22 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.model.Day;
-import com.cwj.love_lhh.model.User;
-import com.cwj.love_lhh.utils.ToastUtil;
-import com.google.android.material.snackbar.Snackbar;
-import com.jaeger.library.StatusBarUtil;
-
-import java.util.List;
+import com.cwj.love_lhh.module.activity.HomeActivity;
+import com.cwj.love_lhh.module.activity.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import yanzhikai.textpath.AsyncTextPathView;
 import yanzhikai.textpath.SyncTextPathView;
-import yanzhikai.textpath.painter.ArrowPainter;
 import yanzhikai.textpath.painter.FireworksPainter;
-import yanzhikai.textpath.painter.PenPainter;
 
 public class SplashActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.fragment;
+package com.cwj.love_lhh.module.fragment;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -13,10 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.activity.CalculatorActivity;
-import com.cwj.love_lhh.activity.ClockActivity;
-import com.cwj.love_lhh.activity.CompassActivity;
-
+import com.cwj.love_lhh.module.activity.CalculatorActivity;
+import com.cwj.love_lhh.module.activity.ClockActivity;
+import com.cwj.love_lhh.module.activity.CompassActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

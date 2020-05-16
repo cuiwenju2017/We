@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.fragment;
+package com.cwj.love_lhh.module.fragment;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,10 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
-import android.text.LoginFilter;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +31,11 @@ import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.activity.LoginActivity;
-import com.cwj.love_lhh.activity.SetTimeActivity;
-import com.cwj.love_lhh.model.Day;
-import com.cwj.love_lhh.model.User;
-import com.cwj.love_lhh.module.AboutActivity;
+import com.cwj.love_lhh.bean.Day;
+import com.cwj.love_lhh.bean.User;
+import com.cwj.love_lhh.module.about.AboutActivity;
+import com.cwj.love_lhh.module.activity.LoginActivity;
+import com.cwj.love_lhh.module.activity.SetTimeActivity;
 import com.cwj.love_lhh.utils.ChinaDate;
 import com.cwj.love_lhh.utils.LunarUtils;
 import com.cwj.love_lhh.utils.NotificationUtils;
@@ -216,7 +213,7 @@ public class UsFragment extends Fragment {
             } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
                 if (isFrist) {
-                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的相恋日，问候ta一下吧!", 0, "", 0, 0);
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的相恋日，问候ta一下吧!", 0, "", 100, 0);
                     isFrist = false;
                 }
             } else {
@@ -263,7 +260,7 @@ public class UsFragment extends Fragment {
             } else if ((thisYearGetMarriedTimestamp - getLunarTimestamp) == 0) {
                 tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
                 if (isFrist2) {
-                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的结婚纪念日，记得给ta一个惊喜哦!", 1, "", 0, 0);
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的结婚纪念日，记得给ta一个惊喜哦!", 1, "", 100, 0);
                     isFrist2 = false;
                 }
             } else {

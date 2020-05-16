@@ -62,7 +62,7 @@ public class RetrofitService {
                 //设置超时时间
                 .connectTimeout(15, TimeUnit.SECONDS)
                 //设置Cookie持久化
-                .cookieJar(new CookiesManager(YUtils.getApplication()))
+//                .cookieJar(new CookiesManager(YUtils.getApplication()))
                 .build();
 
         //关联okHttp并加上rxJava和Gson的配置和baseUrl

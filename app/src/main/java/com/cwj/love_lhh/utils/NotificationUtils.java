@@ -12,8 +12,8 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.activity.HomeActivity;
 import com.cwj.love_lhh.app.App;
+import com.cwj.love_lhh.module.activity.HomeActivity;
 
 
 import static android.app.Notification.VISIBILITY_SECRET;
@@ -60,9 +60,13 @@ public class NotificationUtils {
     public static void showNotification(Context context, String title, String content, int manageId, String channelId, int progress, int maxProgress) {
         final Notification.Builder builder = getNotificationBuilder(title, content, channelId);
 
-        Intent intent = new Intent(context, HomeActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        builder.setContentIntent(pendingIntent);
+        if (progress < 100) {
+
+        } else {//下载完成才可以点击通知
+            Intent intent = new Intent(context, HomeActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            builder.setContentIntent(pendingIntent);
+        }
 
         builder.setOnlyAlertOnce(true);
         builder.setDefaults(Notification.FLAG_ONLY_ALERT_ONCE);

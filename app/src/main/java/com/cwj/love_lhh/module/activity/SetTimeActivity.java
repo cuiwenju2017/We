@@ -1,6 +1,5 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +7,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -18,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,13 +24,12 @@ import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.listener.OnTimeSelectListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.model.Day;
-import com.cwj.love_lhh.model.User;
+import com.cwj.love_lhh.bean.Day;
+import com.cwj.love_lhh.bean.User;
 import com.cwj.love_lhh.utils.ChinaDate;
 import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
-import com.google.android.material.snackbar.Snackbar;
 import com.jaeger.library.StatusBarUtil;
 
 import java.text.ParseException;
@@ -41,7 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

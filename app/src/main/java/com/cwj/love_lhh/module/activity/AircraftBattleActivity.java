@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.activity;
+package com.cwj.love_lhh.module.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,16 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.model.User;
+import com.cwj.love_lhh.bean.User;
 import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.hyb.library.PreventKeyboardBlockUtil;
 import com.jaeger.library.StatusBarUtil;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

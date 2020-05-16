@@ -1,4 +1,4 @@
-package com.cwj.love_lhh.fragment;
+package com.cwj.love_lhh.module.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.activity.AircraftBattleActivity;
-import com.cwj.love_lhh.activity.GobangActivity;
-import com.cwj.love_lhh.activity.PuzzleActivity;
-import com.cwj.love_lhh.activity.WebViewActivity;
-
+import com.cwj.love_lhh.module.activity.AircraftBattleActivity;
+import com.cwj.love_lhh.module.activity.GobangActivity;
+import com.cwj.love_lhh.module.activity.PuzzleActivity;
+import com.cwj.love_lhh.module.activity.WebViewActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
