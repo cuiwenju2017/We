@@ -11,8 +11,8 @@ android {
         applicationId "com.cwj.love_lhh"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 11
-        versionName "1.1.8"
+        versionCode 12
+        versionName "1.1.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

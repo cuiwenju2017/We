@@ -16,6 +16,8 @@ import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.module.activity.CalculatorActivity;
 import com.cwj.love_lhh.module.activity.ClockActivity;
 import com.cwj.love_lhh.module.activity.CompassActivity;
+import com.cwj.love_lhh.module.activity.WebViewActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -30,6 +32,8 @@ public class ToolFragment extends Fragment {
     LinearLayout llCompass;
     @BindView(R.id.ll_clock)
     LinearLayout llClock;
+    @BindView(R.id.ll_byj)
+    LinearLayout llByj;
     private Intent intent;
     private Uri content_url;
 
@@ -41,9 +45,16 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
+    @OnClick({R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_byj://扒一剧
+                intent = new Intent();
+                intent.setAction("android.intent.action.VIEW");
+                content_url = Uri.parse("http://www.81ju.cn/");
+                intent.setData(content_url);
+                startActivity(intent);
+                break;
             case R.id.ll_calculator://计算器
                 startActivity(new Intent(getActivity(), CalculatorActivity.class));
                 break;
@@ -53,13 +64,6 @@ public class ToolFragment extends Fragment {
             case R.id.ll_clock://时钟
                 startActivity(new Intent(getActivity(), ClockActivity.class));
                 break;
-           /* case R.id.ll_niubabavip://牛巴巴vip解析
-                intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                content_url = Uri.parse("http://mv.688ing.com/?qqdrsign=0378b");
-                intent.setData(content_url);
-                startActivity(intent);
-                break;*/
         }
     }
 }
