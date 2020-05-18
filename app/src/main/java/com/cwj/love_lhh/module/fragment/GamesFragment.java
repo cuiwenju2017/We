@@ -21,6 +21,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * 小游戏
+ */
 public class GamesFragment extends Fragment {
 
     @BindView(R.id.ll_ball)

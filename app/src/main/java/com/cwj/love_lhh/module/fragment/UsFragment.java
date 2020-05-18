@@ -57,7 +57,9 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-//我们
+/**
+ * 我们
+ */
 public class UsFragment extends Fragment {
 
     Unbinder unbinder;
