@@ -1,6 +1,7 @@
 package com.cwj.love_lhh.module.ljfl;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,7 +20,9 @@ import com.cwj.love_lhh.base.BaseActivity;
 import com.cwj.love_lhh.base.BaseRVAdapter;
 import com.cwj.love_lhh.base.BaseRVHolder;
 import com.cwj.love_lhh.bean.RubbishBean;
+import com.cwj.love_lhh.module.activity.WebViewActivity;
 import com.cwj.love_lhh.utils.ToastUtil;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
@@ -45,6 +48,8 @@ public class LJFLActivity extends BaseActivity<LJFLPrensenter> implements LJFLVi
     LinearLayout llResult;
     @BindView(R.id.ll_recommend)
     LinearLayout llRecommend;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     @Override
     protected LJFLPrensenter createPresenter() {
@@ -80,9 +85,16 @@ public class LJFLActivity extends BaseActivity<LJFLPrensenter> implements LJFLVi
         rv.setLayoutManager(new GridLayoutManager(this, 1));//列数设置
     }
 
-    @OnClick({R.id.btn_query})
+    private Intent intent;
+
+    @OnClick({R.id.fab, R.id.btn_query})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.fab://指南
+                intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra("url", "https://jingyan.baidu.com/article/f54ae2fcfcbd9c5f93b8491c.html");
+                startActivity(intent);
+                break;
             case R.id.btn_query:
                 if (TextUtils.isEmpty(etName.getText().toString())) {
                     ToastUtil.showTextToast(this, "请输入查询内容");
