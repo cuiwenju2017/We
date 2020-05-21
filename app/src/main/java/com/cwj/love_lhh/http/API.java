@@ -1,6 +1,7 @@
 package com.cwj.love_lhh.http;
 
 import com.cwj.love_lhh.base.BaseBean;
+import com.cwj.love_lhh.bean.JokesBean;
 import com.cwj.love_lhh.bean.LatestBean;
 import com.cwj.love_lhh.bean.RubbishBean;
 
@@ -34,6 +35,14 @@ public class API {
         })
         @GET("api/rubbish/type")
         Observable<BaseBean<RubbishBean>> rubbish(@Query("name") String name);
+
+        //分页获取笑话段子列表
+        @Headers({
+                "app_id:fimtnlhpoltt1v9i",
+                "app_secret:Y0hCWis3bTdxbVgzZGZPZ28yWkpkdz09"
+        })
+        @GET("api/jokes/list")
+        Observable<BaseBean<JokesBean>> jokes(@Query("page") Integer page);
     }
 
 }
