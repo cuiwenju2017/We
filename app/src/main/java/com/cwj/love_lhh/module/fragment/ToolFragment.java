@@ -16,7 +16,7 @@ import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.module.activity.CalculatorActivity;
 import com.cwj.love_lhh.module.activity.ClockActivity;
 import com.cwj.love_lhh.module.activity.CompassActivity;
-import com.cwj.love_lhh.module.activity.WebViewActivity;
+import com.cwj.love_lhh.module.ljfl.LJFLActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +37,8 @@ public class ToolFragment extends Fragment {
     LinearLayout llClock;
     @BindView(R.id.ll_byj)
     LinearLayout llByj;
+    @BindView(R.id.ll_ljfl)
+    LinearLayout llLjfl;
     private Intent intent;
     private Uri content_url;
 
@@ -48,9 +50,12 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
+    @OnClick({R.id.ll_ljfl, R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_ljfl://垃圾分类
+                startActivity(new Intent(getActivity(), LJFLActivity.class));
+                break;
             case R.id.ll_byj://扒一剧
                 intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");

@@ -19,12 +19,12 @@ public class BaseBean<T> implements Serializable {
      * errorMsg :
      */
 
-    public int errorCode;
-    public String errorMsg;
+    public int code;
+    public String msg;
     public T data;
 
     public BaseBean(int code, String data) {
-        this.errorCode = code;
+        this.code = code;
         this.data = (T) data;
     }
 }

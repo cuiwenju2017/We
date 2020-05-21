@@ -10,4 +10,5 @@
     <string name="black_win">黑方胜！</string>
     <string name="restart">再玩一局</string>
     <string name="renew_game">重新开始</string>
+    <string name="tv_no_data">暂无数据</string>
 </resources>

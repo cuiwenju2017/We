@@ -1,7 +1,5 @@
 package com.cwj.love_lhh.base;
 
-import android.util.Log;
-
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -102,6 +100,7 @@ public abstract class BaseObserver<T> extends DisposableObserver<T> {
             view.hideLoading();
         }
     }
+
 
     public abstract void onSuccess(T o);
 

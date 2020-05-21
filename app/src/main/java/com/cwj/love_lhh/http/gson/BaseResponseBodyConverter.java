@@ -1,10 +1,15 @@
 package com.cwj.love_lhh.http.gson;
 
+import android.util.Log;
+
 import com.cwj.love_lhh.base.BaseException;
 import com.google.gson.TypeAdapter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.IOException;
+
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
@@ -20,23 +25,24 @@ public class BaseResponseBodyConverter<T> implements Converter<ResponseBody, T> 
      */
     private static final int LOG_OUT_TIME = -1001;
 
-    BaseResponseBodyConverter( TypeAdapter<T> adapter) {
+    BaseResponseBodyConverter(TypeAdapter<T> adapter) {
         this.adapter = adapter;
     }
 
     @Override
     public T convert(ResponseBody value) throws IOException {
         String jsonString = value.string();
+
         try {
             JSONObject object = new JSONObject(jsonString);
-            int code = object.getInt("errorCode");
-            if (0 != code) {
+            int code = object.getInt("code");
+            if (1 != code) {
                 String data;
                 //错误信息
                 if (code == LOG_OUT_TIME) {
                     data = "登录失效，请重新登录";
                 } else {
-                    data = object.getString("errorMsg");
+                    data = object.getString("msg");
                 }
                 //异常处理
                 throw new BaseException(code, data);
@@ -48,6 +54,7 @@ public class BaseResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             e.printStackTrace();
             //数据解析异常即json格式有变动
             throw new BaseException(BaseException.PARSE_ERROR_MSG);
+
         } finally {
             value.close();
         }

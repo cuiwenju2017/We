@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">we</string>
+	<string name="base_dialog_loading">Loading...</string>
+	<string name="score">fraction:</string>
+	<string name="bestscore">Highest score:</string>
+	<string name="newgame">Restart</string>
+	<string name="new_game">New Board</string>
+	<string name="regret">Undo</string>
+	<string name="white_win">Bai Fangsheng!</string>
+	<string name="black_win">Black wins!</string>
+	<string name="restart">Playing a game</string>
+	<string name="renew_game">Restart</string>
+	<string name="tv_no_data">No data</string>
+</resources>
