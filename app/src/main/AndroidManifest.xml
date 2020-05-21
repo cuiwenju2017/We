@@ -25,7 +25,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.duanzi.DuanziActivity"></activity>
+        <activity android:name=".module.dayelegantstatement.DayElegantStatementActivity"></activity>
+        <activity android:name=".module.duanzi.DuanziActivity" />
         <activity android:name=".module.ljfl.LJFLActivity" />
         <activity
             android:name=".module.activity.ChangePasswordActivity"

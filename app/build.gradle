@@ -106,4 +106,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     //下载更新
     implementation 'com.github.maning0303:MNUpdateAPK:V2.0.3'
+    //LayoutManagerGroup卡片切换库
+    implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
 }

@@ -16,8 +16,8 @@ import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.module.activity.CalculatorActivity;
 import com.cwj.love_lhh.module.activity.ClockActivity;
 import com.cwj.love_lhh.module.activity.CompassActivity;
+import com.cwj.love_lhh.module.dayelegantstatement.DayElegantStatementActivity;
 import com.cwj.love_lhh.module.duanzi.DuanziActivity;
-import com.cwj.love_lhh.module.duanzi.DuanziView;
 import com.cwj.love_lhh.module.ljfl.LJFLActivity;
 
 import butterknife.BindView;
@@ -43,6 +43,8 @@ public class ToolFragment extends Fragment {
     LinearLayout llLjfl;
     @BindView(R.id.ll_duanzi)
     LinearLayout llDuanzi;
+    @BindView(R.id.ll_day_elegant_statement)
+    LinearLayout llDayElegantStatement;
     private Intent intent;
     private Uri content_url;
 
@@ -54,9 +56,12 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_duanzi, R.id.ll_ljfl, R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
+    @OnClick({R.id.ll_day_elegant_statement, R.id.ll_duanzi, R.id.ll_ljfl, R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_day_elegant_statement://每日精美语句
+                startActivity(new Intent(getActivity(), DayElegantStatementActivity.class));
+                break;
             case R.id.ll_duanzi://段子
                 startActivity(new Intent(getActivity(), DuanziActivity.class));
                 break;

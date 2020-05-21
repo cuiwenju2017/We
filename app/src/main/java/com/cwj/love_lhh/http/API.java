@@ -2,15 +2,12 @@ package com.cwj.love_lhh.http;
 
 import com.cwj.love_lhh.base.BaseBean;
 import com.cwj.love_lhh.bean.JokesBean;
-import com.cwj.love_lhh.bean.LatestBean;
+import com.cwj.love_lhh.bean.RecommendBean;
 import com.cwj.love_lhh.bean.RubbishBean;
 
 import io.reactivex.Observable;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -43,6 +40,14 @@ public class API {
         })
         @GET("api/jokes/list")
         Observable<BaseBean<JokesBean>> jokes(@Query("page") Integer page);
+
+        //每日精美语句
+        @Headers({
+                "app_id:fimtnlhpoltt1v9i",
+                "app_secret:Y0hCWis3bTdxbVgzZGZPZ28yWkpkdz09"
+        })
+        @GET("api/daily_word/recommend")
+        Observable<RecommendBean> recommend(@Query("count") String count);
     }
 
 }
