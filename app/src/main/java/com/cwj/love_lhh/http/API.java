@@ -2,6 +2,7 @@ package com.cwj.love_lhh.http;
 
 import com.cwj.love_lhh.base.BaseBean;
 import com.cwj.love_lhh.bean.JokesBean;
+import com.cwj.love_lhh.bean.NewsDetailsBean;
 import com.cwj.love_lhh.bean.NewsListBean;
 import com.cwj.love_lhh.bean.RecommendBean;
 import com.cwj.love_lhh.bean.RubbishBean;
@@ -67,5 +68,12 @@ public class API {
         @GET("api/news/list")
         Observable<NewsListBean> newsList(@Query("typeId") Integer typeId, @Query("page") Integer page);
 
+        //根据新闻id获取新闻详情
+        @Headers({
+                "app_id:fimtnlhpoltt1v9i",
+                "app_secret:Y0hCWis3bTdxbVgzZGZPZ28yWkpkdz09"
+        })
+        @GET("api/news/details")
+        Observable<BaseBean<NewsDetailsBean>> newsDetails(@Query("newsId") String newsId);
     }
 }
