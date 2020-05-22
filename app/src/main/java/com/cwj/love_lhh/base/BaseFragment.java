@@ -80,7 +80,9 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
      */
     @Override
     public void showLoading() {
-        YUtils.showLoading(ActivityUtil.getCurrentActivity(), "加载中");
+        if(ActivityUtil.getCurrentActivity() != null){
+            YUtils.showLoading(ActivityUtil.getCurrentActivity(), "加载中");
+        }
     }
 
     /**

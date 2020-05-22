@@ -33,7 +33,7 @@ public class DuanziActivity extends BaseActivity<DuanziPrensenter> implements Du
     @BindView(R.id.cl_view)
     CoordinatorLayout clView;
 
-    private int page = 0;
+    private int page = 1;
     BaseRVAdapter<JokesBean.ListBean> adapter;
     private TextView tv_random;
 

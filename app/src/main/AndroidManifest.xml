@@ -25,7 +25,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.dayelegantstatement.DayElegantStatementActivity"></activity>
+        <activity
+            android:name=".module.news.VideoPlayerActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".module.news.NewsActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity android:name=".module.dayelegantstatement.DayElegantStatementActivity" />
         <activity android:name=".module.duanzi.DuanziActivity" />
         <activity android:name=".module.ljfl.LJFLActivity" />
         <activity

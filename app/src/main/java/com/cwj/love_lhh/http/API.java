@@ -2,8 +2,10 @@ package com.cwj.love_lhh.http;
 
 import com.cwj.love_lhh.base.BaseBean;
 import com.cwj.love_lhh.bean.JokesBean;
+import com.cwj.love_lhh.bean.NewsListBean;
 import com.cwj.love_lhh.bean.RecommendBean;
 import com.cwj.love_lhh.bean.RubbishBean;
+import com.cwj.love_lhh.bean.TypesBean;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -48,6 +50,22 @@ public class API {
         })
         @GET("api/daily_word/recommend")
         Observable<RecommendBean> recommend(@Query("count") String count);
-    }
 
+        //获取所有新闻类型列表
+        @Headers({
+                "app_id:fimtnlhpoltt1v9i",
+                "app_secret:Y0hCWis3bTdxbVgzZGZPZ28yWkpkdz09"
+        })
+        @GET("api/news/types")
+        Observable<TypesBean> types();
+
+        //根据新闻类型获取新闻列表
+        @Headers({
+                "app_id:fimtnlhpoltt1v9i",
+                "app_secret:Y0hCWis3bTdxbVgzZGZPZ28yWkpkdz09"
+        })
+        @GET("api/news/list")
+        Observable<NewsListBean> newsList(@Query("typeId") Integer typeId, @Query("page") Integer page);
+
+    }
 }
