@@ -227,8 +227,6 @@ public class HomeActivity extends BaseActivity {
 
                                 alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
                                 alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-                            } else {
-                                ToastUtil.showTextToast(HomeActivity.this, "已是最新版本");
                             }
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();

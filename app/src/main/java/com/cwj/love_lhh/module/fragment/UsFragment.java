@@ -210,17 +210,6 @@ public class UsFragment extends Fragment {
             thisYearTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearDate));//当前年月日的时间戳
             thisYearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisYearTogetherDate));//今年在一起的年月日的时间戳
             nextyearTogetherTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyearTogetherDate));//下一年在一起的年月日的时间戳
-            if ((thisYearTogetherTimestamp - thisYearTimestamp) > 0) {
-                tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
-            } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
-                tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
-                if (isFrist) {
-                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的相恋日，问候ta一下吧!", 0, "", 100, 0);
-                    isFrist = false;
-                }
-            } else {
-                tvFallInLove.setText("" + (nextyearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
-            }
 
             try {
                 getLunarnowTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
@@ -257,21 +246,38 @@ public class UsFragment extends Fragment {
             }
             thisYearGetMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(thisyeargetMarriedTime));//今年结婚的年月日的时间戳
             nextyearGetMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(nextyeargetMarriedTime));//下一年结婚的年月日的时间戳
+
+            inHarnessYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setTogetherTime;//在一起年数
+            getMarriedYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setGetMarriedTime;//结婚年数
+            tvInHarnessYear.setText("" + inHarnessYear);
+
+            //相恋日提醒
+            if ((thisYearTogetherTimestamp - thisYearTimestamp) > 0) {
+                tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
+            } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
+                tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
+                sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
+                if (isFrist) {
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们相恋的" + inHarnessYear + "周年，问候ta一下吧!", 0, "", 100, 0);
+                    isFrist = false;
+                }
+            } else {
+                tvFallInLove.setText("" + (nextyearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
+            }
+
+            //结婚纪念日提醒
             if ((thisYearGetMarriedTimestamp - getLunarTimestamp) > 0) {
                 tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
             } else if ((thisYearGetMarriedTimestamp - getLunarTimestamp) == 0) {
                 tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
                 if (isFrist2) {
-                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的结婚纪念日，记得给ta一个惊喜哦!", 1, "", 100, 0);
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的" + getMarriedYear + "周年结婚纪念日，记得给ta一个惊喜哦!", 1, "", 100, 0);
                     isFrist2 = false;
                 }
             } else {
                 tvWeddingDay.setText("" + (nextyearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
             }
 
-            inHarnessYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setTogetherTime;//在一起年数
-            getMarriedYear = Integer.parseInt(TimeUtils.dateToString(nowTime, "yyyy")) - setGetMarriedTime;//结婚年数
-            tvInHarnessYear.setText("" + inHarnessYear);
             long getMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(getMarriedTime2));//阳历结婚时间毫秒数
             if ((thisYearTimestamp - getMarriedTimestamp) >= 0) {
                 tvGetMarriedYear.setText("" + getMarriedYear);
