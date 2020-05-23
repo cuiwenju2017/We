@@ -127,8 +127,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
         return localVersion;
     }
 
-    /* 获取本地软件版本号​
-     */
+    /*获取本地软件版本号​*/
     public static int getLocalVersion(Context ctx) {
         int localVersion = 0;
         try {

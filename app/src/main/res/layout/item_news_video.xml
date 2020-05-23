@@ -5,7 +5,10 @@
     android:layout_marginLeft="15dp"
     android:layout_marginTop="20dp"
     android:layout_marginRight="15dp"
-    android:orientation="vertical">
+    android:background="@drawable/ripple_water_more"
+    android:clickable="true"
+    android:orientation="vertical"
+    android:focusable="true">
 
     <TextView
         android:id="@+id/tv_title"
@@ -23,7 +26,8 @@
             android:id="@+id/iv_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:contentDescription="TODO" />
 
         <ImageView
             android:id="@+id/iv_start"
@@ -31,5 +35,12 @@
             android:layout_height="50dp"
             android:layout_centerInParent="true"
             android:src="@drawable/icon_start" />
+
+        <TextView
+            android:id="@+id/tv_no_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/no_video_data" />
     </RelativeLayout>
 </LinearLayout>
