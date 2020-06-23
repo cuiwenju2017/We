@@ -17,6 +17,8 @@ import com.taobao.sophix.PatchStatus;
 import com.taobao.sophix.SophixManager;
 import com.taobao.sophix.listener.PatchLoadStatusListener;
 
+import cn.bmob.v3.Bmob;
+
 public class App extends BaseApplication {
 
     private static Context context;
@@ -26,6 +28,12 @@ public class App extends BaseApplication {
         super.attachBaseContext(base);
         MultiDex.install(this);
         initSophix();
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
     }
 
     /**

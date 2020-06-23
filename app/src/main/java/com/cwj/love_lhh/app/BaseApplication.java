@@ -18,7 +18,6 @@ public class BaseApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
          /*
             queryAndLoadNewPatch不可放在attachBaseContext 中，
             否则无网络权限，建议放在后面任意时刻，如onCreate中
