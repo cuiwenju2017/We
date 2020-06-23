@@ -7,12 +7,13 @@ def releaseTime() {
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+
     defaultConfig {
         applicationId "com.cwj.love_lhh"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 14
-        versionName "1.2.0"
+        versionCode 15
+        versionName "1.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
     }
@@ -107,4 +108,10 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     //下载更新
     implementation 'com.github.maning0303:MNUpdateAPK:V2.0.3'
+    //LayoutManagerGroup卡片切换库
+    implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
+    //视频播放器
+    implementation 'com.shuyu:GSYVideoPlayer:7.1.4'
+    //阿里热修复
+    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.3'
 }

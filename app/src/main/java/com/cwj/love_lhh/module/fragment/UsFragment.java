@@ -43,6 +43,7 @@ import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
+import com.taobao.sophix.SophixManager;
 
 import java.io.File;
 import java.text.ParseException;
