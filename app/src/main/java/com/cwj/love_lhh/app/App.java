@@ -38,8 +38,11 @@ public class App extends BaseApplication {
 
     @Override
     public void onCreate() {
-        super.onCreate();
         Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
+        super.onCreate();
+        /* queryAndLoadNewPatch不可放在attachBaseContext 中，
+           否则无网络权限，建议放在后面任意时刻，如onCreate中*/
+        SophixManager.getInstance().queryAndLoadNewPatch();
 
         Context context = getApplicationContext();
         // 获取当前包名
@@ -89,7 +92,7 @@ public class App extends BaseApplication {
      * 且在其他方法之前
      */
     private void initSophix() {
-        String appVersion = "1.2.1";
+        String appVersion = "1.2.2";
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             appVersion = packageInfo.versionName;

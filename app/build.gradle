@@ -12,11 +12,12 @@ android {
         applicationId "com.cwj.love_lhh"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 15
-        versionName "1.2.1"
+        versionCode 16
+        versionName "1.2.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -33,19 +34,6 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "我们-v${variant.versionName}-${releaseTime()}-${variant.buildType.name}.apk"
-        }
-    }
-
-    //导入智能更新 SDK 的 AAR 文件
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
-
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
         }
     }
 
@@ -80,8 +68,8 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.6.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
     //Bmob集成所需
-    implementation files('libs/BmobSDK_3.7.4_20190523.jar')
-    implementation "io.reactivex.rxjava2:rxjava:2.2.2"
+    implementation 'cn.bmob.android:bmob-sdk:3.7.8'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
     implementation 'com.squareup.okio:okio:2.1.0'
     implementation 'com.google.code.gson:gson:2.8.5'
