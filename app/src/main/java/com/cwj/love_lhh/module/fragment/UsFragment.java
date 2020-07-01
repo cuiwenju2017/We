@@ -43,13 +43,9 @@ import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
-import com.taobao.sophix.SophixManager;
-import com.tencent.bugly.crashreport.CrashReport;
-
 import java.io.File;
 import java.text.ParseException;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

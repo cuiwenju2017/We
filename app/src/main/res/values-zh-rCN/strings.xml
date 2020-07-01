@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">我们</string>
+	<string name="base_dialog_loading">加载中...</string>
+	<string name="score">分数：</string>
+	<string name="bestscore">最高分：</string>
+	<string name="newgame">重新开始</string>
+	<string name="new_game">新局</string>
+	<string name="regret">悔棋</string>
+	<string name="white_win">白方胜！</string>
+	<string name="black_win">黑方胜！</string>
+	<string name="restart">再玩一局</string>
+	<string name="renew_game">重新开始</string>
+	<string name="tv_no_data">暂无数据</string>
+	<string name="no_video_data">无效的视频资源</string>
+</resources>

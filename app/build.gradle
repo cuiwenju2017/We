@@ -12,8 +12,8 @@ android {
         applicationId "com.cwj.love_lhh"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 16
-        versionName "1.2.2"
+        versionCode 17
+        versionName "1.2.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
     }
@@ -100,8 +100,6 @@ dependencies {
     implementation 'com.github.DingMouRen:LayoutManagerGroup:1e6f4f96eb'
     //视频播放器
     implementation 'com.shuyu:GSYVideoPlayer:7.1.4'
-    //阿里热修复
-    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.3'
     //bugly异常上报
     implementation 'com.tencent.bugly:crashreport:3.2.3'
 }
