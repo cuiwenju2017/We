@@ -44,6 +44,7 @@ import com.cwj.love_lhh.utils.TimeUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
 import com.taobao.sophix.SophixManager;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.File;
 import java.text.ParseException;
