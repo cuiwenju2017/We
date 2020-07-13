@@ -7,17 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.module.activity.CalculatorActivity;
 import com.cwj.love_lhh.module.activity.ClockActivity;
 import com.cwj.love_lhh.module.activity.CompassActivity;
 import com.cwj.love_lhh.module.lpclock.LPClockActivity;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,7 +34,6 @@ public class ToolFragment extends Fragment {
     LinearLayout llClock;
     @BindView(R.id.ll_byj)
     LinearLayout llByj;
-    LinearLayout llNews;
     @BindView(R.id.ll_lp_clock)
     LinearLayout llLpClock;
     private Intent intent;
@@ -51,7 +47,7 @@ public class ToolFragment extends Fragment {
         return view;
     }
 
-    @OnClick({R.id.ll_lp_clock, R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
+    @OnClick({ R.id.ll_lp_clock, R.id.ll_byj, R.id.ll_calculator, R.id.ll_compass, R.id.ll_clock})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_lp_clock://轮盘时钟

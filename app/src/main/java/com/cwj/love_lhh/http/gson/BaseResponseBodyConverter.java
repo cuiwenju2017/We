@@ -36,7 +36,7 @@ public class BaseResponseBodyConverter<T> implements Converter<ResponseBody, T> 
         try {
             JSONObject object = new JSONObject(jsonString);
             int code = object.getInt("code");
-            if (1 != code) {
+            if (200 != code) {
                 String data;
                 //错误信息
                 if (code == LOG_OUT_TIME) {

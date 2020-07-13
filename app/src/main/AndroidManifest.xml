@@ -28,7 +28,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.lpclock.LPClockActivity"></activity>
+        <activity android:name=".module.news.NewsActivity" />
+        <activity android:name=".module.lpclock.LPClockActivity" />
         <activity
             android:name=".module.activity.ChangePasswordActivity"
             android:screenOrientation="portrait"

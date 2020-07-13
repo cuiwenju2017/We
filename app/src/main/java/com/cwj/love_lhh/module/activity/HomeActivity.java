@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -17,7 +16,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -30,14 +28,12 @@ import androidx.viewpager.widget.ViewPager;
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.base.BaseActivity;
 import com.cwj.love_lhh.base.BasePresenter;
-import com.cwj.love_lhh.http.ApiServer;
-import com.cwj.love_lhh.module.about.AboutActivity;
+import com.cwj.love_lhh.http.API;
 import com.cwj.love_lhh.module.fragment.GamesFragment;
 import com.cwj.love_lhh.module.fragment.ToolFragment;
 import com.cwj.love_lhh.module.fragment.UsFragment;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PermissionUtils;
-import com.cwj.love_lhh.utils.ToastUtil;
 import com.cwj.love_lhh.view.TabView;
 import com.maning.updatelibrary.InstallUtils;
 
@@ -165,10 +161,10 @@ public class HomeActivity extends BaseActivity {
             initCallBack();
             //1.创建Retrofit对象
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl("http://api.bq04.com/")
+                    .baseUrl(API.BASE_URL_UPDATA)
                     .build();
             //2.通过Retrofit实例创建接口服务对象
-            ApiServer apiService = retrofit.create(ApiServer.class);
+            API apiService = retrofit.create(API.class);
             //3.接口服务对象调用接口中方法，获得Call对象
             Call<ResponseBody> call = apiService.latest("5e77278df9454809b991dfda", "6570963ae9a308ca993393518f865887");
             //同步请求
