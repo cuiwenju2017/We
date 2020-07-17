@@ -2,37 +2,43 @@ package com.cwj.love_lhh.module.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.module.activity.AircraftBattleActivity;
-import com.cwj.love_lhh.module.activity.GobangActivity;
-import com.cwj.love_lhh.module.activity.PuzzleActivity;
-import com.cwj.love_lhh.module.activity.WebViewActivity;
+import com.cwj.love_lhh.base.BaseRVAdapter;
+import com.cwj.love_lhh.base.BaseRVHolder;
+import com.cwj.love_lhh.bean.GameBean;
+import com.cwj.love_lhh.module.adapter.GameAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 小游戏
  */
 public class GamesFragment extends Fragment {
 
-    @BindView(R.id.ll_ball)
+   /* @BindView(R.id.ll_ball)
     LinearLayout llBall;
     @BindView(R.id.ll_hero)
     LinearLayout llHero;
     @BindView(R.id.ll_aircraft_battle)
     LinearLayout llAircraftBattle;
-    Unbinder unbinder;
     @BindView(R.id.ll_puzzle)
     LinearLayout ll_puzzle;
     @BindView(R.id.ll_gobang)
@@ -42,18 +48,48 @@ public class GamesFragment extends Fragment {
     @BindView(R.id.ll_diefangzhi)
     LinearLayout llDiefangzhi;
     @BindView(R.id.ll_feixingqi)
-    LinearLayout llFeixingqi;
-    private Intent intent;
+    LinearLayout llFeixingqi;*/
+
+    Unbinder unbinder;
+    @BindView(R.id.rv_game)
+    RecyclerView rvGame;
+
+    private List<GameBean> gameBeans = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_games, container, false);
         unbinder = ButterKnife.bind(this, view);
+        initData();
+        GridLayoutManager layoutManager = new GridLayoutManager(getActivity(),2);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        rvGame.setLayoutManager(layoutManager);
+        GameAdapter adapter = new GameAdapter(gameBeans);
+        rvGame.setAdapter(adapter);
         return view;
     }
 
-    @OnClick({R.id.ll_feixingqi, R.id.ll_diefangzhi, R.id.ll_paopaolong, R.id.ll_ball, R.id.ll_hero, R.id.ll_aircraft_battle, R.id.ll_puzzle, R.id.ll_gobang})
+    private void initData() {
+        GameBean gdqq = new GameBean("滚动的球球", R.drawable.loader);
+        gameBeans.add(gdqq);
+        GameBean fkyx = new GameBean("方块英雄", R.drawable.icon_fangkuaiyingxiong);
+        gameBeans.add(fkyx);
+        GameBean fjdz = new GameBean("飞机大战", R.drawable.plane);
+        gameBeans.add(fjdz);
+        GameBean pt = new GameBean("拼图", R.drawable.bb);
+        gameBeans.add(pt);
+        GameBean wzq = new GameBean("五子棋", R.drawable.chess);
+        gameBeans.add(wzq);
+        GameBean xmtt = new GameBean("熊猫弹跳", R.drawable.panda_bounce);
+        gameBeans.add(xmtt);
+        GameBean dfz = new GameBean("叠房子", R.drawable.diefangzi);
+        gameBeans.add(dfz);
+        GameBean mfyx = new GameBean("魔方游戏", R.drawable.mofantg);
+        gameBeans.add(mfyx);
+    }
+
+   /* @OnClick({R.id.ll_feixingqi, R.id.ll_diefangzhi, R.id.ll_paopaolong, R.id.ll_ball, R.id.ll_hero, R.id.ll_aircraft_battle, R.id.ll_puzzle, R.id.ll_gobang})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_feixingqi:
@@ -93,5 +129,5 @@ public class GamesFragment extends Fragment {
                 break;
 
         }
-    }
+    }*/
 }
