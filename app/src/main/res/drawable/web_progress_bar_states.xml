@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 进度条背景-->
+    <item android:id="@android:id/background">
+        <shape>
+            <!--<gradient
+                android:centerColor="#ffa600"
+                android:endColor="#ff5500"
+                android:startColor="#ff0000" />-->
+            <solid android:color="@color/darkRed"></solid>
+        </shape>
+    </item>
+
+    <!--进度条当前进度-->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <solid android:color="@color/colorAccent"></solid>
+            </shape>
+        </clip>
+    </item>
+
+</layer-list>
