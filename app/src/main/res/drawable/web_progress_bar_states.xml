@@ -8,7 +8,7 @@
                 android:centerColor="#ffa600"
                 android:endColor="#ff5500"
                 android:startColor="#ff0000" />-->
-            <solid android:color="@color/darkRed"></solid>
+            <solid android:color="@color/darkRed" />
         </shape>
     </item>
 
@@ -16,7 +16,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/colorAccent"></solid>
+                <solid android:color="@color/colorAccent" />
             </shape>
         </clip>
     </item>
