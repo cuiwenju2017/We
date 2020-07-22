@@ -71,6 +71,7 @@ public class HomeActivity extends BaseActivity {
     private AlertDialog alertDialog;
     private String string;
     private int version;
+    private int REQUEST_SD = 200;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -196,7 +197,7 @@ public class HomeActivity extends BaseActivity {
                                                 dialog.cancel();
                                                 //申请SD卡权限
                                                 if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
-                                                    PermissionUtils.requestSDCardReadPermission(HomeActivity.this, 100);
+                                                    PermissionUtils.requestSDCardReadPermission(HomeActivity.this, REQUEST_SD);
                                                 } else {
                                                     InstallUtils.with(HomeActivity.this)
                                                             //必须-下载地址
@@ -333,7 +334,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
+        if (requestCode == REQUEST_SD) {
             InstallUtils.with(this)
                     //必须-下载地址
                     .setApkUrl(string)

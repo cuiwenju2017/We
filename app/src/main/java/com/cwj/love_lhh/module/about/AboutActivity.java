@@ -82,6 +82,8 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     private String username;
     private String string;
     private int version;
+    private int REQUEST_SD = 200;
+    private int REQUEST_SHARE = 202;
 
     @Override
     protected AboutPrensenter createPresenter() {
@@ -141,7 +143,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
 
     private void share() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_SHARE);
         } else {
             shareImg(BitmapFactory.decodeResource(getResources(), R.drawable.icon_qr_code));
         }
@@ -243,7 +245,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
+        if (requestCode == REQUEST_SD) {
             InstallUtils.with(this)
                     //必须-下载地址
                     .setApkUrl(string)
@@ -251,7 +253,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                     .setCallBack(downloadCallBack)
                     //开始下载
                     .startDownload();
-        } else if (requestCode == 1) {
+        } else if (requestCode == REQUEST_SHARE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 shareImg(BitmapFactory.decodeResource(getResources(), R.drawable.icon_qr_code));
             } else {
@@ -304,7 +306,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                                                     dialog.cancel();
                                                     //申请SD卡权限
                                                     if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
-                                                        PermissionUtils.requestSDCardReadPermission(AboutActivity.this, 100);
+                                                        PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
                                                     } else {
                                                         InstallUtils.with(AboutActivity.this)
                                                                 //必须-下载地址
