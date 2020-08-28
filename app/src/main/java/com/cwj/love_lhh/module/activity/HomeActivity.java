@@ -70,7 +70,7 @@ public class HomeActivity extends BaseActivity {
     private List<Fragment> fragments = new ArrayList<>();
     private AlertDialog alertDialog;
     private String string;
-    private int version;
+    private int build;
     private int REQUEST_SD = 200;
 
     @Override
@@ -171,8 +171,8 @@ public class HomeActivity extends BaseActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response.body().string());
                             string = jsonObject.getString("direct_install_url");
-                            version = Integer.parseInt(jsonObject.getString("version"));
-                            if (getLocalVersion(HomeActivity.this) != version) {
+                            build = Integer.parseInt(jsonObject.getString("build"));
+                            if (getLocalVersion(HomeActivity.this) < build) {
                                 AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this)
                                         .setTitle("检测到新版本")
                                         .setMessage(jsonObject.getString("changelog"))

@@ -12,7 +12,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -31,6 +33,7 @@ import androidx.core.content.ContextCompat;
 
 import com.cwj.love_lhh.R;
 import com.cwj.love_lhh.base.BaseActivity;
+import com.cwj.love_lhh.bean.User;
 import com.cwj.love_lhh.http.API;
 import com.cwj.love_lhh.module.activity.ChangePasswordActivity;
 import com.cwj.love_lhh.module.activity.LoginActivity;
@@ -40,7 +43,12 @@ import com.cwj.love_lhh.utils.LoadingDialog;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PermissionUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
+import com.google.android.material.snackbar.Snackbar;
 import com.jaeger.library.StatusBarUtil;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.interfaces.OnConfirmListener;
+import com.lxj.xpopup.interfaces.OnInputConfirmListener;
 import com.maning.updatelibrary.InstallUtils;
 
 import org.json.JSONException;
@@ -49,8 +57,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,12 +87,14 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     RelativeLayout rlLogout;
     @BindView(R.id.tv_username)
     TextView tvUsername;
+    @BindView(R.id.rl_username)
+    RelativeLayout rlUsername;
 
     private LoadingDialog loadingDialog;
     SharedPreferences sprfMain;
     private String username;
     private String string;
-    private int version;
+    private int build;
     private int REQUEST_SD = 200;
     private int REQUEST_SHARE = 202;
 
@@ -99,7 +112,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     protected void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         tvVersionNumber.setText("V" + getLocalVersionName(this));
-        loadingDialog = new LoadingDialog(AboutActivity.this, "加载中...");
+        loadingDialog = new LoadingDialog(AboutActivity.this, "");
         sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
         username = sprfMain.getString("username", "");
         tvUsername.setText(username);
@@ -134,7 +147,6 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                     .getPackageManager()
                     .getPackageInfo(ctx.getPackageName(), 0);
             localVersion = packageInfo.versionCode;
-            Log.d("TAG", "当前版本号：" + localVersion);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -262,9 +274,52 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
         }
     }
 
-    @OnClick({R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback, R.id.rl_change_password, R.id.rl_logout})
+    SharedPreferences.Editor editorMain;
+
+    /**
+     * 更新用户操作并同步更新本地的用户信息
+     */
+    private void updateUser(String text) {
+        final User user = BmobUser.getCurrentUser(User.class);
+        user.setUsername(text);
+        user.update(new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                loadingDialog.dismiss();
+                if (e == null) {
+                    popupView.dismiss();//关闭弹窗
+                    ToastUtil.showTextToast(AboutActivity.this,"更新用户信息成功");
+                    sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
+                    editorMain = sprfMain.edit();
+                    editorMain.putString("username", text);
+                    editorMain.commit();
+                    tvUsername.setText(text);
+                } else {//202:用户名已存在  301：用户不能为空
+                    ToastUtil.showTextToast(AboutActivity.this,"用户名已存在,换个试试");
+                }
+            }
+        });
+    }
+
+    private BasePopupView popupView;
+
+    @OnClick({R.id.rl_username,R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback, R.id.rl_change_password, R.id.rl_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.rl_username://修改用户名
+                 popupView = new XPopup.Builder(this)
+                        .autoDismiss(false) // 操作完毕后是否自动关闭弹窗，默认为true；比如点击ConfirmPopup的确认按钮，默认自动关闭；如果为false，则不会关闭
+                        .asInputConfirm("修改用户名", "请输入新的用户名",
+                                text -> {
+                                    if(TextUtils.isEmpty(text)){
+                                        ToastUtil.showTextToast(AboutActivity.this,"用户名不能为空");
+                                    }else {
+                                        loadingDialog.show();
+                                        updateUser(text);
+                                    }
+                                })
+                        .show();
+                break;
             case R.id.rl_check_updates://检查更新、
                 loadingDialog.show();
                 initCallBack();
@@ -288,34 +343,26 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                             try {
                                 JSONObject jsonObject = new JSONObject(response.body().string());
                                 string = jsonObject.getString("direct_install_url");
-                                version = Integer.parseInt(jsonObject.getString("version"));
-                                if (getLocalVersion(AboutActivity.this) != version) {
+                                build = Integer.parseInt(jsonObject.getString("build"));
+                                if (getLocalVersion(AboutActivity.this) < build) {
                                     AlertDialog alertDialog = new AlertDialog.Builder(AboutActivity.this)
                                             .setTitle("检测到新版本")
                                             .setMessage(jsonObject.getString("changelog"))
                                             .setCancelable(false)
-                                            .setNegativeButton("暂不升级", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.cancel();
-                                                }
-                                            })
-                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                                @Override
-                                                public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.cancel();
-                                                    //申请SD卡权限
-                                                    if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
-                                                        PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
-                                                    } else {
-                                                        InstallUtils.with(AboutActivity.this)
-                                                                //必须-下载地址
-                                                                .setApkUrl(string)
-                                                                //非必须-下载回调
-                                                                .setCallBack(downloadCallBack)
-                                                                //开始下载
-                                                                .startDownload();
-                                                    }
+                                            .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
+                                            .setPositiveButton("确定", (dialog, which) -> {
+                                                dialog.cancel();
+                                                //申请SD卡权限
+                                                if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
+                                                    PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
+                                                } else {
+                                                    InstallUtils.with(AboutActivity.this)
+                                                            //必须-下载地址
+                                                            .setApkUrl(string)
+                                                            //非必须-下载回调
+                                                            .setCallBack(downloadCallBack)
+                                                            //开始下载
+                                                            .startDownload();
                                                 }
                                             })
                                             .create();
@@ -360,32 +407,15 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.rl_logout://退出登录
-                AlertDialog alertDialog = new AlertDialog.Builder(this)
-                        .setTitle("提示")
-                        .setMessage("确定退出登录吗？")
-                        .setCancelable(true)
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
+                new XPopup.Builder(this).asConfirm("提示", "确定退出登录吗？",
+                        () -> {
+                            BmobUser.logOut();//退出登录，同时清除缓存用户对象。
+                            startActivity(new Intent(AboutActivity.this, LoginActivity.class));
+                            finish();
+                            //结束之前所有的Activity
+                            ActivityCollector.finishall();
                         })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                                BmobUser.logOut();//退出登录，同时清除缓存用户对象。
-                                startActivity(new Intent(AboutActivity.this, LoginActivity.class));
-                                finish();
-                                //结束之前所有的Activity
-                                ActivityCollector.finishall();
-                            }
-                        })
-                        .create();
-                alertDialog.show();
-                //设置颜色和弹窗宽度一定要放在show之下，要不然会报错或者不生效
-                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                        .show();
                 break;
         }
     }

@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
-        loadingDialog = new LoadingDialog(LoginActivity.this, "登录中...");
+        loadingDialog = new LoadingDialog(LoginActivity.this, "");
     }
 
     @Override
