@@ -312,6 +312,8 @@ public class SetTimeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                //TODO 修改和新增有冲突
+//                pvCustomLunar.setDate( selectedDate);// 如果不设置的话，默认是系统时间*/
                 pvCustomLunar.setDate(TextUtils.isEmpty(gT2) ? selectedDate : setgTTime);// 如果不设置的话，默认是系统时间*/
                 pvCustomLunar.show();
                 break;

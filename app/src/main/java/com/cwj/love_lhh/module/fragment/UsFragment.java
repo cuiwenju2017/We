@@ -254,7 +254,7 @@ public class UsFragment extends Fragment {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
             } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
-                sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
+//                sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
                 if (isFrist) {
                     NotificationUtils.showNotification(getActivity(), null, "今天是你们相恋的" + inHarnessYear + "周年，问候ta一下吧!", 0, "", 100, 0);
                     isFrist = false;
