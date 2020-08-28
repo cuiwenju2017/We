@@ -49,11 +49,9 @@ public class NotificationUtils {
             channel.shouldShowLights();//是否会闪光
             //通知管理者创建的渠道
             getManager().createNotificationChannel(channel);
-
         }
-        return new Notification.Builder(App.getInstance()).setAutoCancel(true).setChannelId(channelId)
-                .setContentTitle(title)
-                .setContentText(content).setSmallIcon(R.drawable.logo);
+
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? new Notification.Builder(App.getInstance()).setAutoCancel(true).setChannelId(channelId).setContentTitle(title).setContentText(content).setSmallIcon(R.drawable.logo) : new Notification.Builder(App.getInstance()).setAutoCancel(true).setContentTitle(title).setContentText(content).setSmallIcon(R.drawable.logo);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

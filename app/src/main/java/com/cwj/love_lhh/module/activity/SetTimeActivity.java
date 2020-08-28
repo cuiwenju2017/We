@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -31,6 +32,8 @@ import com.cwj.love_lhh.utils.ChinaDate2;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -93,8 +96,8 @@ public class SetTimeActivity extends AppCompatActivity {
             day.save(new SaveListener<String>() {
                 @Override
                 public void done(String s, BmobException e) {
+                    popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
                     if (e == null) {
-//                        ToastUtil.showTextToast(SetTimeActivity.this, "添加成功");
                     } else {
                         ToastUtil.showTextToast(SetTimeActivity.this, e.getMessage());
                     }
@@ -187,6 +190,7 @@ public class SetTimeActivity extends AppCompatActivity {
         day.update(new UpdateListener() {
             @Override
             public void done(BmobException e) {
+                popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
                 if (e == null) {
                     ToastUtil.showTextToast(SetTimeActivity.this, "修改成功");
                 } else {
@@ -197,23 +201,19 @@ public class SetTimeActivity extends AppCompatActivity {
     }
 
     private SimpleDateFormat chineseDateFormat;
+    private BasePopupView popupView;
 
     @OnClick({R.id.tv_together_time, R.id.tv_get_married_time, R.id.tv_confirm})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_together_time://在一起日子的选择
                 Calendar startDate = Calendar.getInstance();
-//                Calendar endDate = Calendar.getInstance();
                 //正确设置方式 原因：注意事项有说明
                 startDate.set(1900, 0, 1);
-//                endDate.set(2020, 11, 31);
                 //时间选择器
-                pvTime = new TimePickerBuilder(this, new OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date, View v) {
-                        togetherTime = getTime2(date);
-                        tvTogetherTime.setText(togetherTime);
-                    }
+                pvTime = new TimePickerBuilder(this, (date, v) -> {
+                    togetherTime = getTime2(date);
+                    tvTogetherTime.setText(togetherTime);
                 })
                         .setType(new boolean[]{true, true, true, false, false, false})// 默认全部显示
                         .setRangDate(startDate, selectedDate)//起始终止年月日设定
@@ -238,24 +238,21 @@ public class SetTimeActivity extends AppCompatActivity {
                 Calendar endDate = Calendar.getInstance();
                 endDate.set(2100, 0, 1);
                 //时间选择器 ，自定义布局
-                pvCustomLunar = new TimePickerBuilder(this, new OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date, View v) {//选中事件回调
-                        getMarriedTime = getTime2(date);
-                        try {
-                            getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Calendar setMarriedTime = Calendar.getInstance();
-                            chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                            setMarriedTime.setTime(chineseDateFormat.parse(getTime2(date)));
-                            lunar = new ChinaDate(setMarriedTime);
-                            tvGetMarriedTime.setText("" + lunar);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                pvCustomLunar = new TimePickerBuilder(this, (date, v) -> {//选中事件回调
+                    getMarriedTime = getTime2(date);
+                    try {
+                        getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        Calendar setMarriedTime = Calendar.getInstance();
+                        chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                        setMarriedTime.setTime(chineseDateFormat.parse(getTime2(date)));
+                        lunar = new ChinaDate(setMarriedTime);
+                        tvGetMarriedTime.setText("" + lunar);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 })
                         .setDate(selectedDate)
@@ -266,29 +263,18 @@ public class SetTimeActivity extends AppCompatActivity {
                             public void customLayout(final View v) {
                                 final TextView tvSubmit = (TextView) v.findViewById(R.id.tv_finish);
                                 ImageView ivCancel = (ImageView) v.findViewById(R.id.iv_cancel);
-                                tvSubmit.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        pvCustomLunar.returnData();
-                                        pvCustomLunar.dismiss();
-                                    }
+                                tvSubmit.setOnClickListener(v1 -> {
+                                    pvCustomLunar.returnData();
+                                    pvCustomLunar.dismiss();
                                 });
-                                ivCancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        pvCustomLunar.dismiss();
-                                    }
-                                });
+                                ivCancel.setOnClickListener(v12 -> pvCustomLunar.dismiss());
                                 //公农历切换
                                 CheckBox cb_lunar = (CheckBox) v.findViewById(R.id.cb_lunar);
 
-                                cb_lunar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                    @Override
-                                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                        pvCustomLunar.setLunarCalendar(!pvCustomLunar.isLunarCalendar());
-                                        //自适应宽
-                                        setTimePickerChildWeight(v, isChecked ? 0.8f : 1f, isChecked ? 1f : 1.1f);
-                                    }
+                                cb_lunar.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                                    pvCustomLunar.setLunarCalendar(!pvCustomLunar.isLunarCalendar());
+                                    //自适应宽
+                                    setTimePickerChildWeight(v, isChecked ? 0.8f : 1f, isChecked ? 1f : 1.1f);
                                 });
 
                             }
@@ -334,9 +320,14 @@ public class SetTimeActivity extends AppCompatActivity {
                 try {
                     startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherTime));//在一起时间戳
                     getMarried = Long.parseLong(TimeUtils.dateToStamp2(getMarriedTime));//结婚时间戳
+
                     if (startTime > getMarried) {
                         Toast.makeText(this, "结婚时间不能早于在一起的时间", Toast.LENGTH_SHORT).show();
                     } else {
+                        popupView = new XPopup.Builder(this)
+                                .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
+                                .asLoading("")
+                                .show();
                         if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
                             Intent intent = new Intent(this, HomeActivity.class);
                             savePost();//新增数据

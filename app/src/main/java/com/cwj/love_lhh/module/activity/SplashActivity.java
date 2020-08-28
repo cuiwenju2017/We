@@ -38,16 +38,13 @@ public class SplashActivity extends AppCompatActivity {
         getMarriedTime = sprfMain.getString("getMarriedTime", "");
 
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (BmobUser.isLogin()) {
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
-                    finish();
-                } else {
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                    finish();
-                }
+        handler.postDelayed(() -> {
+            if (BmobUser.isLogin()) {
+                startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                finish();
+            } else {
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                finish();
             }
         }, 3333);//n秒后执行Runnable中的run方法
     }
