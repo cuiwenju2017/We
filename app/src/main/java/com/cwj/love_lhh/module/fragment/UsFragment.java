@@ -347,6 +347,7 @@ public class UsFragment extends Fragment {
         switch (view.getId()) {
             case R.id.tv_change_date://日期修改
                 Intent intent = new Intent(getActivity(), SetTimeActivity.class);
+                intent.putExtra("setTime",2);
                 startActivityForResult(intent, REQUEST_SEARCH);
                 break;
             case R.id.tv_about://关于

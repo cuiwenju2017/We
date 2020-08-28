@@ -75,10 +75,13 @@ public class SetTimeActivity extends AppCompatActivity {
         initView();
     }
 
+    private int setTime;
+
     private void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         selectedDate = Calendar.getInstance();//系统当前时间
         queryPostAuthor();
+        setTime = getIntent().getIntExtra("setTime", 0);
     }
 
     /**
@@ -313,8 +316,11 @@ public class SetTimeActivity extends AppCompatActivity {
                 }
 
                 //TODO 修改和新增有冲突
-//                pvCustomLunar.setDate( selectedDate);// 如果不设置的话，默认是系统时间*/
-                pvCustomLunar.setDate(TextUtils.isEmpty(gT2) ? selectedDate : setgTTime);// 如果不设置的话，默认是系统时间*/
+                if (setTime == 2) {
+                    pvCustomLunar.setDate(TextUtils.isEmpty(gT2) ? selectedDate : setgTTime);// 如果不设置的话，默认是系统时间*/
+                } else {
+                    pvCustomLunar.setDate(selectedDate);// 如果不设置的话，默认是系统时间*/
+                }
                 pvCustomLunar.show();
                 break;
             case R.id.tv_confirm://设置好了

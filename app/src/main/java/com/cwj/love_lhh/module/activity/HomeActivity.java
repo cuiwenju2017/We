@@ -121,36 +121,28 @@ public class HomeActivity extends BaseActivity {
                     .setTitle("提示")
                     .setMessage("请在“通知”中打开通知权限以便观察应用更新进度")
                     .setCancelable(false)
-                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            Intent intent = new Intent();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                                intent.putExtra("android.provider.extra.APP_PACKAGE", HomeActivity.this.getPackageName());
-                            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //5.0
-                                intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                                intent.putExtra("app_package", HomeActivity.this.getPackageName());
-                                intent.putExtra("app_uid", HomeActivity.this.getApplicationInfo().uid);
-                                startActivity(intent);
-                            } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {  //4.4
-                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                                intent.addCategory(Intent.CATEGORY_DEFAULT);
-                                intent.setData(Uri.parse("package:" + HomeActivity.this.getPackageName()));
-                            } else if (Build.VERSION.SDK_INT >= 15) {
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                                intent.setData(Uri.fromParts("package", HomeActivity.this.getPackageName(), null));
-                            }
+                    .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
+                    .setPositiveButton("去设置", (dialog, which) -> {
+                        dialog.cancel();
+                        Intent intent = new Intent();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                            intent.putExtra("android.provider.extra.APP_PACKAGE", HomeActivity.this.getPackageName());
+                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //5.0
+                            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                            intent.putExtra("app_package", HomeActivity.this.getPackageName());
+                            intent.putExtra("app_uid", HomeActivity.this.getApplicationInfo().uid);
                             startActivity(intent);
+                        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {  //4.4
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            intent.addCategory(Intent.CATEGORY_DEFAULT);
+                            intent.setData(Uri.parse("package:" + HomeActivity.this.getPackageName()));
+                        } else if (Build.VERSION.SDK_INT >= 15) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                            intent.setData(Uri.fromParts("package", HomeActivity.this.getPackageName(), null));
                         }
+                        startActivity(intent);
                     })
                     .create();
             alertDialog.show();
@@ -185,28 +177,20 @@ public class HomeActivity extends BaseActivity {
                                         .setTitle("检测到新版本")
                                         .setMessage(jsonObject.getString("changelog"))
                                         .setCancelable(false)
-                                        .setNegativeButton("暂不升级", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                            }
-                                        })
-                                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                dialog.cancel();
-                                                //申请SD卡权限
-                                                if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
-                                                    PermissionUtils.requestSDCardReadPermission(HomeActivity.this, REQUEST_SD);
-                                                } else {
-                                                    InstallUtils.with(HomeActivity.this)
-                                                            //必须-下载地址
-                                                            .setApkUrl(string)
-                                                            //非必须-下载回调
-                                                            .setCallBack(downloadCallBack)
-                                                            //开始下载
-                                                            .startDownload();
-                                                }
+                                        .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
+                                        .setPositiveButton("确定", (dialog, which) -> {
+                                            dialog.cancel();
+                                            //申请SD卡权限
+                                            if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
+                                                PermissionUtils.requestSDCardReadPermission(HomeActivity.this, REQUEST_SD);
+                                            } else {
+                                                InstallUtils.with(HomeActivity.this)
+                                                        //必须-下载地址
+                                                        .setApkUrl(string)
+                                                        //非必须-下载回调
+                                                        .setCallBack(downloadCallBack)
+                                                        //开始下载
+                                                        .startDownload();
                                             }
                                         })
                                         .create();
