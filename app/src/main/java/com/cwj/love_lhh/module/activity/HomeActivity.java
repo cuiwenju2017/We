@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
@@ -16,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -34,6 +36,8 @@ import com.cwj.love_lhh.module.fragment.ToolFragment;
 import com.cwj.love_lhh.module.fragment.UsFragment;
 import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PermissionUtils;
+import com.cwj.love_lhh.view.FallObject;
+import com.cwj.love_lhh.view.FallingView;
 import com.cwj.love_lhh.view.TabView;
 import com.maning.updatelibrary.InstallUtils;
 
@@ -45,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -66,6 +71,10 @@ public class HomeActivity extends BaseActivity {
     private static final int INDEX_US = 0;
     private static final int INDEX_GAMES = 1;
     private static final int INDEX_TOOL = 2;
+    @BindView(R.id.fallingView)
+    FallingView fallingView;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
     private List<TabView> mTabViews = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
     private AlertDialog alertDialog;
@@ -111,6 +120,18 @@ public class HomeActivity extends BaseActivity {
                 }
             }
         });
+
+        //初始化一个雪花样式的fallObject
+        FallObject.Builder builder = new FallObject.Builder(getResources().getDrawable(R.drawable.snow_flake));
+        FallObject fallObject = builder
+                .setSpeed(6, true)
+                .setSize(25, 25, true)
+                .setWind(5, true, true)
+                .build();
+        fallingView.addFallObject(fallObject, 100);//添加下落物体对象
+
+        //底部导航背景透明度设置0~255
+        llBottom.getBackground().setAlpha(200);
 
         //通知用户开启通知
         NotificationManagerCompat notification = NotificationManagerCompat.from(this);
@@ -207,7 +228,7 @@ public class HomeActivity extends BaseActivity {
                                 dialogWindow.setAttributes(p);
 
                                 alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                                alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
                             }
                         } catch (IOException | JSONException e) {
                             e.printStackTrace();
@@ -362,6 +383,13 @@ public class HomeActivity extends BaseActivity {
                 updateCurrentTab(INDEX_US);
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

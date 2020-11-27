@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +43,14 @@ import com.cwj.love_lhh.utils.NotificationUtils;
 import com.cwj.love_lhh.utils.PictureSelectorUtils;
 import com.cwj.love_lhh.utils.TimeUtils;
 import com.cwj.love_lhh.utils.ToastUtil;
+import com.cwj.love_lhh.view.FallObject;
+import com.cwj.love_lhh.view.FallingView;
 import com.jaeger.library.StatusBarUtil;
+
 import java.io.File;
 import java.text.ParseException;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -91,6 +96,8 @@ public class UsFragment extends Fragment {
     TextView tvWeddingDay;
     @BindView(R.id.tv_fall_in_love)
     TextView tvFallInLove;
+    @BindView(R.id.hsv)
+    HorizontalScrollView hsv;
 
     private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, url;
     SharedPreferences sprfMain;
@@ -347,7 +354,7 @@ public class UsFragment extends Fragment {
         switch (view.getId()) {
             case R.id.tv_change_date://日期修改
                 Intent intent = new Intent(getActivity(), SetTimeActivity.class);
-                intent.putExtra("setTime",2);
+                intent.putExtra("setTime", 2);
                 startActivityForResult(intent, REQUEST_SEARCH);
                 break;
             case R.id.tv_about://关于

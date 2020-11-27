@@ -6,7 +6,7 @@
     android:layout_marginLeft="1dp"
     android:layout_marginTop="2dp"
     android:layout_marginRight="1dp"
-    android:background="@drawable/ripple_water_more"
+    android:background="@drawable/ripple_water_bg"
     android:clickable="true"
     android:gravity="center"
     android:orientation="vertical"

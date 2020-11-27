@@ -11,11 +11,12 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
+        android:id="@+id/ll_bottom"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#4Dffffff"
-        android:gravity="center_vertical"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bottom"
+        android:gravity="center_vertical">
 
         <com.cwj.love_lhh.view.TabView
             android:id="@+id/tab_us"
@@ -48,4 +49,8 @@
             bxll:tabTitle="工具" />
     </LinearLayout>
 
+    <com.cwj.love_lhh.view.FallingView
+        android:id="@+id/fallingView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

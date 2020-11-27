@@ -2,7 +2,6 @@ package com.cwj.love_lhh.module.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cwj.love_lhh.R;
-import com.cwj.love_lhh.base.BaseRVAdapter;
-import com.cwj.love_lhh.base.BaseRVHolder;
 import com.cwj.love_lhh.bean.GameBean;
 import com.cwj.love_lhh.module.activity.AircraftBattleActivity;
 import com.cwj.love_lhh.module.activity.GobangActivity;
 import com.cwj.love_lhh.module.activity.PuzzleActivity;
 import com.cwj.love_lhh.module.activity.WebViewActivity;
 import com.cwj.love_lhh.module.adapter.GameAdapter;
+import com.cwj.love_lhh.view.FallObject;
+import com.cwj.love_lhh.view.FallingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * 小游戏
