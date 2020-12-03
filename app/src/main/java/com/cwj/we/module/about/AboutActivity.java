@@ -324,7 +324,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 //2.通过Retrofit实例创建接口服务对象
                 API apiService = retrofit.create(API.class);
                 //3.接口服务对象调用接口中方法，获得Call对象
-                Call<ResponseBody> call = apiService.latest("5e77278df9454809b991dfda", "6570963ae9a308ca993393518f865887");
+                Call<ResponseBody> call = apiService.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
                 //同步请求
                 //Response<ResponseBody> bodyResponse = call.execute();
                 //4.Call对象执行请求（异步、同步请求）
