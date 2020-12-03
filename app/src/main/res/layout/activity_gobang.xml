@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="?attr/appBg">
 
-    <com.cwj.love_lhh.game.gobang.PannelView
+    <com.cwj.we.game.gobang.PannelView
         android:id="@+id/v_pannel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

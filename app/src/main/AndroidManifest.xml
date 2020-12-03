@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.cwj.love_lhh">
+    package="com.cwj.we">
 
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 连接互联网Internet权限 -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- 拍照权限 -->
@@ -110,7 +110,7 @@
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.cwj.love_lhh.BmobContentProvider" /> <!-- 设置BmobAppKey -->
+            android:authorities="com.cwj.we.BmobContentProvider" /> <!-- 设置BmobAppKey -->
         <meta-data
             android:name="Bmob_APP_KEY"
             android:value="6b641f364905d608449772bae45f7b60" />

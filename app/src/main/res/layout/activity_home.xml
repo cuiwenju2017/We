@@ -18,7 +18,7 @@
         android:background="@drawable/bottom"
         android:gravity="center_vertical">
 
-        <com.cwj.love_lhh.view.TabView
+        <com.cwj.we.view.TabView
             android:id="@+id/tab_us"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             bxll:tabSelectedImage="@drawable/us_list_pressed"
             bxll:tabTitle="我们" />
 
-        <com.cwj.love_lhh.view.TabView
+        <com.cwj.we.view.TabView
             android:id="@+id/tab_games"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             bxll:tabSelectedImage="@drawable/mini_games_list_pressed"
             bxll:tabTitle="小游戏" />
 
-        <com.cwj.love_lhh.view.TabView
+        <com.cwj.we.view.TabView
             android:id="@+id/tab_tool"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             bxll:tabTitle="工具" />
     </LinearLayout>
 
-    <com.cwj.love_lhh.view.FallingView
+    <com.cwj.we.view.FallingView
         android:id="@+id/fallingView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

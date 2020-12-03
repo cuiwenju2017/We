@@ -28,8 +28,7 @@
 
     </LinearLayout>
 
-
-    <com.cwj.love_lhh.view.BeatingHeartView
+    <com.cwj.we.view.BeatingHeartView
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

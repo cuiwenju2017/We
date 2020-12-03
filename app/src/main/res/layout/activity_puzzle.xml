@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-    <com.cwj.love_lhh.game.puzzle.GamePintuLayout
+    <com.cwj.we.game.puzzle.GamePintuLayout
         android:id="@+id/id_gameview"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

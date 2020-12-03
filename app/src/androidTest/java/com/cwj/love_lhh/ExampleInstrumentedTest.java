@@ -1,4 +1,4 @@
-package com.cwj.love_lhh;
+package com.cwj.we;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.cwj.love_lhh", appContext.getPackageName());
+        assertEquals("com.cwj.we", appContext.getPackageName());
     }
 }

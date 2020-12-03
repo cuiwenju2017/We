@@ -5,32 +5,32 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <com.cwj.love_lhh.view.AutoRotateSecondView
+    <com.cwj.we.view.AutoRotateSecondView
         android:id="@+id/timeView_second"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.cwj.love_lhh.view.AutoRotateMinuteView
+    <com.cwj.we.view.AutoRotateMinuteView
         android:id="@+id/timeView_minute"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.cwj.love_lhh.view.AutoRotateHoursView
+    <com.cwj.we.view.AutoRotateHoursView
         android:id="@+id/timeView_hours"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.cwj.love_lhh.view.AutoRotateWeekView
+    <com.cwj.we.view.AutoRotateWeekView
         android:id="@+id/timeView_week"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.cwj.love_lhh.view.AutoRotateDayView
+    <com.cwj.we.view.AutoRotateDayView
         android:id="@+id/timeView_day"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.cwj.love_lhh.view.AutoRotateMonthView
+    <com.cwj.we.view.AutoRotateMonthView
         android:id="@+id/timeView_month"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
