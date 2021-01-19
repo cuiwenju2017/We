@@ -18,6 +18,7 @@ import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.AircraftBattleActivity;
 import com.cwj.we.module.activity.GobangActivity;
 import com.cwj.we.module.activity.PuzzleActivity;
+import com.cwj.we.module.activity.QijiangangqinActivity;
 import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 
@@ -84,6 +85,9 @@ public class GamesFragment extends Fragment {
                 intent = new Intent(getActivity(), WebViewActivity.class);
                 intent.putExtra("url", "https://www.yikm.net/");
                 startActivity(intent);
+            }else if (position == 9) {//七键钢琴
+                intent = new Intent(getActivity(), QijiangangqinActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -109,5 +113,7 @@ public class GamesFragment extends Fragment {
         gameBeans.add(mfyx);
         GameBean xbw = new GameBean("小霸王", R.drawable.icon_xbw);
         gameBeans.add(xbw);
+        GameBean qijiangangqin = new GameBean("七键钢琴", R.drawable.icon_qijiangangqin);
+        gameBeans.add(qijiangangqin);
     }
 }

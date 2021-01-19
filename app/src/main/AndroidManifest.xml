@@ -30,7 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".module.activity.QijiangangqinActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".module.ljxj.OpenCameraActivity"
             android:screenOrientation="portrait"

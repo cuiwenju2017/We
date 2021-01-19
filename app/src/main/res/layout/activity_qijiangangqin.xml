@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:background="@android:color/black">
+
+    <TextView
+        android:id="@+id/tv_dou"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="dou" />
+
+    <TextView
+        android:id="@+id/tv_rai"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="rai" />
+
+    <TextView
+        android:id="@+id/tv_mi"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="mi" />
+
+    <TextView
+        android:id="@+id/tv_fa"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="fa" />
+
+    <TextView
+        android:id="@+id/tv_sao"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="sao" />
+
+    <TextView
+        android:id="@+id/tv_la"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="la" />
+
+    <TextView
+        android:id="@+id/tv_xi"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        android:background="@drawable/ripple_water_more"
+        android:gravity="bottom|center"
+        android:paddingBottom="30dp"
+        android:text="xi" />
+</LinearLayout>
