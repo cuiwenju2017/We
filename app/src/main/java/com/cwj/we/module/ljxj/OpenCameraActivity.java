@@ -168,25 +168,22 @@ public class OpenCameraActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void onCapture() {
-        mCameraView.takePicture(new FilteredBitmapCallback() {
-            @Override
-            public void onData(Bitmap bitmap) {
-                File file = FileUtils.createImageFile();
-                //重新写入文件
-                try {
-                    // 写入文件
-                    FileOutputStream fos;
-                    fos = new FileOutputStream(file);
-                    //默认jpg
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-                    fos.flush();
-                    fos.close();
-                    bitmap.recycle();
-                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-                    ToastUtil.showTextToast(OpenCameraActivity.this, "已保存");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        mCameraView.takePicture(bitmap -> {
+            File file = FileUtils.createImageFile();
+            //重新写入文件
+            try {
+                // 写入文件
+                FileOutputStream fos;
+                fos = new FileOutputStream(file);
+                //默认jpg
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+                bitmap.recycle();
+                sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                ToastUtil.showTextToast(OpenCameraActivity.this, "已保存");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
