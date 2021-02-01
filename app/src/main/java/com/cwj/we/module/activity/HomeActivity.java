@@ -13,6 +13,7 @@ import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,6 +36,7 @@ import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
 import com.cwj.we.utils.NotificationUtils;
 import com.cwj.we.utils.PermissionUtils;
+import com.cwj.we.utils.ToastUtil;
 import com.cwj.we.view.FallObject;
 import com.cwj.we.view.FallingView;
 import com.cwj.we.view.TabView;
@@ -401,5 +403,32 @@ public class HomeActivity extends BaseActivity {
         public int getCount() {
             return frags.size();
         }
+    }
+
+    /**
+     * 再按一次退出程序
+     */
+    private long currentBackPressedTime = 0;
+    private static int BACK_PRESSED_INTERVAL = 2000;
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getAction() == KeyEvent.ACTION_DOWN
+                && event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - currentBackPressedTime > BACK_PRESSED_INTERVAL) {
+                currentBackPressedTime = System.currentTimeMillis();
+                ToastUtil.showTextToast(this, "再按一次退出程序");
+                return true;
+            } else {//退出程序
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                startActivity(intent);
+            }
+            return false;
+        } else if (event.getKeyCode() == KeyEvent.KEYCODE_MENU) {
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
     }
 }
