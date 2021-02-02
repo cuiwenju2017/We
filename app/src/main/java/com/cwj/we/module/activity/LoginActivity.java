@@ -9,13 +9,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.cwj.we.R;
 import com.cwj.we.bean.User;
+import com.cwj.we.module.main.HomeActivity;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.ToastUtil;
 import com.hyb.library.PreventKeyboardBlockUtil;
 import com.jaeger.library.StatusBarUtil;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

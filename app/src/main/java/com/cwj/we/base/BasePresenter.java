@@ -24,7 +24,7 @@ public class BasePresenter<V extends BaseView> {
     /**
      * 这个后面可以直接用   Example：apiServer.login(username, password)；
      */
-    protected API apiServer = RetrofitService.getInstance().getApiService();
+    protected API.UPDATAApi apiServer = RetrofitService.getInstance().getApiService();
 
     public BasePresenter(V baseView) {
         this.baseView = baseView;

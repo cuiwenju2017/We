@@ -20,6 +20,7 @@ import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.ClockActivity;
 import com.cwj.we.module.activity.CompassActivity;
+import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
@@ -66,10 +67,13 @@ public class ToolFragment extends Fragment {
             } else if (position == 2) {//时钟
                 startActivity(new Intent(getActivity(), ClockActivity.class));
             } else if (position == 3) {//扒一剧
-                intent = new Intent();
+                /*intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
                 content_url = Uri.parse("http://www.81ju.cn/");
                 intent.setData(content_url);
+                startActivity(intent);*/
+                intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                intent.putExtra("movieUrl", "http://www.81ju.cn/");
                 startActivity(intent);
             } else if (position == 4) {//轮盘时中
                 startActivity(new Intent(getActivity(), LPClockActivity.class));
@@ -84,9 +88,12 @@ public class ToolFragment extends Fragment {
                                 ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                             }
                         });
+            } else if (position == 6) {
+                intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                intent.putExtra("movieUrl", "https://vip.smtu.cc/");
+                startActivity(intent);
             }
         });
-
         return view;
     }
 
@@ -103,5 +110,7 @@ public class ToolFragment extends Fragment {
         gameBeans.add(lpsz);
         GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
         gameBeans.add(ljxj);
+        GameBean ddt = new GameBean("达达兔", R.drawable.icon_byj);
+        gameBeans.add(ddt);
     }
 }

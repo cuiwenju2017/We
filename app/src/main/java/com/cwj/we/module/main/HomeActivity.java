@@ -1,4 +1,4 @@
-package com.cwj.we.module.activity;
+package com.cwj.we.module.main;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,8 +29,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
-import com.cwj.we.base.BasePresenter;
-import com.cwj.we.http.API;
+import com.cwj.we.bean.LatestBean;
 import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
@@ -42,22 +41,13 @@ import com.cwj.we.view.FallingView;
 import com.cwj.we.view.TabView;
 import com.maning.updatelibrary.InstallUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
-public class HomeActivity extends BaseActivity {
+public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeView {
 
     @BindView(R.id.tab_tool)
     TabView tabTool;
@@ -83,8 +73,8 @@ public class HomeActivity extends BaseActivity {
     private int REQUEST_SD = 200;
 
     @Override
-    protected BasePresenter createPresenter() {
-        return null;
+    protected HomePrensenter createPresenter() {
+        return new HomePrensenter(this);
     }
 
     @Override
@@ -137,111 +127,48 @@ public class HomeActivity extends BaseActivity {
         NotificationManagerCompat notification = NotificationManagerCompat.from(this);
         boolean isEnabled = notification.areNotificationsEnabled();
         if (!isEnabled) {
-            //未打开通知
-            alertDialog = new AlertDialog.Builder(this)
-                    .setTitle("提示")
-                    .setMessage("请在“通知”中打开通知权限以便观察应用更新进度")
-                    .setCancelable(false)
-                    .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
-                    .setPositiveButton("去设置", (dialog, which) -> {
-                        dialog.cancel();
-                        Intent intent = new Intent();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                            intent.putExtra("android.provider.extra.APP_PACKAGE", HomeActivity.this.getPackageName());
-                        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //5.0
-                            intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
-                            intent.putExtra("app_package", HomeActivity.this.getPackageName());
-                            intent.putExtra("app_uid", HomeActivity.this.getApplicationInfo().uid);
-                            startActivity(intent);
-                        } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {  //4.4
-                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                            intent.addCategory(Intent.CATEGORY_DEFAULT);
-                            intent.setData(Uri.parse("package:" + HomeActivity.this.getPackageName()));
-                        } else if (Build.VERSION.SDK_INT >= 15) {
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                            intent.setData(Uri.fromParts("package", HomeActivity.this.getPackageName(), null));
-                        }
-                        startActivity(intent);
-                    })
-                    .create();
-            alertDialog.show();
-            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+            openTongzhi();
         }
 
         if (alertDialog == null) {
             initCallBack();
-            //1.创建Retrofit对象
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(API.BASE_URL_UPDATA)
-                    .build();
-            //2.通过Retrofit实例创建接口服务对象
-            API apiService = retrofit.create(API.class);
-            //3.接口服务对象调用接口中方法，获得Call对象
-            Call<ResponseBody> call = apiService.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
-            //同步请求
-            //Response<ResponseBody> bodyResponse = call.execute();
-            //4.Call对象执行请求（异步、同步请求）
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    //onResponse方法是运行在主线程也就是UI线程的，所以我们可以在这里直接更新ui
-                    if (response.isSuccessful()) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response.body().string());
-                            string = jsonObject.getString("direct_install_url");
-                            build = Integer.parseInt(jsonObject.getString("build"));
-                            if (getLocalVersion(HomeActivity.this) < build) {
-                                AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this)
-                                        .setTitle("检测到新版本")
-                                        .setMessage(jsonObject.getString("changelog"))
-                                        .setCancelable(false)
-                                        .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
-                                        .setPositiveButton("确定", (dialog, which) -> {
-                                            dialog.cancel();
-                                            //申请SD卡权限
-                                            if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
-                                                PermissionUtils.requestSDCardReadPermission(HomeActivity.this, REQUEST_SD);
-                                            } else {
-                                                InstallUtils.with(HomeActivity.this)
-                                                        //必须-下载地址
-                                                        .setApkUrl(string)
-                                                        //非必须-下载回调
-                                                        .setCallBack(downloadCallBack)
-                                                        //开始下载
-                                                        .startDownload();
-                                            }
-                                        })
-                                        .create();
-                                alertDialog.show();
-                                //放在show()之后，不然有些属性是没有效果的，比如height和width
-                                Window dialogWindow = alertDialog.getWindow();
-                                WindowManager m = getWindowManager();
-                                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
-                                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                                // 设置宽度
-                                p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
-                                p.gravity = Gravity.CENTER;//设置位置
-                                //p.alpha = 0.8f;//设置透明度
-                                dialogWindow.setAttributes(p);
-
-                                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                                alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-                            }
-                        } catch (IOException | JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                }
-            });
+            presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
         }
+    }
+
+    private void openTongzhi() {
+        //未打开通知
+        alertDialog = new AlertDialog.Builder(this)
+                .setTitle("提示")
+                .setMessage("请在“通知”中打开通知权限以便观察应用更新进度")
+                .setCancelable(false)
+                .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
+                .setPositiveButton("去设置", (dialog, which) -> {
+                    dialog.cancel();
+                    Intent intent = new Intent();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                        intent.putExtra("android.provider.extra.APP_PACKAGE", HomeActivity.this.getPackageName());
+                    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //5.0
+                        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+                        intent.putExtra("app_package", HomeActivity.this.getPackageName());
+                        intent.putExtra("app_uid", HomeActivity.this.getApplicationInfo().uid);
+                        startActivity(intent);
+                    } else if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {  //4.4
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.addCategory(Intent.CATEGORY_DEFAULT);
+                        intent.setData(Uri.parse("package:" + HomeActivity.this.getPackageName()));
+                    } else if (Build.VERSION.SDK_INT >= 15) {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                        intent.setData(Uri.fromParts("package", HomeActivity.this.getPackageName(), null));
+                    }
+                    startActivity(intent);
+                })
+                .create();
+        alertDialog.show();
+        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
     }
 
     /*获取本地软件版本号​*/
@@ -301,7 +228,6 @@ public class HomeActivity extends BaseActivity {
                         //p.alpha = 0.8f;//设置透明度
                         dialogWindow.setAttributes(p);
                     }
-
                 } else {
                     NotificationUtils.cancleNotification(0);
                     alertDialog.dismiss();
@@ -383,6 +309,59 @@ public class HomeActivity extends BaseActivity {
                 updateCurrentTab(INDEX_US);
                 break;
         }
+    }
+
+    @Override
+    public void latestData(LatestBean bean) {
+        if (bean != null) {
+            string = bean.getDirect_install_url();
+            updata(bean);
+        }
+    }
+
+    private void updata(LatestBean bean) {
+        if (getLocalVersion(HomeActivity.this) < Integer.parseInt(bean.getBuild())) {
+            AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("检测到新版本")
+                    .setMessage(bean.getChangelog())
+                    .setCancelable(false)
+                    .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
+                    .setPositiveButton("确定", (dialog, which) -> {
+                        dialog.cancel();
+                        //申请SD卡权限
+                        if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
+                            PermissionUtils.requestSDCardReadPermission(HomeActivity.this, REQUEST_SD);
+                        } else {
+                            InstallUtils.with(HomeActivity.this)
+                                    //必须-下载地址
+                                    .setApkUrl(string)
+                                    //非必须-下载回调
+                                    .setCallBack(downloadCallBack)
+                                    //开始下载
+                                    .startDownload();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+            //放在show()之后，不然有些属性是没有效果的，比如height和width
+            Window dialogWindow = alertDialog.getWindow();
+            WindowManager m = getWindowManager();
+            Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
+            WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+            // 设置宽度
+            p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
+            p.gravity = Gravity.CENTER;//设置位置
+            //p.alpha = 0.8f;//设置透明度
+            dialogWindow.setAttributes(p);
+
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+        }
+    }
+
+    @Override
+    public void onError(String msg) {
+        ToastUtil.showTextToast(this, msg);
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {

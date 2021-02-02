@@ -67,16 +67,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected void initListener() {
     }
 
-    @Override
-    public void showLoading() {
-        YUtils.showLoading(this, "加载中");
-    }
-
-    @Override
-    public void hideLoading() {
-        YUtils.dismissLoading();
-    }
-
     /**
      * 可以处理异常
      */

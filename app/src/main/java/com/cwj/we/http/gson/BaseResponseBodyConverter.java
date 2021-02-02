@@ -1,10 +1,6 @@
 package com.cwj.we.http.gson;
 
-import com.cwj.we.base.BaseException;
 import com.google.gson.TypeAdapter;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -30,8 +26,10 @@ public class BaseResponseBodyConverter<T> implements Converter<ResponseBody, T> 
     @Override
     public T convert(ResponseBody value) throws IOException {
         String jsonString = value.string();
+        //正确返回整个json
+        return adapter.fromJson(jsonString);
 
-        try {
+        /*try {
             JSONObject object = new JSONObject(jsonString);
             int code = object.getInt("code");
             if (200 != code) {
@@ -52,9 +50,8 @@ public class BaseResponseBodyConverter<T> implements Converter<ResponseBody, T> 
             e.printStackTrace();
             //数据解析异常即json格式有变动
             throw new BaseException(BaseException.PARSE_ERROR_MSG);
-
         } finally {
             value.close();
-        }
+        }*/
     }
 }

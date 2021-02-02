@@ -20,7 +20,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 public class RetrofitService {
 
     private volatile static RetrofitService apiRetrofit;
-    private API apiServer;
+    private API.UPDATAApi apiServer;
 
     /**
      * 单例调用
@@ -38,13 +38,12 @@ public class RetrofitService {
         return apiRetrofit;
     }
 
-
     /**
      * 获取api对象
      *
      * @return api对象
      */
-    public API getApiService() {
+    public API.UPDATAApi getApiService() {
         return apiServer;
     }
 
@@ -70,10 +69,10 @@ public class RetrofitService {
                 .client(okHttpClient)
                 .addConverterFactory(BaseConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(API.BASE_URL)
+                .baseUrl(API.BASE_URL_UPDATA)
                 .build();
 
-        apiServer = retrofit.create(API.class);
+        apiServer = retrofit.create(API.UPDATAApi.class);
     }
 
 }

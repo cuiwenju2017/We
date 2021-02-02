@@ -31,8 +31,8 @@ import androidx.core.content.ContextCompat;
 
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
+import com.cwj.we.bean.LatestBean;
 import com.cwj.we.bean.User;
-import com.cwj.we.http.API;
 import com.cwj.we.module.activity.ChangePasswordActivity;
 import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.WebViewActivity;
@@ -46,21 +46,11 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.maning.updatelibrary.InstallUtils;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 /**
  * 关于
@@ -88,7 +78,6 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     SharedPreferences sprfMain;
     private String username;
     private String string;
-    private int build;
     private int REQUEST_SD = 200;
     private int REQUEST_SHARE = 202;
 
@@ -213,7 +202,6 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                         //p.alpha = 0.8f;//设置透明度
                         dialogWindow.setAttributes(p);
                     }
-
                 } else {
                     NotificationUtils.cancleNotification(0);
                     alertDialog.dismiss();
@@ -282,14 +270,14 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 loadingDialog.dismiss();
                 if (e == null) {
                     popupView.dismiss();//关闭弹窗
-                    ToastUtil.showTextToast(AboutActivity.this,"更新用户信息成功");
+                    ToastUtil.showTextToast(AboutActivity.this, "更新用户信息成功");
                     sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
                     editorMain = sprfMain.edit();
                     editorMain.putString("username", text);
                     editorMain.commit();
                     tvUsername.setText(text);
                 } else {//202:用户名已存在  301：用户不能为空
-                    ToastUtil.showTextToast(AboutActivity.this,"用户名已存在,换个试试");
+                    ToastUtil.showTextToast(AboutActivity.this, "用户名已存在,换个试试");
                 }
             }
         });
@@ -297,97 +285,27 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
 
     private BasePopupView popupView;
 
-    @OnClick({R.id.rl_username,R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback, R.id.rl_change_password, R.id.rl_logout})
+    @OnClick({R.id.rl_username, R.id.rl_check_updates, R.id.rl_share, R.id.rl_feedback, R.id.rl_change_password, R.id.rl_logout})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_username://修改用户名
-                 popupView = new XPopup.Builder(this)
+                popupView = new XPopup.Builder(this)
                         .autoDismiss(false) // 操作完毕后是否自动关闭弹窗，默认为true；比如点击ConfirmPopup的确认按钮，默认自动关闭；如果为false，则不会关闭
                         .asInputConfirm("修改用户名", "请输入新的用户名",
                                 text -> {
-                                    if(TextUtils.isEmpty(text)){
-                                        ToastUtil.showTextToast(AboutActivity.this,"用户名不能为空");
-                                    }else {
+                                    if (TextUtils.isEmpty(text)) {
+                                        ToastUtil.showTextToast(AboutActivity.this, "用户名不能为空");
+                                    } else {
                                         loadingDialog.show();
                                         updateUser(text);
                                     }
                                 })
                         .show();
                 break;
-            case R.id.rl_check_updates://检查更新、
+            case R.id.rl_check_updates://检查更新
                 loadingDialog.show();
                 initCallBack();
-                //1.创建Retrofit对象
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(API.BASE_URL_UPDATA)
-                        .build();
-                //2.通过Retrofit实例创建接口服务对象
-                API apiService = retrofit.create(API.class);
-                //3.接口服务对象调用接口中方法，获得Call对象
-                Call<ResponseBody> call = apiService.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
-                //同步请求
-                //Response<ResponseBody> bodyResponse = call.execute();
-                //4.Call对象执行请求（异步、同步请求）
-                call.enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        //onResponse方法是运行在主线程也就是UI线程的，所以我们可以在这里直接更新ui
-                        if (response.isSuccessful()) {
-                            loadingDialog.dismiss();
-                            try {
-                                JSONObject jsonObject = new JSONObject(response.body().string());
-                                string = jsonObject.getString("direct_install_url");
-                                build = Integer.parseInt(jsonObject.getString("build"));
-                                if (getLocalVersion(AboutActivity.this) < build) {
-                                    AlertDialog alertDialog = new AlertDialog.Builder(AboutActivity.this)
-                                            .setTitle("检测到新版本")
-                                            .setMessage(jsonObject.getString("changelog"))
-                                            .setCancelable(false)
-                                            .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
-                                            .setPositiveButton("确定", (dialog, which) -> {
-                                                dialog.cancel();
-                                                //申请SD卡权限
-                                                if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
-                                                    PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
-                                                } else {
-                                                    InstallUtils.with(AboutActivity.this)
-                                                            //必须-下载地址
-                                                            .setApkUrl(string)
-                                                            //非必须-下载回调
-                                                            .setCallBack(downloadCallBack)
-                                                            //开始下载
-                                                            .startDownload();
-                                                }
-                                            })
-                                            .create();
-                                    alertDialog.show();
-                                    //放在show()之后，不然有些属性是没有效果的，比如height和width
-                                    Window dialogWindow = alertDialog.getWindow();
-                                    WindowManager m = getWindowManager();
-                                    Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
-                                    WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                                    // 设置宽度
-                                    p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
-                                    p.gravity = Gravity.CENTER;//设置位置
-                                    //p.alpha = 0.8f;//设置透明度
-                                    dialogWindow.setAttributes(p);
-
-                                    alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                                    alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-                                } else {
-                                    ToastUtil.showTextToast(AboutActivity.this, "已是最新版本");
-                                }
-                            } catch (IOException | JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-                    }
-                });
+                presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
                 break;
             case R.id.rl_share://分享
                 share();
@@ -412,5 +330,62 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                         .show();
                 break;
         }
+    }
+
+    @Override
+    public void latestData(LatestBean bean) {
+        loadingDialog.dismiss();
+        if (bean != null) {
+            string = bean.getDirect_install_url();
+            updata(bean);
+        }
+    }
+
+    private void updata(LatestBean bean) {
+        if (getLocalVersion(AboutActivity.this) < Integer.parseInt(bean.getBuild())) {
+            AlertDialog alertDialog = new AlertDialog.Builder(AboutActivity.this)
+                    .setTitle("检测到新版本")
+                    .setMessage(bean.getChangelog())
+                    .setCancelable(false)
+                    .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
+                    .setPositiveButton("确定", (dialog, which) -> {
+                        dialog.cancel();
+                        //申请SD卡权限
+                        if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
+                            PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
+                        } else {
+                            InstallUtils.with(AboutActivity.this)
+                                    //必须-下载地址
+                                    .setApkUrl(string)
+                                    //非必须-下载回调
+                                    .setCallBack(downloadCallBack)
+                                    //开始下载
+                                    .startDownload();
+                        }
+                    })
+                    .create();
+            alertDialog.show();
+            //放在show()之后，不然有些属性是没有效果的，比如height和width
+            Window dialogWindow = alertDialog.getWindow();
+            WindowManager m = getWindowManager();
+            Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
+            WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+            // 设置宽度
+            p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
+            p.gravity = Gravity.CENTER;//设置位置
+            //p.alpha = 0.8f;//设置透明度
+            dialogWindow.setAttributes(p);
+
+            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+            alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+        } else {
+            ToastUtil.showTextToast(AboutActivity.this, "已是最新版本");
+        }
+    }
+
+    @Override
+    public void onError(String msg) {
+        loadingDialog.dismiss();
+        ToastUtil.showTextToast(this, msg);
     }
 }

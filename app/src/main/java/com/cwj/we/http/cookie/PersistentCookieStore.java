@@ -32,7 +32,6 @@ public class PersistentCookieStore {
     private SharedPreferences cookiePrefs;
 
     public PersistentCookieStore(Context context) {
-
         cookiePrefs = context.getSharedPreferences(COOKIE_PREFS, 0);
         cookies = new ArrayMap<>();
 

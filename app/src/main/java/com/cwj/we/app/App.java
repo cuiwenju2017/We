@@ -1,11 +1,7 @@
 package com.cwj.we.app;
 
-import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.multidex.MultiDex;
 
@@ -23,7 +19,6 @@ import com.ycbjie.webviewlib.utils.X5WebUtils;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.List;
 
 import cn.bmob.v3.Bmob;
 
@@ -41,6 +36,8 @@ public class App extends BaseApplication {
     public void onCreate() {
         super.onCreate();
         Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
+
+        X5WebUtils.init(this);//初始化WebViewLib
 
         Context context = getApplicationContext();
         // 获取当前包名

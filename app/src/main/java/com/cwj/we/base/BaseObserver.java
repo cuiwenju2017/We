@@ -1,5 +1,7 @@
 package com.cwj.we.base;
 
+import android.util.Log;
+
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -23,28 +25,10 @@ import retrofit2.HttpException;
 public abstract class BaseObserver<T> extends DisposableObserver<T> {
 
     protected BaseView view;
-    private boolean isShowDialog;
-
-    protected BaseObserver(BaseView view) {
-        this.view = view;
-    }
-
-    /**
-     * 带进度条的初始化方法
-     *
-     * @param view         view
-     * @param isShowDialog 是否显示进度条
-     */
-    protected BaseObserver(BaseView view, boolean isShowDialog) {
-        this.view = view;
-        this.isShowDialog = isShowDialog;
-    }
 
     @Override
     protected void onStart() {
-        if (view != null && isShowDialog) {
-            view.showLoading();
-        }
+
     }
 
     @Override
@@ -54,10 +38,9 @@ public abstract class BaseObserver<T> extends DisposableObserver<T> {
 
     @Override
     public void onError(Throwable e) {
-        if (view != null && isShowDialog) {
-            view.hideLoading();
-        }
         BaseException be;
+
+        Log.i("aaa", "onError: " + e);
 
         if (e != null) {
             //自定义异常
@@ -96,11 +79,8 @@ public abstract class BaseObserver<T> extends DisposableObserver<T> {
 
     @Override
     public void onComplete() {
-        if (view != null && isShowDialog) {
-            view.hideLoading();
-        }
-    }
 
+    }
 
     public abstract void onSuccess(T o);
 

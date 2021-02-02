@@ -31,6 +31,10 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".module.activity.VideoWebViewActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:hardwareAccelerated="true" />
+        <activity
             android:name=".module.activity.QijiangangqinActivity"
             android:screenOrientation="landscape" />
         <activity
@@ -87,7 +91,7 @@
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".module.activity.HomeActivity"
+            android:name=".module.main.HomeActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

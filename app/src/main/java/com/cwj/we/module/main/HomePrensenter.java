@@ -1,11 +1,11 @@
-package com.cwj.we.module.about;
+package com.cwj.we.module.main;
 
 import com.cwj.we.base.BaseObserver;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.LatestBean;
 
-public class AboutPrensenter extends BasePresenter<AboutView> {
-    public AboutPrensenter(AboutView baseView) {
+public class HomePrensenter extends BasePresenter<HomeView> {
+    public HomePrensenter(HomeView baseView) {
         super(baseView);
     }
 

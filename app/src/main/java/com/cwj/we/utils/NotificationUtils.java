@@ -8,14 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import com.cwj.we.R;
 import com.cwj.we.app.App;
-import com.cwj.we.module.activity.HomeActivity;
-
-
+import com.cwj.we.module.main.HomeActivity;
 import static android.app.Notification.VISIBILITY_SECRET;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
