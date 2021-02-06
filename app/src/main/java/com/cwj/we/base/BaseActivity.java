@@ -2,7 +2,6 @@ package com.cwj.we.base;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
@@ -10,7 +9,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cwj.we.utils.ActivityCollector;
-import com.yechaoa.yutils.YUtils;
 
 import butterknife.ButterKnife;
 

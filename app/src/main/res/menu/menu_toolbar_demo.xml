@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/toolbar1"
+        android:title="本地浏览器打开"
+        app:showAsAction="never"
+        tools:ignore="DuplicateIds" />
+
+    <item
+        android:id="@+id/toolbar2"
+        android:title="QQ浏览器打开"
+        app:showAsAction="never"
+        tools:ignore="DuplicateIds" />
+
+    <item
+        android:id="@+id/toolbar3"
+        android:title="UC浏览器打开"
+        app:showAsAction="never"
+        tools:ignore="DuplicateIds" />
+</menu>

@@ -128,4 +128,19 @@
         <!--        <item name="picture.folder_checked_dot">@drawable/orange_oval</item>-->
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
+        <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <!-- actionMenuTextColor is the color of the text of action (menu) items  -->
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <!-- Tints the input fields like checkboxes and text fields -->
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- This configures the styles for the title within the Toolbar  -->
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">21dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

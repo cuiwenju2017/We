@@ -2,7 +2,6 @@ package com.cwj.we.module.fragment;
 
 import android.Manifest;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +43,6 @@ public class ToolFragment extends Fragment {
     RecyclerView rvGame;
 
     private Intent intent;
-    private Uri content_url;
     private List<GameBean> gameBeans = new ArrayList<>();
 
     @Nullable
@@ -67,12 +65,8 @@ public class ToolFragment extends Fragment {
             } else if (position == 2) {//时钟
                 startActivity(new Intent(getActivity(), ClockActivity.class));
             } else if (position == 3) {//扒一剧
-                /*intent = new Intent();
-                intent.setAction("android.intent.action.VIEW");
-                content_url = Uri.parse("http://www.81ju.cn/");
-                intent.setData(content_url);
-                startActivity(intent);*/
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://www.81ju.cn/");
                 startActivity(intent);
             } else if (position == 4) {//轮盘时中
@@ -88,8 +82,9 @@ public class ToolFragment extends Fragment {
                                 ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                             }
                         });
-            } else if (position == 6) {
+            } else if (position == 6) {//达达兔
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "https://vip.smtu.cc/");
                 startActivity(intent);
             }
