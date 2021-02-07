@@ -175,7 +175,7 @@ public class VideoWebViewActivity extends BaseActivity {
                     MarketUtils.getTools().openInstalledAppInURL(this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", urlStr);
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
-                    MarketUtils.getTools().startMarket(this, "com.tencent.mtt");
+                    MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
                 }
                 break;
             case R.id.toolbar3://UC浏览器打开
@@ -186,11 +186,8 @@ public class VideoWebViewActivity extends BaseActivity {
                     MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.uc.browser.ActivityUpdate", urlStr);
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
-                    MarketUtils.getTools().startMarket(this, "com.UCMobile");
+                    MarketUtils.getTools().openMarket(this, "com.UCMobile");
                 }
-                break;
-            case android.R.id.home:
-                finish();
                 break;
             default:
                 break;
