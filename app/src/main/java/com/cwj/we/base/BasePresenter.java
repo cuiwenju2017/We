@@ -26,6 +26,8 @@ public class BasePresenter<V extends BaseView> {
      */
     protected API.UPDATAApi apiServer = RetrofitService.getInstance().getApiService();
 
+    protected API.QingyunkeApi qingyunkeApi = RetrofitService.getInstance().getQingyunkeApi();
+
     public BasePresenter(V baseView) {
         this.baseView = baseView;
     }

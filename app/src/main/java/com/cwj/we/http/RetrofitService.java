@@ -21,6 +21,7 @@ public class RetrofitService {
 
     private volatile static RetrofitService apiRetrofit;
     private API.UPDATAApi apiServer;
+    private API.QingyunkeApi qingyunkeApi;
 
     /**
      * 单例调用
@@ -47,6 +48,9 @@ public class RetrofitService {
         return apiServer;
     }
 
+    public API.QingyunkeApi getQingyunkeApi() {
+        return qingyunkeApi;
+    }
 
     /**
      * 初始化retrofit
@@ -71,8 +75,15 @@ public class RetrofitService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(API.BASE_URL_UPDATA)
                 .build();
-
         apiServer = retrofit.create(API.UPDATAApi.class);
+
+        Retrofit retrofitQingyunke = new Retrofit.Builder()
+                .client(okHttpClient)
+                .addConverterFactory(BaseConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .baseUrl(API.BASE_URL_Qingyunke)
+                .build();
+        qingyunkeApi = retrofitQingyunke.create(API.QingyunkeApi.class);
     }
 
 }

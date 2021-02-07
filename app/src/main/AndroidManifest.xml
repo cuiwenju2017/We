@@ -30,13 +30,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".module.jiqiren.JiqirenActivity"></activity>
         <activity
             android:name=".module.activity.VideoWebViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:hardwareAccelerated="true" />
-        <activity
-            android:name=".module.activity.QijiangangqinActivity"
-            android:screenOrientation="landscape" />
         <activity
             android:name=".module.ljxj.OpenCameraActivity"
             android:screenOrientation="portrait"
