@@ -112,13 +112,13 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         });
 
         //初始化一个雪花样式的fallObject
-        FallObject.Builder builder = new FallObject.Builder(getResources().getDrawable(R.drawable.snow_flake));
+        FallObject.Builder builder = new FallObject.Builder(getResources().getDrawable(R.drawable.icon_huaban));
         FallObject fallObject = builder
-                .setSpeed(6, true)
-                .setSize(25, 25, true)
+                .setSpeed(3, true)
+                .setSize(55, 55, true)
                 .setWind(5, true, true)
                 .build();
-        fallingView.addFallObject(fallObject, 100);//添加下落物体对象
+        fallingView.addFallObject(fallObject, 30);//添加下落物体对象
 
         //底部导航背景透明度设置0~255
         llBottom.getBackground().setAlpha(200);
@@ -322,7 +322,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private void updata(LatestBean bean) {
         if (getLocalVersion(HomeActivity.this) < Integer.parseInt(bean.getBuild())) {
             AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle("检测到新版本")
+                    .setTitle("检测到新版本V" + bean.getVersionShort())
                     .setMessage(bean.getChangelog())
                     .setCancelable(false)
                     .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())

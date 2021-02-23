@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bottom"
+        android:background="@drawable/bottom2"
         android:gravity="center_vertical">
 
         <com.cwj.we.view.TabView

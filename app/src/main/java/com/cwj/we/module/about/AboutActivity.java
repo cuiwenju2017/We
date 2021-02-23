@@ -344,7 +344,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     private void updata(LatestBean bean) {
         if (getLocalVersion(AboutActivity.this) < Integer.parseInt(bean.getBuild())) {
             AlertDialog alertDialog = new AlertDialog.Builder(AboutActivity.this)
-                    .setTitle("检测到新版本")
+                    .setTitle("检测到新版本V" + bean.getVersionShort())
                     .setMessage(bean.getChangelog())
                     .setCancelable(false)
                     .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
