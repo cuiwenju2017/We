@@ -64,14 +64,9 @@ public class ToolFragment extends Fragment {
                 startActivity(new Intent(getActivity(), CompassActivity.class));
             } else if (position == 2) {//时钟
                 startActivity(new Intent(getActivity(), ClockActivity.class));
-            } else if (position == 3) {//扒一剧
-                intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("name", gameBeans.get(position).getName());
-                intent.putExtra("movieUrl", "http://www.81ju.cn/");
-                startActivity(intent);
-            } else if (position == 4) {//轮盘时中
+            } else if (position == 3) {//轮盘时中
                 startActivity(new Intent(getActivity(), LPClockActivity.class));
-            } else if (position == 5) {//滤镜相机
+            } else if (position == 4) {//滤镜相机
                 PermissionX.init(this)
                         .permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
@@ -82,7 +77,7 @@ public class ToolFragment extends Fragment {
                                 ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                             }
                         });
-            } else if (position == 6) {//达达兔
+            } else if (position == 5) {//达达兔
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
                 intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "https://vip.smtu.cc/");
@@ -99,8 +94,6 @@ public class ToolFragment extends Fragment {
         gameBeans.add(znz);
         GameBean sz = new GameBean("时钟", R.drawable.clock);
         gameBeans.add(sz);
-        GameBean byj = new GameBean("扒一剧", R.drawable.icon_byj);
-        gameBeans.add(byj);
         GameBean lpsz = new GameBean("轮盘时钟", R.drawable.icon_lp_shizhong);
         gameBeans.add(lpsz);
         GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
