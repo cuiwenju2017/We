@@ -183,7 +183,7 @@ public class VideoWebViewActivity extends BaseActivity {
                     urlStr = movieUrl;
                 }
                 if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
-                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.uc.browser.ActivityUpdate", urlStr);
+                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.UCMobile.main.UCMobile", urlStr);
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
                     MarketUtils.getTools().openMarket(this, "com.UCMobile");
