@@ -9,5 +9,4 @@ package com.cwj.we.base;
 
 
 public interface BaseView {
-    void onErrorCode(BaseBean bean);
 }

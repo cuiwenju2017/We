@@ -39,7 +39,7 @@ public class JiqirenActivity extends BaseActivity<JiqirenPrensenter> implements 
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         initMsgs();
         editText = findViewById(R.id.enter);
@@ -79,7 +79,7 @@ public class JiqirenActivity extends BaseActivity<JiqirenPrensenter> implements 
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
 
     }
 

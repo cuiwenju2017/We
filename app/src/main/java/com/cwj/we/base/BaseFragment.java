@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.yechaoa.yutils.ActivityUtil;
-import com.yechaoa.yutils.YUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -69,9 +68,5 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
     }
 
     private void initListener() {
-    }
-
-    @Override
-    public void onErrorCode(BaseBean bean) {
     }
 }

@@ -92,7 +92,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         tvVersionNumber.setText("V" + getLocalVersionName(this));
         loadingDialog = new LoadingDialog(AboutActivity.this, "");
@@ -102,7 +102,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
 
     }
 

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.atech.glcamera.interfaces.FileCallback;
-import com.atech.glcamera.interfaces.FilteredBitmapCallback;
 import com.atech.glcamera.utils.FileUtils;
 import com.atech.glcamera.utils.FilterFactory;
 import com.atech.glcamera.views.GLCameraView;
@@ -143,9 +141,11 @@ public class OpenCameraActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv://相册
-                Intent intent = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setType("image/*");
-                this.startActivity(intent);
+                this.startActivity(intent);*/
+
+                startActivity(new Intent(this, PhotoListActivity.class));
                 break;
             case R.id.img_switch:
                 mCameraView.switchCamera();

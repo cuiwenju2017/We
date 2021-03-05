@@ -93,7 +93,7 @@ public class VideoWebViewActivity extends BaseActivity {
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
         name = getIntent().getStringExtra("name");
         webView = findViewById(R.id.web_view);
@@ -145,7 +145,7 @@ public class VideoWebViewActivity extends BaseActivity {
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
 
     }
 

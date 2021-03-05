@@ -30,7 +30,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.jiqiren.JiqirenActivity"></activity>
+        <activity android:name=".module.ljxj.PhotoViewActivity" />
+        <activity android:name=".module.ljxj.PhotoListActivity" />
+        <activity android:name=".module.jiqiren.JiqirenActivity" />
         <activity
             android:name=".module.activity.VideoWebViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

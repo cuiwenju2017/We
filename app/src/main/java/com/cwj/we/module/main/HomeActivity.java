@@ -83,7 +83,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         UsFragment usFragment = new UsFragment();
         GamesFragment gamesFragment = new GamesFragment();
         ToolFragment toolFragment = new ToolFragment();
@@ -277,7 +277,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
 
     }
 

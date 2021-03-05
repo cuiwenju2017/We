@@ -24,8 +24,6 @@ import retrofit2.HttpException;
 
 public abstract class BaseObserver<T> extends DisposableObserver<T> {
 
-    protected BaseView view;
-
     @Override
     protected void onStart() {
 
@@ -46,13 +44,6 @@ public abstract class BaseObserver<T> extends DisposableObserver<T> {
             //自定义异常
             if (e instanceof BaseException) {
                 be = (BaseException) e;
-                //回调到view层 处理 或者根据项目情况处理
-                if (view != null) {
-                    // 处理登录失效 更新
-                    view.onErrorCode(new BaseBean(be.getErrorCode(), be.getErrorMsg()));
-                } else {
-                    onError(be.getErrorMsg());
-                }
                 //系统异常
             } else {
                 if (e instanceof HttpException) {

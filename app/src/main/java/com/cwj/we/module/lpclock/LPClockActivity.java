@@ -50,7 +50,7 @@ public class LPClockActivity extends BaseActivity {
     }
 
     @Override
-    protected void initView() {
+    public void initView() {
         StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
         timeView_second = (AutoRotateSecondView) findViewById(R.id.timeView_second);
         timeView_minute = (AutoRotateMinuteView) findViewById(R.id.timeView_minute);
@@ -134,7 +134,7 @@ public class LPClockActivity extends BaseActivity {
     }
 
     @Override
-    protected void initData() {
+    public void initData() {
 
     }
 }
