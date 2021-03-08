@@ -35,4 +35,5 @@
     <external-path
         name="beta_external_files_path"
         path="Android/data/" />
+    <external-path path="." name="my_files" />
 </paths>

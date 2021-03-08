@@ -71,6 +71,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private String string;
     private int build;
     private int REQUEST_SD = 200;
+    private int INSTALL_PERMISS_CODE = 203;
 
     @Override
     protected HomePrensenter createPresenter() {
@@ -319,6 +320,84 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         }
     }
 
+    public void setInstallPermission() {
+        boolean haveInstallPermission;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            //先判断是否有安装未知来源应用的权限
+            haveInstallPermission = getPackageManager().canRequestPackageInstalls();
+            if (!haveInstallPermission) {
+                androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(this)
+                        .setTitle("安装权限")
+                        .setMessage("需要打开允许来自此来源，请去设置中开启此权限")
+                        .setCancelable(false)
+                        .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
+                        .setPositiveButton("确定", (dialog, which) -> {
+                            dialog.cancel();
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                //此方法需要API>=26才能使用
+                                toInstallPermissionSettingIntent();
+                            }
+                        })
+                        .create();
+                alertDialog.show();
+                //放在show()之后，不然有些属性是没有效果的，比如height和width
+                Window dialogWindow = alertDialog.getWindow();
+                WindowManager m = getWindowManager();
+                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
+                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
+                // 设置宽度
+                p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
+                p.gravity = Gravity.CENTER;//设置位置
+                //p.alpha = 0.8f;//设置透明度
+                dialogWindow.setAttributes(p);
+
+                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
+                alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                return;
+            } else {
+                if (!PermissionUtils.isGrantSDCardReadPermission(this)) {
+                    PermissionUtils.requestSDCardReadPermission(this, REQUEST_SD);
+                } else {
+                    InstallUtils.with(this)
+                            //必须-下载地址
+                            .setApkUrl(string)
+                            //非必须-下载回调
+                            .setCallBack(downloadCallBack)
+                            //开始下载
+                            .startDownload();
+                }
+            }
+        }
+    }
+
+    /**
+     * 开启安装未知来源权限
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void toInstallPermissionSettingIntent() {
+        Uri packageURI = Uri.parse("package:" + getPackageName());
+        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
+        startActivityForResult(intent, INSTALL_PERMISS_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == INSTALL_PERMISS_CODE) {
+            if (!PermissionUtils.isGrantSDCardReadPermission(this)) {
+                PermissionUtils.requestSDCardReadPermission(this, REQUEST_SD);
+            } else {
+                InstallUtils.with(this)
+                        //必须-下载地址
+                        .setApkUrl(string)
+                        //非必须-下载回调
+                        .setCallBack(downloadCallBack)
+                        //开始下载
+                        .startDownload();
+            }
+        }
+    }
+
     private void updata(LatestBean bean) {
         if (getLocalVersion(HomeActivity.this) < Integer.parseInt(bean.getBuild())) {
             AlertDialog alertDialog = new AlertDialog.Builder(HomeActivity.this)
@@ -328,8 +407,11 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                     .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
                     .setPositiveButton("确定", (dialog, which) -> {
                         dialog.cancel();
+
+                        setInstallPermission();
+
                         //申请SD卡权限
-                        if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
+                       /* if (!PermissionUtils.isGrantSDCardReadPermission(HomeActivity.this)) {
                             PermissionUtils.requestSDCardReadPermission(HomeActivity.this, REQUEST_SD);
                         } else {
                             InstallUtils.with(HomeActivity.this)
@@ -339,7 +421,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                                     .setCallBack(downloadCallBack)
                                     //开始下载
                                     .startDownload();
-                        }
+                        }*/
                     })
                     .create();
             alertDialog.show();
