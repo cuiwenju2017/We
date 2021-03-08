@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -199,8 +200,46 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
             @Override
             public void onComplete(String path) {
                 string = path;
-                //去安装APK
-                installApk(string);
+                //下载完成
+                //先判断有没有安装权限---适配8.0
+                //如果不想用封装好的，可以自己去实现8.0适配
+                InstallUtils.checkInstallPermission(HomeActivity.this, new InstallUtils.InstallPermissionCallBack() {
+                    @Override
+                    public void onGranted() {
+                        //去安装APK
+                        installApk(string);
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        //弹出弹框提醒用户
+                        androidx.appcompat.app.AlertDialog alertDialog = new androidx.appcompat.app.AlertDialog.Builder(context)
+                                .setTitle("温馨提示")
+                                .setMessage("必须授权才能安装APK，请设置允许安装")
+                                .setNegativeButton("取消", null)
+                                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //打开设置页面
+                                        InstallUtils.openInstallPermissionSetting(HomeActivity.this, new InstallUtils.InstallPermissionCallBack() {
+                                            @Override
+                                            public void onGranted() {
+                                                //去安装APK
+                                                installApk(string);
+                                            }
+
+                                            @Override
+                                            public void onDenied() {
+                                                //还是不允许咋搞？
+                                                Toast.makeText(context, "不允许安装咋搞？强制更新就退出应用程序吧！", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                })
+                                .create();
+                        alertDialog.show();
+                    }
+                });
             }
 
             @RequiresApi(api = Build.VERSION_CODES.O)
