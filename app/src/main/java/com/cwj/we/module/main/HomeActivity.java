@@ -217,24 +217,21 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                                 .setTitle("温馨提示")
                                 .setMessage("必须授权才能安装APK，请设置允许安装")
                                 .setNegativeButton("取消", null)
-                                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //打开设置页面
-                                        InstallUtils.openInstallPermissionSetting(HomeActivity.this, new InstallUtils.InstallPermissionCallBack() {
-                                            @Override
-                                            public void onGranted() {
-                                                //去安装APK
-                                                installApk(string);
-                                            }
+                                .setPositiveButton("设置", (dialog, which) -> {
+                                    //打开设置页面
+                                    InstallUtils.openInstallPermissionSetting(HomeActivity.this, new InstallUtils.InstallPermissionCallBack() {
+                                        @Override
+                                        public void onGranted() {
+                                            //去安装APK
+                                            installApk(string);
+                                        }
 
-                                            @Override
-                                            public void onDenied() {
-                                                //还是不允许咋搞？
-                                                Toast.makeText(context, "不允许安装咋搞？强制更新就退出应用程序吧！", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
+                                        @Override
+                                        public void onDenied() {
+                                            //还是不允许咋搞？
+                                            Toast.makeText(context, "不允许安装咋搞？强制更新就退出应用程序吧！", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 })
                                 .create();
                         alertDialog.show();
