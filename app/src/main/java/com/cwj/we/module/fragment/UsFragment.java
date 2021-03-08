@@ -189,10 +189,10 @@ public class UsFragment extends Fragment {
             nowTime = TimeUtils.getTimeStame();//当前时间戳
 
             startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherTime));//在一起的时间
-            apartTime = (nowTime - startTime) / 1000 / 60 / 60 / 24;//天数
-            remainderHour = (nowTime - startTime) / 1000 / 60 / 60 % 24;//小时
-            remainderMinute = (nowTime - startTime) / 1000 / 60 % 60;//分钟
-            remainderSecond = (nowTime - startTime) / 1000 % 60;//秒
+            apartTime = (nowTime - startTime) / (1000 * 60 * 60 * 24);//天数
+            remainderHour = ((nowTime - startTime) / (1000 * 60 * 60)) % 24;//小时
+            remainderMinute = ((nowTime - startTime) / (1000 * 60)) % 60;//分钟
+            remainderSecond = ((nowTime - startTime) / 1000) % 60;//秒
             tv.setText(apartTime + "天" + remainderHour + "小时" + remainderMinute + "分" + remainderSecond + "秒");
 
             setTogetherTime = Integer.parseInt(togetherTime.substring(0, 4));//取出在一起年
