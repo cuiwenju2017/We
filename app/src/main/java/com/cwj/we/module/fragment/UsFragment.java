@@ -1,6 +1,7 @@
 package com.cwj.we.module.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,7 +18,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -64,8 +64,6 @@ import cn.bmob.v3.listener.FindListener;
 public class UsFragment extends Fragment {
 
     Unbinder unbinder;
-    @BindView(R.id.wv)
-    WebView wv;
     @BindView(R.id.tv)
     TextView tv;
     @BindView(R.id.tv_time)
@@ -158,19 +156,12 @@ public class UsFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initView() {
         StatusBarUtil.setTranslucentForImageView(getActivity(), 0, clView);//沉浸状态栏
-        // 设置WebView属性，能够执行Javascript脚本
-        wv.getSettings().setJavaScriptEnabled(true);
-        //语言设置防止加载乱码
-        wv.getSettings().setDefaultTextEncodingName("GBK");
-        // 即asserts文件夹下有一个color2.html
-        wv.loadUrl("file:///android_asset/index.html");
 
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
         //设置背景
         if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
-            wv.setVisibility(View.VISIBLE);
+            Glide.with(this).load(R.drawable.we_bg).into(ivBg);
         } else {
-            wv.setVisibility(View.GONE);
             Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
         }
     }
@@ -186,6 +177,7 @@ public class UsFragment extends Fragment {
 
     private ChinaDate lunar;
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void update() {
         long nowTime, startTime, apartTime, remainderHour, remainderMinute, remainderSecond, thisYearTogetherTimestamp,
@@ -332,8 +324,6 @@ public class UsFragment extends Fragment {
                 if (userIconPath == null) {
                 } else {
                     Glide.with(this).load(Uri.fromFile(new File(userIconPath))).into(ivBg);
-                    wv.setVisibility(View.GONE);
-                    ivBg.setVisibility(View.VISIBLE);
                     sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
                     editorMain = sprfMain.edit();
                     editorMain.putString("path", userIconPath);
@@ -380,22 +370,13 @@ public class UsFragment extends Fragment {
                             .setTitle("提示")
                             .setMessage("确定重置当前背景吗？")
                             .setCancelable(true)
-                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            })
-                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    wv.setVisibility(View.VISIBLE);
-                                    ivBg.setVisibility(View.GONE);
-                                    editorMain = sprfMain.edit();
-                                    editorMain.putString("path", "");
-                                    editorMain.commit();
-                                }
+                            .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
+                            .setPositiveButton("确定", (dialog, which) -> {
+                                dialog.cancel();
+                                editorMain = sprfMain.edit();
+                                editorMain.putString("path", "");
+                                editorMain.commit();
+                                Glide.with(getActivity()).load(R.drawable.we_bg).into(ivBg);
                             })
                             .create();
                     alertDialog.show();
