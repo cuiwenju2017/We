@@ -122,7 +122,6 @@
             android:name="Bmob_APP_KEY"
             android:value="6b641f364905d608449772bae45f7b60" />
 
-        <!--android 10 以上安装无权限问题 添加provider 添加在application里面 -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.cwj.we.fileprovider"

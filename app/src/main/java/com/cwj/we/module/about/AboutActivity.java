@@ -2,34 +2,25 @@ package com.cwj.we.module.about;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.text.TextUtils;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.cwj.we.BuildConfig;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.LatestBean;
@@ -39,13 +30,15 @@ import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
-import com.cwj.we.utils.NotificationUtils;
-import com.cwj.we.utils.PermissionUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.jaeger.library.StatusBarUtil;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.maning.updatelibrary.InstallUtils;
+import com.ycbjie.ycupdatelib.AppUpdateUtils;
+import com.ycbjie.ycupdatelib.PermissionUtils;
+import com.ycbjie.ycupdatelib.UpdateFragment;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,7 +74,11 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     private String string;
     private int REQUEST_SD = 200;
     private int REQUEST_SHARE = 202;
-    private int INSTALL_PERMISS_CODE = 203;
+    private LatestBean updataBean;
+    //这个是你的包名
+    private static final String apkName = "yilu";
+    private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE};
 
     @Override
     protected AboutPrensenter createPresenter() {
@@ -161,133 +158,11 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
         startActivity(intent);
     }
 
-    private InstallUtils.DownloadCallBack downloadCallBack;
-    private AlertDialog alertDialog;
-
-    private void initCallBack() {
-        downloadCallBack = new InstallUtils.DownloadCallBack() {
-            @Override
-            public void onStart() {
-
-            }
-
-            @Override
-            public void onComplete(String path) {
-                string = path;
-
-                //下载完成
-                //先判断有没有安装权限---适配8.0
-                //如果不想用封装好的，可以自己去实现8.0适配
-                InstallUtils.checkInstallPermission(AboutActivity.this, new InstallUtils.InstallPermissionCallBack() {
-                    @Override
-                    public void onGranted() {
-                        //去安装APK
-                        installApk(string);
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        //弹出弹框提醒用户
-                        AlertDialog alertDialog = new AlertDialog.Builder(context)
-                                .setTitle("温馨提示")
-                                .setMessage("必须授权才能安装APK，请设置允许安装")
-                                .setNegativeButton("取消", null)
-                                .setPositiveButton("设置", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //打开设置页面
-                                        InstallUtils.openInstallPermissionSetting(AboutActivity.this, new InstallUtils.InstallPermissionCallBack() {
-                                            @Override
-                                            public void onGranted() {
-                                                //去安装APK
-                                                installApk(string);
-                                            }
-
-                                            @Override
-                                            public void onDenied() {
-                                                //还是不允许咋搞？
-                                                Toast.makeText(context, "不允许安装咋搞？强制更新就退出应用程序吧！", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-                                    }
-                                })
-                                .create();
-                        alertDialog.show();
-                    }
-                });
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onLoading(long total, long current) {
-                //内部做了处理，onLoading 进度转回progress必须是+1，防止频率过快
-                int progress = (int) (current * 100 / total);
-                if (progress < 100) {
-                    NotificationUtils.showNotification(AboutActivity.this, "下载中...", "下载进度：" + progress + "%", 0, "", progress, 100);
-
-                    if (alertDialog == null) {
-                        alertDialog = new AlertDialog.Builder(AboutActivity.this)
-                                .setTitle("提示")
-                                .setMessage("应用下中，请稍等...")
-                                .setCancelable(false)
-                                .create();
-                        alertDialog.show();
-                        //放在show()之后，不然有些属性是没有效果的，比如height和width
-                        Window dialogWindow = alertDialog.getWindow();
-                        WindowManager m = getWindowManager();
-                        Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
-                        WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                        // 设置宽度
-                        p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
-                        p.gravity = Gravity.CENTER;//设置位置
-                        //p.alpha = 0.8f;//设置透明度
-                        dialogWindow.setAttributes(p);
-                    }
-                } else {
-                    NotificationUtils.cancleNotification(0);
-                    alertDialog.dismiss();
-                }
-            }
-
-            @Override
-            public void onFail(Exception e) {
-
-            }
-
-            @Override
-            public void cancle() {
-
-            }
-        };
-    }
-
-    private void installApk(String path) {
-        InstallUtils.installAPK(this, path, new InstallUtils.InstallCallBack() {
-            @Override
-            public void onSuccess() {
-                //onSuccess：表示系统的安装界面被打开
-                //防止用户取消安装，在这里可以关闭当前应用，以免出现安装被取消
-//                ToastUtil.s(getString(R.string.installing_program));
-            }
-
-            @Override
-            public void onFail(Exception e) {
-
-            }
-        });
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_SD) {
-            InstallUtils.with(this)
-                    //必须-下载地址
-                    .setApkUrl(string)
-                    //非必须-下载回调
-                    .setCallBack(downloadCallBack)
-                    //开始下载
-                    .startDownload();
+            updata();
         } else if (requestCode == REQUEST_SHARE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 shareImg(BitmapFactory.decodeResource(getResources(), R.drawable.icon_qr_code));
@@ -345,7 +220,6 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 break;
             case R.id.rl_check_updates://检查更新
                 loadingDialog.show();
-                initCallBack();
                 presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
                 break;
             case R.id.rl_share://分享
@@ -378,128 +252,35 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
         loadingDialog.dismiss();
         if (bean != null) {
             string = bean.getDirect_install_url();
-            updata(bean);
+            updataBean = bean;
+            updata();
         }
     }
 
-    public void setInstallPermission() {
-        boolean haveInstallPermission;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //先判断是否有安装未知来源应用的权限
-            haveInstallPermission = getPackageManager().canRequestPackageInstalls();
-            if (!haveInstallPermission) {
-                AlertDialog alertDialog = new AlertDialog.Builder(AboutActivity.this)
-                        .setTitle("安装权限")
-                        .setMessage("需要打开允许来自此来源，请去设置中开启此权限")
-                        .setCancelable(false)
-                        .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
-                        .setPositiveButton("确定", (dialog, which) -> {
-                            dialog.cancel();
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                //此方法需要API>=26才能使用
-                                toInstallPermissionSettingIntent();
-                            }
-                        })
-                        .create();
-                alertDialog.show();
-                //放在show()之后，不然有些属性是没有效果的，比如height和width
-                Window dialogWindow = alertDialog.getWindow();
-                WindowManager m = getWindowManager();
-                Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
-                WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-                // 设置宽度
-                p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
-                p.gravity = Gravity.CENTER;//设置位置
-                //p.alpha = 0.8f;//设置透明度
-                dialogWindow.setAttributes(p);
+    private void updata() {
+        if (getLocalVersion(AboutActivity.this) < Integer.parseInt(updataBean.getBuild())) {
+            PermissionUtils.init(this);
+            boolean granted = PermissionUtils.isGranted(mPermission);
+            if (!granted) {
+                PermissionUtils permission = PermissionUtils.permission(mPermission);
+                permission.callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
 
-                alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
-                return;
+                    }
+
+                    @Override
+                    public void onDenied() {
+                        PermissionUtils.openAppSettings();
+                        ToastUtil.showTextToast(AboutActivity.this, "请允许存储权限");
+                    }
+                });
+                permission.request();
             } else {
-                if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
-                    PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
-                } else {
-                    InstallUtils.with(AboutActivity.this)
-                            //必须-下载地址
-                            .setApkUrl(string)
-                            //非必须-下载回调
-                            .setCallBack(downloadCallBack)
-                            //开始下载
-                            .startDownload();
-                }
+                //设置自定义下载文件路径
+                AppUpdateUtils.APP_UPDATE_DOWN_APK_PATH = "apk" + File.separator + "downApk";
+                UpdateFragment.showFragment(this, false, string, apkName, updataBean.getChangelog(), BuildConfig.APPLICATION_ID, null);
             }
-        }
-    }
-
-    /**
-     * 开启安装未知来源权限
-     */
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private void toInstallPermissionSettingIntent() {
-        Uri packageURI = Uri.parse("package:" + getPackageName());
-        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
-        startActivityForResult(intent, INSTALL_PERMISS_CODE);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == INSTALL_PERMISS_CODE) {
-            if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
-                PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
-            } else {
-                InstallUtils.with(AboutActivity.this)
-                        //必须-下载地址
-                        .setApkUrl(string)
-                        //非必须-下载回调
-                        .setCallBack(downloadCallBack)
-                        //开始下载
-                        .startDownload();
-            }
-        }
-    }
-
-    private void updata(LatestBean bean) {
-        if (getLocalVersion(AboutActivity.this) < Integer.parseInt(bean.getBuild())) {
-            AlertDialog alertDialog = new AlertDialog.Builder(AboutActivity.this)
-                    .setTitle("检测到新版本V" + bean.getVersionShort())
-                    .setMessage(bean.getChangelog())
-                    .setCancelable(false)
-                    .setNegativeButton("暂不升级", (dialog, which) -> dialog.cancel())
-                    .setPositiveButton("确定", (dialog, which) -> {
-                        dialog.cancel();
-
-                        setInstallPermission();
-
-                        //申请SD卡权限
-                       /* if (!PermissionUtils.isGrantSDCardReadPermission(AboutActivity.this)) {
-                            PermissionUtils.requestSDCardReadPermission(AboutActivity.this, REQUEST_SD);
-                        } else {
-                            InstallUtils.with(AboutActivity.this)
-                                    //必须-下载地址
-                                    .setApkUrl(string)
-                                    //非必须-下载回调
-                                    .setCallBack(downloadCallBack)
-                                    //开始下载
-                                    .startDownload();
-                        }*/
-                    })
-                    .create();
-            alertDialog.show();
-            //放在show()之后，不然有些属性是没有效果的，比如height和width
-            Window dialogWindow = alertDialog.getWindow();
-            WindowManager m = getWindowManager();
-            Display d = m.getDefaultDisplay(); // 获取屏幕宽、高
-            WindowManager.LayoutParams p = dialogWindow.getAttributes(); // 获取对话框当前的参数值
-            // 设置宽度
-            p.width = (int) (d.getWidth() * 0.95); // 宽度设置为屏幕的0.95
-            p.gravity = Gravity.CENTER;//设置位置
-            //p.alpha = 0.8f;//设置透明度
-            dialogWindow.setAttributes(p);
-
-            alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-            alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
         } else {
             ToastUtil.showTextToast(AboutActivity.this, "已是最新版本");
         }
