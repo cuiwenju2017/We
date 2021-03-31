@@ -192,6 +192,9 @@ public class SetTimeActivity extends AppCompatActivity {
                 popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
                 if (e == null) {
                     ToastUtil.showTextToast(SetTimeActivity.this, "修改成功");
+                    Intent intent = new Intent(SetTimeActivity.this, HomeActivity.class);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 } else {
                     ToastUtil.showTextToast(SetTimeActivity.this, e.getMessage());
                 }
@@ -337,10 +340,7 @@ public class SetTimeActivity extends AppCompatActivity {
                             startActivity(intent);
                             finish();
                         } else {
-                            Intent intent = new Intent(this, HomeActivity.class);
                             updatePostAuthor();//修改数据
-                            setResult(RESULT_OK, intent);
-                            finish();
                         }
                     }
                 } catch (ParseException e) {

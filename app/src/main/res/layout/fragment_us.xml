@@ -157,6 +157,7 @@
                     android:paddingBottom="5dp">
 
                     <TextView
+                        android:id="@+id/tv_wedding_day_tip"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"

@@ -94,6 +94,8 @@ public class UsFragment extends Fragment {
     TextView tvFallInLove;
     @BindView(R.id.hsv)
     HorizontalScrollView hsv;
+    @BindView(R.id.tv_wedding_day_tip)
+    TextView tvWeddingDayTip;
 
     private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, url;
     SharedPreferences sprfMain;
@@ -259,19 +261,6 @@ public class UsFragment extends Fragment {
                 tvFallInLove.setText("" + (nextyearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
             }
 
-            //结婚纪念日提醒
-            if ((thisYearGetMarriedTimestamp - getLunarTimestamp) > 0) {
-                tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
-            } else if ((thisYearGetMarriedTimestamp - getLunarTimestamp) == 0) {
-                tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
-                if (isFrist2) {
-                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的" + getMarriedYear + "周年结婚纪念日，记得给ta一个惊喜哦!", 1, "", 100, 0);
-                    isFrist2 = false;
-                }
-            } else {
-                tvWeddingDay.setText("" + (nextyearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
-            }
-
             long getMarriedTimestamp = Long.parseLong(TimeUtils.dateToStamp2(getMarriedTime2));//阳历结婚时间毫秒数
             if ((thisYearTimestamp - getMarriedTimestamp) >= 0) {
                 tvGetMarriedYear.setText("" + getMarriedYear);
@@ -281,6 +270,25 @@ public class UsFragment extends Fragment {
                 tvGetMarriedYear.setText("还有" + (getMarriedTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天我们就结婚啦");
                 tvJh.setVisibility(View.GONE);
                 tvY.setVisibility(View.GONE);
+            }
+
+            //结婚纪念日提醒
+            if ((thisYearGetMarriedTimestamp - getLunarTimestamp) > 0 && ((getMarriedTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24) < 0) {
+                tvWeddingDayTip.setText("距结婚纪念日还剩");
+                tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
+            } else if ((thisYearGetMarriedTimestamp - getLunarTimestamp) == 0) {
+                tvWeddingDayTip.setText("距结婚纪念日还剩");
+                tvWeddingDay.setText("" + (thisYearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
+                if (isFrist2) {
+                    NotificationUtils.showNotification(getActivity(), null, "今天是你们的" + getMarriedYear + "周年结婚纪念日，记得给ta一个惊喜哦!", 1, "", 100, 0);
+                    isFrist2 = false;
+                }
+            } else if (((getMarriedTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24) > 0) {
+                tvWeddingDayTip.setText("距结婚还剩");
+                tvWeddingDay.setText("" + (getMarriedTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//结婚纪念日
+            } else {
+                tvWeddingDayTip.setText("距结婚纪念日还剩");
+                tvWeddingDay.setText("" + (nextyearGetMarriedTimestamp - getLunarTimestamp) / 1000 / 60 / 60 / 24 + "天");
             }
         } catch (ParseException e) {
             e.printStackTrace();
