@@ -35,6 +35,9 @@ public class App extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Bmob重置域名
+        Bmob.resetDomain("https://open3.bmob.cn/");
+        //初始化Bmob
         Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
 
         X5WebUtils.init(this);//初始化WebViewLib
