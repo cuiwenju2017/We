@@ -197,7 +197,6 @@ public class UsFragment extends Fragment {
 
             setTogetherTime = Integer.parseInt(togetherTime.substring(0, 4));//取出在一起年
             setGetMarriedTime = Integer.parseInt(getMarriedTime.substring(3, 7));//取出结婚年
-
             setTogetherDate = togetherTime.substring(4, 10);//取出在一起月日
             thisYearDate = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");//当前年月日
             thisYearTogetherDate = TimeUtils.dateToString(nowTime, "yyyy") + setTogetherDate;//取出今年在一起的年月日
@@ -219,7 +218,7 @@ public class UsFragment extends Fragment {
                 int year = Integer.parseInt(thisYearGetMarriedDate.substring(0, 4));
                 int month = Integer.parseInt(thisYearGetMarriedDate.substring(5, 7));
                 int monthDay = Integer.parseInt(thisYearGetMarriedDate.substring(8, 10));
-                thisyeargetMarriedTime = LunarUtils.getTranslateSolarString(year, -month, monthDay);
+                thisyeargetMarriedTime = LunarUtils.getTranslateSolarString(year, month, monthDay);
 
                 int nextyear = Integer.parseInt(nextyearGetMarriedDate.substring(0, 4));
                 int nextmonth = Integer.parseInt(nextyearGetMarriedDate.substring(5, 7));
