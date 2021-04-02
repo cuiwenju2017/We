@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
@@ -12,14 +15,12 @@ import com.cwj.we.module.main.HomeActivity;
 
 import butterknife.BindView;
 import cn.bmob.v3.BmobUser;
-import yanzhikai.textpath.SyncTextPathView;
-import yanzhikai.textpath.painter.FireworksPainter;
 
 public class SplashActivity extends BaseActivity {
 
-    @BindView(R.id.stpv)
-    SyncTextPathView stpv;
     SharedPreferences sprfMain;
+    @BindView(R.id.tv_sp)
+    TextView tvSp;
     private String togetherTime, getMarriedTime;
 
     @Override
@@ -45,6 +46,9 @@ public class SplashActivity extends BaseActivity {
         togetherTime = sprfMain.getString("togetherTime", "");
         getMarriedTime = sprfMain.getString("getMarriedTime", "");
 
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.alpha_welcome);
+        tvSp.startAnimation(animation);
+
         Handler handler = new Handler();
         handler.postDelayed(() -> {
             if (BmobUser.isLogin()) {
@@ -55,14 +59,6 @@ public class SplashActivity extends BaseActivity {
                 finish();
             }
         }, 2000);//n秒后执行Runnable中的run方法
-
-        stpv.startAnimation(0, 1);
-        //设置画笔特效
-//        stpv.setPathPainter(new PenPainter());//笔形
-        stpv.setPathPainter(new FireworksPainter());//火花
-//        stpv.setPathPainter(new ArrowPainter());//箭头
-        //设置动画播放完后填充颜色
-        stpv.setFillColor(true);
     }
 
     @Override

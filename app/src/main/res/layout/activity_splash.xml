@@ -13,18 +13,14 @@
         android:layout_marginTop="240dp"
         android:src="@drawable/logo" />
 
-    <yanzhikai.textpath.SyncTextPathView
-        android:id="@+id/stpv"
+    <TextView
+        android:id="@+id/tv_sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="140dp"
-        app:duration="2000"
-        app:paintStrokeColor="@color/colorYello"
-        app:pathStrokeColor="@color/colorAccent"
-        app:showPainter="true"
-        app:text="我们"
-        app:textInCenter="true"
-        app:textSize="60sp" />
+        android:text="我们"
+        android:textColor="@color/colorAccent"
+        android:textSize="60sp" />
 </RelativeLayout>

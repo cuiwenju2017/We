@@ -115,6 +115,10 @@ public class SetTimeActivity extends AppCompatActivity {
      * 查询一对一关联，查询当前用户下的日期
      */
     private void queryPostAuthor() {
+        popupView = new XPopup.Builder(this)
+                .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
+                .asLoading("")
+                .show();
         if (BmobUser.isLogin()) {
             BmobQuery<Day> query = new BmobQuery<>();
             query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
@@ -161,9 +165,11 @@ public class SetTimeActivity extends AppCompatActivity {
                     }
                     tvTogetherTime.setText(togetherTime);
                     tvGetMarriedTime.setText("" + lunar);
+                    popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
                 }
             });
         } else {
+            popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
             ToastUtil.showTextToast(SetTimeActivity.this, "请先登录");
             startActivity(new Intent(SetTimeActivity.this, LoginActivity.class));
             finish();

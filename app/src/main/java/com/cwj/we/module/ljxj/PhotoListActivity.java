@@ -50,12 +50,13 @@ public class PhotoListActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        toolbar = findViewById(R.id.my_toolbar);
+
         ImmersionBar.with(this)
                 .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
-                .fitsSystemWindows(true) //解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色，还有一些重载方法
-                .statusBarColor(R.color.colorPrimary)     //状态栏颜色，不写默认透明色
+                .titleBar(toolbar)    //解决状态栏和布局重叠问题，任选其一
                 .init();
-        toolbar = findViewById(R.id.my_toolbar);
+
         toolbar.setTitle("相册");
         // 显示导航按钮
         toolbar.setNavigationIcon(R.drawable.icon_back);

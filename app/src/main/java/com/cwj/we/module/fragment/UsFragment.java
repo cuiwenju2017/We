@@ -42,6 +42,7 @@ import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.gyf.immersionbar.components.ImmersionFragment;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 
 import java.io.File;
 import java.text.ParseException;
@@ -99,6 +100,7 @@ public class UsFragment extends ImmersionFragment {
     SharedPreferences sprfMain;
     private boolean isFrist = true;
     private boolean isFrist2 = true;
+    private BasePopupView popupView;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -115,6 +117,10 @@ public class UsFragment extends ImmersionFragment {
      * 查询一对一关联，查询当前用户下的日期
      */
     private void queryPostAuthor() {
+        popupView = new XPopup.Builder(getActivity())
+                .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
+                .asLoading("")
+                .show();
         if (BmobUser.isLogin()) {
             BmobQuery<Day> query = new BmobQuery<>();
             query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
@@ -143,10 +149,12 @@ public class UsFragment extends ImmersionFragment {
                         startActivity(new Intent(getActivity(), SetTimeActivity.class));
                         getActivity().finish();
                     }
+                    popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
                 }
 
             });
         } else {
+            popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
             ToastUtil.showTextToast(getActivity(), "请先登录");
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
@@ -325,6 +333,9 @@ public class UsFragment extends ImmersionFragment {
                 String userIconPath = PictureSelectorUtils.forResult(resultCode, data);
                 if (userIconPath == null) {
                 } else {
+                    if (popupView != null) {
+                        popupView.dismiss();
+                    }
                     Glide.with(this).load(Uri.fromFile(new File(userIconPath))).into(ivBg);
                     sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
                     editorMain = sprfMain.edit();
