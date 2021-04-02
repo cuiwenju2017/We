@@ -2,9 +2,9 @@
 <resources>
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#FF0000</color>
+    <color name="colorAccent">#F55255</color>
     <!--小游戏、工具背景色-->
-    <color name="color_bg">#77A327</color>
+    <color name="color_bg">#ffffff</color>
     <!--底部导航背景色-->
     <color name="color_bottom">#4Dffffff</color>
 

@@ -11,7 +11,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.we.R;
 import com.cwj.we.view.ChaosCompassView;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +33,8 @@ public class CompassActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compass);
         ButterKnife.bind(this);
-        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
+        ImmersionBar.with(this)
+                .init();
         chaosCompassView = (ChaosCompassView) findViewById(R.id.ccv);
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 

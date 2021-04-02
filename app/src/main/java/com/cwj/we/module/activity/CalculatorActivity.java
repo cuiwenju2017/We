@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.we.R;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,7 +90,8 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calculator);
         ButterKnife.bind(this);
-        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
+        ImmersionBar.with(this)
+                .init();
         initView();
         initEvent();
     }

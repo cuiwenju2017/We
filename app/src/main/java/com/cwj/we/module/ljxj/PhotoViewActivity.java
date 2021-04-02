@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.List;
 
@@ -66,6 +66,7 @@ public class PhotoViewActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
+        ImmersionBar.with(this)
+                .init();
     }
 }

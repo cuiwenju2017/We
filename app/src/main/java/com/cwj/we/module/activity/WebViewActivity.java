@@ -14,7 +14,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.we.R;
 import com.cwj.we.view.ProgressWebView;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,8 +35,9 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
-//        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
         Intent intent = getIntent();
         String url = intent.getStringExtra("url");
         /*// 设置WebView属性，能够执行Javascript脚本

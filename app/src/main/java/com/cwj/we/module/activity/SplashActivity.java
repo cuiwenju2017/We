@@ -3,21 +3,19 @@ package com.cwj.we.module.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.os.Handler;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.cwj.we.R;
+import com.cwj.we.base.BaseActivity;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.module.main.HomeActivity;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import cn.bmob.v3.BmobUser;
 import yanzhikai.textpath.SyncTextPathView;
 import yanzhikai.textpath.painter.FireworksPainter;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
 
     @BindView(R.id.stpv)
     SyncTextPathView stpv;
@@ -25,11 +23,22 @@ public class SplashActivity extends AppCompatActivity {
     private String togetherTime, getMarriedTime;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
-        ButterKnife.bind(this);
-        initView();
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_splash;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    public void initView() {
+        fullScreen(true);//全屏显示
 
         //取出上个页面保存的值（取数据）
         sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
@@ -45,11 +54,8 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 finish();
             }
-        }, 3333);//n秒后执行Runnable中的run方法
-    }
+        }, 2000);//n秒后执行Runnable中的run方法
 
-    private void initView() {
-//        StatusBarUtil.setTransparent(this);
         stpv.startAnimation(0, 1);
         //设置画笔特效
 //        stpv.setPathPainter(new PenPainter());//笔形
@@ -59,4 +65,8 @@ public class SplashActivity extends AppCompatActivity {
         stpv.setFillColor(true);
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
 }

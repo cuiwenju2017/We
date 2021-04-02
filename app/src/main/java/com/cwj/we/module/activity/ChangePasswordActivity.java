@@ -15,7 +15,7 @@ import com.cwj.we.R;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.ToastUtil;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +24,9 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
 
+/**
+ * 修改密码
+ */
 public class ChangePasswordActivity extends AppCompatActivity {
 
     @BindView(R.id.ll_back)
@@ -50,7 +53,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
         loadingDialog = new LoadingDialog(ChangePasswordActivity.this, "提交中...");
         tvTitle.setText("修改密码");
     }

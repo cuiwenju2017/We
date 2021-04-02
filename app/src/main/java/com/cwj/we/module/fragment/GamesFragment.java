@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,6 +20,8 @@ import com.cwj.we.module.activity.PuzzleActivity;
 import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.jiqiren.JiqirenActivity;
+import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.immersionbar.components.ImmersionFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ import butterknife.Unbinder;
 /**
  * 小游戏
  */
-public class GamesFragment extends Fragment {
+public class GamesFragment extends ImmersionFragment {
 
     Unbinder unbinder;
     @BindView(R.id.rv_game)
@@ -115,5 +116,12 @@ public class GamesFragment extends Fragment {
         gameBeans.add(xbw);
         GameBean zhinengjiqiren = new GameBean("智能机器人", R.drawable.icon_jiqiren);
         gameBeans.add(zhinengjiqiren);
+    }
+
+    @Override
+    public void initImmersionBar() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
     }
 }

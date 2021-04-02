@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+    <!-- 底部颜色 -->
+    <item android:drawable="@color/white" />
+
+    <!--当然还可以放logo图片，如果是全背景，直接放在外面的 styles里的windowBackground属性-->
+    <item
+        android:width="60dp"
+        android:height="60dp"
+        android:gravity="top|center_horizontal"
+        android:top="240dp">
+        <bitmap android:src="@drawable/logo" />
+    </item>
+
+</layer-list>

@@ -12,7 +12,7 @@ import com.cwj.we.bean.Msg;
 import com.cwj.we.bean.MsgBean;
 import com.cwj.we.module.adapter.MsgAdapter;
 import com.cwj.we.utils.ToastUtil;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,9 @@ public class JiqirenActivity extends BaseActivity<JiqirenPrensenter> implements 
 
     @Override
     public void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
         initMsgs();
         editText = findViewById(R.id.enter);
         sendButton = findViewById(R.id.send);

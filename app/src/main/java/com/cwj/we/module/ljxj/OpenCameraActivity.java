@@ -17,7 +17,7 @@ import com.atech.glcamera.utils.FilterFactory;
 import com.atech.glcamera.views.GLCameraView;
 import com.cwj.we.R;
 import com.cwj.we.utils.ToastUtil;
-import com.zackratos.ultimatebarx.library.UltimateBarX;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -46,15 +46,8 @@ public class OpenCameraActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_camera);
-
-        UltimateBarX.create(UltimateBarX.STATUS_BAR)
-                .transparent()
-                .apply(this);
-
-        UltimateBarX.create(UltimateBarX.NAVIGATION_BAR)
-                .transparent()
-                .apply(this);
-
+        ImmersionBar.with(this)
+                .init();
         imgCapter = findViewById(R.id.img_capture);
         imgSwitch = findViewById(R.id.img_switch);
         imgFilter = findViewById(R.id.img_filter);
@@ -141,10 +134,6 @@ public class OpenCameraActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv://相册
-                /*Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setType("image/*");
-                this.startActivity(intent);*/
-
                 startActivity(new Intent(this, PhotoListActivity.class));
                 break;
             case R.id.img_switch:

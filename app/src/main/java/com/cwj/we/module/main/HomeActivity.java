@@ -1,17 +1,13 @@
 package com.cwj.we.module.main;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -32,9 +28,9 @@ import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
 import com.cwj.we.utils.ToastUtil;
-import com.cwj.we.view.FallObject;
-import com.cwj.we.view.FallingView;
 import com.cwj.we.view.TabView;
+import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 import com.ycbjie.ycupdatelib.AppUpdateUtils;
 import com.ycbjie.ycupdatelib.PermissionUtils;
 import com.ycbjie.ycupdatelib.UpdateFragment;
@@ -56,26 +52,23 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     TabView tabUs;
     @BindView(R.id.viewpager)
     ViewPager viewpager;
+    @BindView(R.id.ll_bottom)
+    LinearLayout llBottom;
 
+    private List<TabView> mTabViews = new ArrayList<>();
+    private List<Fragment> fragments = new ArrayList<>();
+    private String string;
+    private int REQUEST_SD = 200;
+    private LatestBean updataBean;
     private static final int INDEX_US = 0;
     private static final int INDEX_GAMES = 1;
     private static final int INDEX_TOOL = 2;
-    @BindView(R.id.fallingView)
-    FallingView fallingView;
-    @BindView(R.id.ll_bottom)
-    LinearLayout llBottom;
-    private List<TabView> mTabViews = new ArrayList<>();
-    private List<Fragment> fragments = new ArrayList<>();
-    private AlertDialog alertDialog;
-    private String string;
-    private int build;
-    private int REQUEST_SD = 200;
-    private int INSTALL_PERMISS_CODE = 203;
-    private LatestBean updataBean;
+
     //这个是你的包名
     private static final String apkName = "yilu";
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE};
+    private BasePopupView basePopupView;
 
     @Override
     protected HomePrensenter createPresenter() {
@@ -116,17 +109,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
             }
         });
 
-        //初始化一个雪花样式的fallObject
-        FallObject.Builder builder = new FallObject.Builder(getResources().getDrawable(R.drawable.icon_huaban));
-        FallObject fallObject = builder
-                .setSpeed(3, true)
-                .setSize(55, 55, true)
-                .setWind(5, true, true)
-                .build();
-        fallingView.addFallObject(fallObject, 30);//添加下落物体对象
-
         //底部导航背景透明度设置0~255
-        llBottom.getBackground().setAlpha(200);
+        llBottom.getBackground().setAlpha(100);
 
         //通知用户开启通知
         NotificationManagerCompat notification = NotificationManagerCompat.from(this);
@@ -135,20 +119,15 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
             openTongzhi();
         }
 
-        if (alertDialog == null) {
+        if (basePopupView == null) {
             presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
         }
     }
 
     private void openTongzhi() {
         //未打开通知
-        alertDialog = new AlertDialog.Builder(this)
-                .setTitle("提示")
-                .setMessage("请在“通知”中打开通知权限以便观察应用更新进度")
-                .setCancelable(false)
-                .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
-                .setPositiveButton("去设置", (dialog, which) -> {
-                    dialog.cancel();
+        basePopupView = new XPopup.Builder(this).asConfirm("提示", "请在“通知”中打开通知权限以便观察应用更新进度",
+                () -> {
                     Intent intent = new Intent();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
@@ -169,10 +148,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                     }
                     startActivity(intent);
                 })
-                .create();
-        alertDialog.show();
-        alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+                .show();
     }
 
     /*获取本地软件版本号​*/
@@ -183,7 +159,6 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                     .getPackageManager()
                     .getPackageInfo(ctx.getPackageName(), 0);
             localVersion = packageInfo.versionCode;
-            Log.d("TAG", "当前版本号：" + localVersion);
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
@@ -251,7 +226,9 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                 permission.callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
-
+                        if (basePopupView == null) {
+                            presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
+                        }
                     }
 
                     @Override
@@ -261,7 +238,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                     }
                 });
                 permission.request();
-            }else {
+            } else {
                 //设置自定义下载文件路径
                 AppUpdateUtils.APP_UPDATE_DOWN_APK_PATH = "apk" + File.separator + "downApk";
                 UpdateFragment.showFragment(this, false, string, apkName, updataBean.getChangelog(), BuildConfig.APPLICATION_ID, null);

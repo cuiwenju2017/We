@@ -6,30 +6,25 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="240dp"
+        android:src="@drawable/logo" />
+
+    <yanzhikai.textpath.SyncTextPathView
+        android:id="@+id/stpv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="180dp"
-        android:orientation="vertical">
-
-        <yanzhikai.textpath.SyncTextPathView
-            android:id="@+id/stpv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:duration="3000"
-            app:paintStrokeColor="@color/colorYello"
-            app:pathStrokeColor="@color/colorAccent"
-            app:showPainter="true"
-            app:text="我们"
-            app:textInCenter="true"
-            app:textSize="60sp" />
-
-    </LinearLayout>
-
-    <com.cwj.we.view.BeatingHeartView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="140dp"
+        app:duration="2000"
+        app:paintStrokeColor="@color/colorYello"
+        app:pathStrokeColor="@color/colorAccent"
+        app:showPainter="true"
+        app:text="我们"
+        app:textInCenter="true"
+        app:textSize="60sp" />
 </RelativeLayout>

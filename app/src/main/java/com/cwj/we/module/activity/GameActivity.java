@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.cwj.we.R;
 import com.cwj.we.game.aircraftbattle.GameView;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -21,7 +21,9 @@ public class GameActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
         gameView = (GameView) findViewById(R.id.gameView);
         //0:combatAircraft
         //1:explosion

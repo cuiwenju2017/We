@@ -17,7 +17,7 @@ import com.cwj.we.R;
 import com.cwj.we.game.gobang.BaseActivity;
 import com.cwj.we.game.gobang.DialogUtil;
 import com.cwj.we.game.gobang.PannelView;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,7 +53,8 @@ public class GobangActivity extends BaseActivity implements PannelView.OnGameOve
     @Override
     protected void initContentView() {
         super.initContentView();
-        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
+        ImmersionBar.with(this)
+                .init();
         mPannelView.registerGameOverListner(this);
         mPannelView.registerTurnChangedListener(this);
         mWhitePiece = BitmapFactory.decodeResource(getResources(), R.drawable.stone_w2);

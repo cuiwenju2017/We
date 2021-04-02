@@ -16,7 +16,7 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.utils.MarketUtils;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.WebView;
@@ -94,7 +94,11 @@ public class VideoWebViewActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .fitsSystemWindows(true) //解决状态栏和布局重叠问题，任选其一，默认为false，当为true时一定要指定statusBarColor()，不然状态栏为透明色，还有一些重载方法
+                .statusBarColor(R.color.colorPrimary)     //状态栏颜色，不写默认透明色
+                .init();
         name = getIntent().getStringExtra("name");
         webView = findViewById(R.id.web_view);
         toolbar = findViewById(R.id.my_toolbar);

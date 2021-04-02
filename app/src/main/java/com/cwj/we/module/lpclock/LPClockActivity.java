@@ -17,7 +17,7 @@ import com.cwj.we.view.AutoRotateMinuteView;
 import com.cwj.we.view.AutoRotateMonthView;
 import com.cwj.we.view.AutoRotateSecondView;
 import com.cwj.we.view.AutoRotateWeekView;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.Calendar;
 
@@ -51,7 +51,8 @@ public class LPClockActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        StatusBarUtil.setTranslucentForImageView(this, 0, clView);//沉浸状态栏
+        ImmersionBar.with(this)
+                .init();
         timeView_second = (AutoRotateSecondView) findViewById(R.id.timeView_second);
         timeView_minute = (AutoRotateMinuteView) findViewById(R.id.timeView_minute);
         timeView_hours = (AutoRotateHoursView) findViewById(R.id.timeView_hours);

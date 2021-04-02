@@ -8,6 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/layerlist</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
     <style name="LoadingDialogStyle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
@@ -61,9 +67,9 @@
         <!--标题栏高度-->
         <!--        <item name="picture.title_bar.height">@dimen/action_bar_height</item>-->
         <!--标题栏背景色-->
-        <item name="colorPrimary">@color/color_bg</item>
+        <item name="colorPrimary">@color/colorAccent</item>
         <!--状态栏背景色-->
-        <item name="colorPrimaryDark">@color/color_bg</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
         <!--图片列表占位图-->
         <!--        <item name="picture.image.holder">@drawable/image_holder</item>-->
         <!--拍摄按钮背图标-->
@@ -93,7 +99,7 @@
         <!--图片列表背景色-->
         <item name="picture.bg">@color/white</item>
         <!--图片列表底部背景色-->
-        <!--        <item name="picture.bottom.bg">@color/surface</item>-->
+        <item name="picture.bottom.bg">@color/white</item>
         <!--图片列表底部高度-->
         <!--        <item name="picture.bottom.height">@dimen/bottom_bar_height</item>-->
         <!--图片列表预览文字颜色-->
@@ -107,11 +113,11 @@
         <!--预览界面已完成文字颜色-->
         <!--        <item name="picture.ac_preview.complete.textColor">@color/picture_selector_preview_text_color</item>-->
         <!--预览界面标题栏背景色-->
-        <item name="picture.ac_preview.title.bg">@color/color_bg</item>
+        <item name="picture.ac_preview.title.bg">@color/colorAccent</item>
         <!--预览界面背景色-->
         <item name="picture.ac_preview.bg">@color/white</item>
         <!--预览界面底部背景色-->
-        <item name="picture.ac_preview.bottom.bg">@color/color_bg</item>
+        <item name="picture.ac_preview.bottom.bg">@color/white</item>
         <!--预览界面底部高度-->
         <!--        <item name="picture.ac_preview.bottom.height">@dimen/bottom_bar_height</item>-->
         <!--预览界面返回箭头-->

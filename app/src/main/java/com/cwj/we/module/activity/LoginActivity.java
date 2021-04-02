@@ -17,8 +17,8 @@ import com.cwj.we.bean.User;
 import com.cwj.we.module.main.HomeActivity;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.ToastUtil;
+import com.gyf.immersionbar.ImmersionBar;
 import com.hyb.library.PreventKeyboardBlockUtil;
-import com.jaeger.library.StatusBarUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,7 +54,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
         loadingDialog = new LoadingDialog(LoginActivity.this, "");
     }
 

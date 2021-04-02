@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +23,8 @@ import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
 import com.cwj.we.utils.ToastUtil;
+import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.immersionbar.components.ImmersionFragment;
 import com.permissionx.guolindev.PermissionX;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ import butterknife.Unbinder;
 /**
  * 工具
  */
-public class ToolFragment extends Fragment {
+public class ToolFragment extends ImmersionFragment {
 
     Unbinder unbinder;
     @BindView(R.id.rv_game)
@@ -100,5 +101,12 @@ public class ToolFragment extends Fragment {
         gameBeans.add(ljxj);
         GameBean ddt = new GameBean("达达兔", R.drawable.icon_byj);
         gameBeans.add(ddt);
+    }
+
+    @Override
+    public void initImmersionBar() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
     }
 }

@@ -12,10 +12,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cwj.we.R;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
-import com.jaeger.library.StatusBarUtil;
 
 import butterknife.ButterKnife;
 
@@ -95,7 +93,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(getLayoutId());
-        setStatusBar();
         ButterKnife.bind(this);
         presenter = createPresenter();
         initView();
@@ -125,10 +122,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             decorView.setSystemUiVisibility(uiOptions);
             this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-    }
-
-    protected void setStatusBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary), 0);
     }
 
     public abstract void initData();

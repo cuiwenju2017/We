@@ -31,7 +31,7 @@ import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.ToastUtil;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.ycbjie.ycupdatelib.AppUpdateUtils;
@@ -92,7 +92,9 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
 
     @Override
     public void initView() {
-        StatusBarUtil.setLightMode(this);//状态栏字体暗色设置
+        ImmersionBar.with(this)
+                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .init();
         tvVersionNumber.setText("V" + getLocalVersionName(this));
         loadingDialog = new LoadingDialog(AboutActivity.this, "");
         sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
@@ -266,7 +268,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 permission.callback(new PermissionUtils.SimpleCallback() {
                     @Override
                     public void onGranted() {
-
+                        presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
                     }
 
                     @Override

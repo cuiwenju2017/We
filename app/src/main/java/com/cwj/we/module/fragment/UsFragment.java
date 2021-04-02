@@ -3,13 +3,10 @@ package com.cwj.we.module.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,9 +23,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+import androidx.core.widget.NestedScrollView;
 
 import com.bumptech.glide.Glide;
 import com.cwj.we.R;
@@ -43,7 +39,9 @@ import com.cwj.we.utils.NotificationUtils;
 import com.cwj.we.utils.PictureSelectorUtils;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
-import com.jaeger.library.StatusBarUtil;
+import com.gyf.immersionbar.ImmersionBar;
+import com.gyf.immersionbar.components.ImmersionFragment;
+import com.lxj.xpopup.XPopup;
 
 import java.io.File;
 import java.text.ParseException;
@@ -61,7 +59,7 @@ import cn.bmob.v3.listener.FindListener;
 /**
  * 我们
  */
-public class UsFragment extends Fragment {
+public class UsFragment extends ImmersionFragment {
 
     Unbinder unbinder;
     @BindView(R.id.tv)
@@ -76,8 +74,6 @@ public class UsFragment extends Fragment {
     TextView tvChangeDate;
     @BindView(R.id.tv_about)
     TextView tvAbout;
-    @BindView(R.id.cl_view)
-    CoordinatorLayout clView;
     @BindView(R.id.tv_jh)
     TextView tvJh;
     @BindView(R.id.tv_y)
@@ -96,8 +92,10 @@ public class UsFragment extends Fragment {
     HorizontalScrollView hsv;
     @BindView(R.id.tv_wedding_day_tip)
     TextView tvWeddingDayTip;
+    @BindView(R.id.nsv)
+    NestedScrollView nsv;
 
-    private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime, url;
+    private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
     SharedPreferences sprfMain;
     private boolean isFrist = true;
     private boolean isFrist2 = true;
@@ -157,8 +155,6 @@ public class UsFragment extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void initView() {
-        StatusBarUtil.setTranslucentForImageView(getActivity(), 0, clView);//沉浸状态栏
-
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
         //设置背景
         if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
@@ -252,7 +248,6 @@ public class UsFragment extends Fragment {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");//相恋纪念日
             } else if ((thisYearTogetherTimestamp - thisYearTimestamp) == 0) {
                 tvFallInLove.setText("" + (thisYearTogetherTimestamp - thisYearTimestamp) / 1000 / 60 / 60 / 24 + "天");
-//                sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
                 if (isFrist) {
                     NotificationUtils.showNotification(getActivity(), null, "今天是你们相恋的" + inHarnessYear + "周年，问候ta一下吧!", 0, "", 100, 0);
                     isFrist = false;
@@ -373,25 +368,23 @@ public class UsFragment extends Fragment {
                 if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
                     ToastUtil.showTextToast(getActivity(), "已经是原始背景,请勿重试！");
                 } else {
-                    AlertDialog alertDialog = new AlertDialog.Builder(getActivity())
-                            .setTitle("提示")
-                            .setMessage("确定重置当前背景吗？")
-                            .setCancelable(true)
-                            .setNegativeButton("取消", (dialog, which) -> dialog.cancel())
-                            .setPositiveButton("确定", (dialog, which) -> {
-                                dialog.cancel();
+                    new XPopup.Builder(getActivity()).asConfirm("提示", "确定重置当前背景吗？",
+                            () -> {
                                 editorMain = sprfMain.edit();
                                 editorMain.putString("path", "");
                                 editorMain.commit();
                                 Glide.with(getActivity()).load(R.drawable.we_bg).into(ivBg);
                             })
-                            .create();
-                    alertDialog.show();
-                    //设置颜色和弹窗宽度一定要放在show之下，要不然会报错或者不生效
-                    alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
-                    alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorAccent));
+                            .show();
                 }
                 break;
         }
+    }
+
+    @Override
+    public void initImmersionBar() {
+        ImmersionBar.with(this)
+                .statusBarDarkFont(false)  //状态栏字体是深色，不写默认为亮色
+                .init();
     }
 }
