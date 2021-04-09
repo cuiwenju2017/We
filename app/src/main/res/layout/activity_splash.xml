@@ -23,4 +23,14 @@
         android:text="我们"
         android:textColor="@color/colorAccent"
         android:textSize="60sp" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/animation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="happy-valentines-day.json"
+        app:lottie_loop="false" />
 </RelativeLayout>
