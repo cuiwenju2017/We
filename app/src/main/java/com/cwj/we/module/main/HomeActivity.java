@@ -3,13 +3,16 @@ package com.cwj.we.module.main;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -20,9 +23,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.cwj.we.BuildConfig;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
+import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.LatestBean;
 import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.ToolFragment;
@@ -34,6 +39,10 @@ import com.lxj.xpopup.core.BasePopupView;
 import com.ycbjie.ycupdatelib.AppUpdateUtils;
 import com.ycbjie.ycupdatelib.PermissionUtils;
 import com.ycbjie.ycupdatelib.UpdateFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,6 +63,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     ViewPager viewpager;
     @BindView(R.id.ll_bottom)
     LinearLayout llBottom;
+    @BindView(R.id.iv_bg)
+    ImageView ivBg;
 
     private List<TabView> mTabViews = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
@@ -69,6 +80,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE};
     private BasePopupView basePopupView;
+    SharedPreferences sprfMain;
 
     @Override
     protected HomePrensenter createPresenter() {
@@ -82,6 +94,15 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
 
     @Override
     public void initView() {
+        EventBus.getDefault().register(this);
+        sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
+        //设置背景
+        if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
+            Glide.with(this).load(R.drawable.we_bg).into(ivBg);
+        } else {
+            Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
+        }
+
         UsFragment usFragment = new UsFragment();
         GamesFragment gamesFragment = new GamesFragment();
         ToolFragment toolFragment = new ToolFragment();
@@ -121,6 +142,18 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
 
         if (basePopupView == null) {
             presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventBG eventBG) {
+        switch (eventBG.getType()) {
+            case "EVENT_CZ_BG":
+                Glide.with(this).load(R.drawable.we_bg).into(ivBg);
+                break;
+            case "EVENT_SZ_BG":
+                Glide.with(this).load(Uri.fromFile(new File(eventBG.getUserIconPath()))).into(ivBg);
+                break;
         }
     }
 
@@ -269,6 +302,12 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         public int getCount() {
             return frags.size();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     /**

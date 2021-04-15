@@ -106,7 +106,7 @@ public class ToolFragment extends ImmersionFragment {
     @Override
     public void initImmersionBar() {
         ImmersionBar.with(this)
-                .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
+                .statusBarDarkFont(false)  //状态栏字体是深色，不写默认为亮色
                 .init();
     }
 }

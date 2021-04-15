@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +24,9 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
-import com.bumptech.glide.Glide;
 import com.cwj.we.R;
 import com.cwj.we.bean.Day;
+import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.User;
 import com.cwj.we.module.about.AboutActivity;
 import com.cwj.we.module.activity.LoginActivity;
@@ -44,7 +42,8 @@ import com.gyf.immersionbar.components.ImmersionFragment;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -81,8 +80,6 @@ public class UsFragment extends ImmersionFragment {
     TextView tvY;
     @BindView(R.id.tv_set_backgground)
     TextView tvSetBackgground;
-    @BindView(R.id.iv_bg)
-    ImageView ivBg;
     @BindView(R.id.tv_reset)
     TextView tvReset;
     @BindView(R.id.tv_wedding_day)
@@ -161,15 +158,8 @@ public class UsFragment extends ImmersionFragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initView() {
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
-        //设置背景
-        if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
-            Glide.with(this).load(R.drawable.we_bg).into(ivBg);
-        } else {
-            Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
-        }
     }
 
     private Handler handler = new Handler();
@@ -336,7 +326,10 @@ public class UsFragment extends ImmersionFragment {
                     if (popupView != null) {
                         popupView.dismiss();
                     }
-                    Glide.with(this).load(Uri.fromFile(new File(userIconPath))).into(ivBg);
+
+                    EventBG eventBG = new EventBG("EVENT_SZ_BG", userIconPath);
+                    EventBus.getDefault().post(eventBG);
+
                     sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
                     editorMain = sprfMain.edit();
                     editorMain.putString("path", userIconPath);
@@ -384,7 +377,9 @@ public class UsFragment extends ImmersionFragment {
                                 editorMain = sprfMain.edit();
                                 editorMain.putString("path", "");
                                 editorMain.commit();
-                                Glide.with(getActivity()).load(R.drawable.we_bg).into(ivBg);
+
+                                EventBG eventBG = new EventBG("EVENT_CZ_BG", "");
+                                EventBus.getDefault().post(eventBG);
                             })
                             .show();
                 }
