@@ -34,7 +34,6 @@ import com.cwj.we.bean.User;
 import com.cwj.we.module.about.AboutActivity;
 import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.SetTimeActivity;
-import com.cwj.we.utils.ChinaDate;
 import com.cwj.we.utils.LunarUtils;
 import com.cwj.we.utils.NotificationUtils;
 import com.cwj.we.utils.PictureSelectorUtils;
@@ -43,7 +42,6 @@ import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.gyf.immersionbar.components.ImmersionFragment;
 import com.lxj.xpopup.XPopup;
-import com.lxj.xpopup.core.BasePopupView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -121,10 +119,9 @@ public class UsFragment extends ImmersionFragment {
     SharedPreferences sprfMain;
     private boolean isFrist = true;
     private boolean isFrist2 = true;
-    private BasePopupView popupView;
 
     private Broccoli mBroccoli;
-    private Handler mHandler = new Handler();
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -205,6 +202,7 @@ public class UsFragment extends ImmersionFragment {
             query.include("author");
             query.findObjects(new FindListener<Day>() {
 
+                @SuppressLint("SetTextI18n")
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void done(List<Day> object, BmobException e) {
@@ -238,7 +236,6 @@ public class UsFragment extends ImmersionFragment {
 
             });
         } else {
-            popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
             ToastUtil.showTextToast(getActivity(), "请先登录");
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
@@ -257,8 +254,6 @@ public class UsFragment extends ImmersionFragment {
             handler.postDelayed(this, 1000); //n秒刷新一次
         }
     };
-
-    private ChinaDate lunar;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -410,10 +405,6 @@ public class UsFragment extends ImmersionFragment {
                 String userIconPath = PictureSelectorUtils.forResult(resultCode, data);
                 if (userIconPath == null) {
                 } else {
-                    if (popupView != null) {
-                        popupView.dismiss();
-                    }
-
                     EventBG eventBG = new EventBG("EVENT_SZ_BG", userIconPath);
                     EventBus.getDefault().post(eventBG);
 
