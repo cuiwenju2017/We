@@ -119,9 +119,7 @@ public class UsFragment extends ImmersionFragment {
     SharedPreferences sprfMain;
     private boolean isFrist = true;
     private boolean isFrist2 = true;
-
     private Broccoli mBroccoli;
-
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
