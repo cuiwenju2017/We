@@ -22,6 +22,7 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/ll_zaiyiqi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -31,6 +32,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_yincang1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -63,6 +65,7 @@
                     android:textColor="@color/colorWhite" />
 
                 <LinearLayout
+                    android:id="@+id/ll_zaiyiqi_year"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -75,6 +78,7 @@
                     android:padding="20dp">
 
                     <TextView
+                        android:id="@+id/tv_yincang2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="不知不觉我们已经在一起"
@@ -89,6 +93,7 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tv_yincang3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="年了"
@@ -96,6 +101,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_jiehun_year"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -142,6 +148,7 @@
                 android:paddingRight="10dp">
 
                 <LinearLayout
+                    android:id="@+id/ll_jiehunjinian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -171,6 +178,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_zaiyiqijinian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -181,6 +189,7 @@
                     android:paddingBottom="5dp">
 
                     <TextView
+                        android:id="@+id/tv_yincang4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"

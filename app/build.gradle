@@ -12,8 +12,8 @@ android {
         applicationId "com.cwj.we"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 47
-        versionName "1.3.25"
+        versionCode 48
+        versionName "1.3.26"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
     }
@@ -113,4 +113,6 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.2.2"
     //eventbus
     implementation 'org.greenrobot:eventbus:3.0.0'
+    //broccoli占位视图
+    implementation 'me.samlss:broccoli:1.0.0'
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +15,9 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +58,9 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import me.samlss.broccoli.Broccoli;
+import me.samlss.broccoli.BroccoliGradientDrawable;
+import me.samlss.broccoli.PlaceholderParameter;
 
 /**
  * 我们
@@ -92,12 +98,33 @@ public class UsFragment extends ImmersionFragment {
     TextView tvWeddingDayTip;
     @BindView(R.id.nsv)
     NestedScrollView nsv;
+    @BindView(R.id.ll_zaiyiqi_year)
+    LinearLayout llZaiyiqiYear;
+    @BindView(R.id.ll_jiehun_year)
+    LinearLayout llJiehunYear;
+    @BindView(R.id.ll_jiehunjinian)
+    LinearLayout llJiehunjinian;
+    @BindView(R.id.ll_zaiyiqijinian)
+    LinearLayout llZaiyiqijinian;
+    @BindView(R.id.ll_zaiyiqi)
+    LinearLayout llZaiyiqi;
+    @BindView(R.id.tv_yincang1)
+    TextView tvYincang1;
+    @BindView(R.id.tv_yincang2)
+    TextView tvYincang2;
+    @BindView(R.id.tv_yincang3)
+    TextView tvYincang3;
+    @BindView(R.id.tv_yincang4)
+    TextView tvYincang4;
 
     private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
     SharedPreferences sprfMain;
     private boolean isFrist = true;
     private boolean isFrist2 = true;
     private BasePopupView popupView;
+
+    private Broccoli mBroccoli;
+    private Handler mHandler = new Handler();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Nullable
@@ -110,14 +137,66 @@ public class UsFragment extends ImmersionFragment {
         return view;
     }
 
+    private void initPlaceholders() {
+        mBroccoli = new Broccoli();
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(llZaiyiqi)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(tv)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(tvTime)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(llZaiyiqiYear)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(llJiehunYear)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(llJiehunjinian)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+
+        mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
+                .setView(llZaiyiqijinian)
+                .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
+                        Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
+                .build());
+        mBroccoli.show();
+    }
+
     /**
      * 查询一对一关联，查询当前用户下的日期
      */
     private void queryPostAuthor() {
-        popupView = new XPopup.Builder(getActivity())
-                .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
-                .asLoading("")
-                .show();
+        tvYincang1.setVisibility(View.GONE);
+        tvYincang2.setVisibility(View.GONE);
+        tvYincang3.setVisibility(View.GONE);
+        tvYincang4.setVisibility(View.GONE);
+        tvJh.setVisibility(View.GONE);
+        tvY.setVisibility(View.GONE);
+        tvWeddingDayTip.setVisibility(View.GONE);
+        initPlaceholders();
+
         if (BmobUser.isLogin()) {
             BmobQuery<Day> query = new BmobQuery<>();
             query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
@@ -146,7 +225,15 @@ public class UsFragment extends ImmersionFragment {
                         startActivity(new Intent(getActivity(), SetTimeActivity.class));
                         getActivity().finish();
                     }
-                    popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
+
+                    mBroccoli.clearAllPlaceholders();
+                    tvYincang1.setVisibility(View.VISIBLE);
+                    tvYincang2.setVisibility(View.VISIBLE);
+                    tvYincang3.setVisibility(View.VISIBLE);
+                    tvYincang4.setVisibility(View.VISIBLE);
+                    tvJh.setVisibility(View.VISIBLE);
+                    tvY.setVisibility(View.VISIBLE);
+                    tvWeddingDayTip.setVisibility(View.VISIBLE);
                 }
 
             });
