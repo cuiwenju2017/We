@@ -24,8 +24,6 @@ allprojects {
         maven {
             url 'http://maven.aliyun.com/nexus/content/repositories/releases/'
         }
-        //Bmob的maven仓库地址--必填
-        maven {url 'https://dl.bintray.com/chaozhouzhang/maven' }
     }
 }
 
