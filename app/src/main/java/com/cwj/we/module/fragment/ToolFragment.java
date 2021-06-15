@@ -78,10 +78,10 @@ public class ToolFragment extends ImmersionFragment {
                                 ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                             }
                         });
-            } else if (position == 5) {//达达兔
+            } else if (position == 5) {//扒一剧
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
                 intent.putExtra("name", gameBeans.get(position).getName());
-                intent.putExtra("movieUrl", "https://vip.smtu.cc/");
+                intent.putExtra("movieUrl", "http://www.ddyybb.com/");
                 startActivity(intent);
             }
         });
@@ -99,7 +99,7 @@ public class ToolFragment extends ImmersionFragment {
         gameBeans.add(lpsz);
         GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
         gameBeans.add(ljxj);
-        GameBean ddt = new GameBean("达达兔", R.drawable.icon_byj);
+        GameBean ddt = new GameBean("扒一剧", R.drawable.icon_byj);
         gameBeans.add(ddt);
     }
 
