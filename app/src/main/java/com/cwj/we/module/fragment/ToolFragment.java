@@ -19,6 +19,7 @@ import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.ClockActivity;
 import com.cwj.we.module.activity.CompassActivity;
 import com.cwj.we.module.activity.VideoWebViewActivity;
+import com.cwj.we.module.activity.VipJiexiActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
@@ -83,6 +84,9 @@ public class ToolFragment extends ImmersionFragment {
                 intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://www.ddyybb.com/");
                 startActivity(intent);
+            } else if (position == 6) {//视频解析
+                intent = new Intent(getActivity(), VipJiexiActivity.class);
+                startActivity(intent);
             }
         });
         return view;
@@ -101,6 +105,8 @@ public class ToolFragment extends ImmersionFragment {
         gameBeans.add(ljxj);
         GameBean ddt = new GameBean("扒一剧", R.drawable.icon_byj);
         gameBeans.add(ddt);
+        GameBean spjx = new GameBean("视频解析", R.drawable.icon_byj);
+        gameBeans.add(spjx);
     }
 
     @Override

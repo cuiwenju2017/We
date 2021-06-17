@@ -177,7 +177,7 @@ public class VideoWebViewActivity extends BaseActivity {
                     urlStr = movieUrl;
                 }
                 if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
-                    MarketUtils.getTools().openInstalledAppInURL(this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", urlStr);
+                    MarketUtils.getTools().openInstalledAppInURL(VideoWebViewActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", urlStr);
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
                     MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
@@ -188,7 +188,7 @@ public class VideoWebViewActivity extends BaseActivity {
                     urlStr = movieUrl;
                 }
                 if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
-                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.UCMobile.main.UCMobile", urlStr);
+                    MarketUtils.getTools().openInstalledAppInURL(VideoWebViewActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", urlStr);
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
                     MarketUtils.getTools().openMarket(this, "com.UCMobile");
@@ -247,14 +247,14 @@ public class VideoWebViewActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("网络拦截--------1------", url);
-            urlStr = url;
+            Log.d("aaa", url);
             return super.shouldOverrideUrlLoading(view, url);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Log.d("网络拦截--------2------", request.getUrl().toString());
+            Log.d("bbb", request.getUrl().toString());
+            urlStr = request.getUrl().toString();
             return super.shouldOverrideUrlLoading(view, request);
         }
 

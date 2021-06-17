@@ -33,7 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".module.activity.VipJiexiActivity"></activity>
         <activity android:name=".module.ljxj.PhotoViewActivity" />
         <activity android:name=".module.ljxj.PhotoListActivity" />
         <activity android:name=".module.jiqiren.JiqirenActivity" />
@@ -121,23 +121,16 @@
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.cwj.we.BmobContentProvider" />
-
-        <!-- 设置BmobAppKey -->
+            android:authorities="com.cwj.we.BmobContentProvider" /> <!-- 设置BmobAppKey -->
         <meta-data
             android:name="Bmob_APP_KEY"
             android:value="6b641f364905d608449772bae45f7b60" />
-
         <meta-data
             android:name="android.max_aspect"
-            android:value="2.4" />
-
-        <!--适配华为（huawei）刘海屏-->
+            android:value="2.4" /> <!-- 适配华为（huawei）刘海屏 -->
         <meta-data
             android:name="android.notch_support"
-            android:value="true" />
-
-        <!--适配小米（xiaomi）刘海屏-->
+            android:value="true" /> <!-- 适配小米（xiaomi）刘海屏 -->
         <meta-data
             android:name="notch.config"
             android:value="portrait|landscape" />
