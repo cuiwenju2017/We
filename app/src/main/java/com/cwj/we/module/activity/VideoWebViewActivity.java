@@ -31,8 +31,12 @@ import com.ycbjie.webviewlib.utils.X5WebUtils;
 import com.ycbjie.webviewlib.view.X5WebView;
 import com.ycbjie.webviewlib.widget.WebProgress;
 
+import butterknife.BindView;
+
 public class VideoWebViewActivity extends BaseActivity {
 
+    @BindView(R.id.my_toolbar)
+    Toolbar myToolbar;
     private X5WebView webView;
     private X5WebChromeClient x5WebChromeClient;
     private X5WebViewClient x5WebViewClient;

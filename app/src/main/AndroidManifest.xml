@@ -33,7 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.activity.VipJiexiActivity"></activity>
+        <activity android:name=".module.activity.VipJiexiActivity" />
         <activity android:name=".module.ljxj.PhotoViewActivity" />
         <activity android:name=".module.ljxj.PhotoListActivity" />
         <activity android:name=".module.jiqiren.JiqirenActivity" />

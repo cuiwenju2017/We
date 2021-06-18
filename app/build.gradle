@@ -110,4 +110,6 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     //broccoli占位视图
     implementation 'me.samlss:broccoli:1.0.0'
+    //AgentWeb依赖库
+    implementation 'com.github.Justson.AgentWeb:agentweb-core:v4.1.9-androidx' // (必选)
 }

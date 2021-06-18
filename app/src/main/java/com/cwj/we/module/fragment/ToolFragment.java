@@ -87,6 +87,11 @@ public class ToolFragment extends ImmersionFragment {
             } else if (position == 6) {//视频解析
                 intent = new Intent(getActivity(), VipJiexiActivity.class);
                 startActivity(intent);
+            } else if (position == 7) {//人人视频
+                intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                intent.putExtra("name", gameBeans.get(position).getName());
+                intent.putExtra("movieUrl", "http://m.rr.tv/");
+                startActivity(intent);
             }
         });
         return view;
@@ -107,6 +112,8 @@ public class ToolFragment extends ImmersionFragment {
         gameBeans.add(ddt);
         GameBean spjx = new GameBean("视频解析", R.drawable.icon_byj);
         gameBeans.add(spjx);
+        GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
+        gameBeans.add(rrsp);
     }
 
     @Override
