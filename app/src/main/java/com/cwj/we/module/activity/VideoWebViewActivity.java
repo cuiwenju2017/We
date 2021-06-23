@@ -33,6 +33,8 @@ import com.ycbjie.webviewlib.widget.WebProgress;
 
 import butterknife.BindView;
 
+import static android.view.View.GONE;
+
 public class VideoWebViewActivity extends BaseActivity {
 
     @BindView(R.id.my_toolbar)
@@ -218,15 +220,12 @@ public class VideoWebViewActivity extends BaseActivity {
                     break;
                 //404，网页无法打开
                 case X5WebUtils.ErrorMode.STATE_404:
-
                     break;
                 //onReceivedError，请求网络出现error
                 case X5WebUtils.ErrorMode.RECEIVED_ERROR:
-
                     break;
                 //在加载资源时通知主机应用程序发生SSL错误
                 case X5WebUtils.ErrorMode.SSL_ERROR:
-
                     break;
                 default:
                     break;
@@ -240,7 +239,6 @@ public class VideoWebViewActivity extends BaseActivity {
 
         @Override
         public void showTitle(String title) {
-
         }
     };
 
@@ -305,6 +303,18 @@ public class VideoWebViewActivity extends BaseActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
+        }
+
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if (newProgress == 100) {
+                progress.hide();
+            } else {
+                if (progress.getVisibility() == GONE)
+                    progress.show();
+                progress.setProgress(newProgress);
+            }
+            super.onProgressChanged(view, newProgress);
         }
     }
 }

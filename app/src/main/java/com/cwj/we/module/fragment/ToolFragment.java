@@ -92,6 +92,11 @@ public class ToolFragment extends ImmersionFragment {
                 intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://m.rr.tv/");
                 startActivity(intent);
+            } else if (position == 8) {//电视直播
+                intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                intent.putExtra("name", gameBeans.get(position).getName());
+                intent.putExtra("movieUrl", "http://m.hao5.net/");
+                startActivity(intent);
             }
         });
         return view;
@@ -114,6 +119,8 @@ public class ToolFragment extends ImmersionFragment {
         gameBeans.add(spjx);
         GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
         gameBeans.add(rrsp);
+        GameBean dszb = new GameBean("电视直播", R.drawable.icon_byj);
+        gameBeans.add(dszb);
     }
 
     @Override
