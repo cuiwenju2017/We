@@ -2,6 +2,7 @@ package com.cwj.we.module.jiqiren;
 
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.cwj.we.bean.MsgBean;
 import com.cwj.we.module.adapter.MsgAdapter;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
+import com.hyb.library.PreventKeyboardBlockUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,7 @@ public class JiqirenActivity extends BaseActivity<JiqirenPrensenter> implements 
     private Button sendButton;
     private RecyclerView recyclerView;
     private MsgAdapter msgAdapter;
+    private LinearLayout ll;
 
     @Override
     protected JiqirenPrensenter createPresenter() {
@@ -47,6 +50,7 @@ public class JiqirenActivity extends BaseActivity<JiqirenPrensenter> implements 
         editText = findViewById(R.id.enter);
         sendButton = findViewById(R.id.send);
         recyclerView = findViewById(R.id.chatroomRecyclerView);
+        ll = findViewById(R.id.ll);
         //布局排列方式
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -71,6 +75,18 @@ public class JiqirenActivity extends BaseActivity<JiqirenPrensenter> implements 
                 ToastUtil.showTextToast(this, "输入内容不能为空");
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        PreventKeyboardBlockUtil.getInstance(this).setBtnView(ll).register();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        PreventKeyboardBlockUtil.getInstance(this).unRegister();
     }
 
     public void initMsgs() {
