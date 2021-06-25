@@ -45,6 +45,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -110,6 +111,8 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     //broccoli占位视图
     implementation 'me.samlss:broccoli:1.0.0'
-    //AgentWeb依赖库
-    implementation 'com.github.Justson.AgentWeb:agentweb-core:v4.1.9-androidx' // (必选)
+    //material
+    implementation 'com.google.android.material:material:1.3.0'
+    //RevealLayout点赞动画库
+    implementation 'com.github.goweii:RevealLayout:1.1.1'
 }

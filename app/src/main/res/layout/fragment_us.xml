@@ -26,9 +26,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:layout_marginTop="30dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/shape_translucence"
                     android:orientation="vertical">
 
                     <TextView
@@ -59,7 +58,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/shape_translucence"
                     android:gravity="center"
                     android:padding="10dp"
                     android:textColor="@color/colorWhite" />
@@ -72,7 +71,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/shape_translucence"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="20dp">
@@ -108,7 +107,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/shape_translucence"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="20dp">
@@ -153,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/shape_translucence"
                     android:orientation="vertical"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp">
@@ -183,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_weight="1"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/shape_translucence"
                     android:orientation="vertical"
                     android:paddingTop="5dp"
                     android:paddingBottom="5dp">

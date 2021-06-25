@@ -6,12 +6,19 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
 
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="240dp"
-        android:src="@drawable/logo" />
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logo" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_sp"

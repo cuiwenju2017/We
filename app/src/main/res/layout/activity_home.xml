@@ -53,5 +53,15 @@
             bxll:tabImage="@drawable/tool_list_normal"
             bxll:tabSelectedImage="@drawable/tool_list_pressed"
             bxll:tabTitle="工具" />
+
+        <com.cwj.we.view.TabView
+            android:id="@+id/tab_quanzi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            bxll:tabColor="@color/colorAccent"
+            bxll:tabImage="@drawable/quanzi_list_normal"
+            bxll:tabSelectedImage="@drawable/quanzi_list_pressed"
+            bxll:tabTitle="圈子" />
     </LinearLayout>
 </RelativeLayout>

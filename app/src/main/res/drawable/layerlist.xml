@@ -11,7 +11,11 @@
         android:height="60dp"
         android:gravity="top|center_horizontal"
         android:top="240dp">
-        <bitmap android:src="@drawable/logo" />
+        <!--        <bitmap android:src="@drawable/logo" />-->
+        <shape>
+            <solid android:color="@color/colorAccent" />
+            <corners android:radius="8dp" />
+        </shape>
     </item>
 
 </layer-list>

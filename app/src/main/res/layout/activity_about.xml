@@ -7,12 +7,19 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <ImageView
+    <androidx.cardview.widget.CardView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:src="@drawable/logo" />
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logo" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_version_number"
@@ -40,12 +47,12 @@
 
         <TextView
             android:id="@+id/tv_username"
-            android:drawableRight="@drawable/icon_in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp" />
+            android:layout_marginRight="10dp"
+            android:drawableRight="@drawable/icon_in" />
     </RelativeLayout>
 
     <RelativeLayout

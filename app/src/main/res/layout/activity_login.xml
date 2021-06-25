@@ -10,10 +10,17 @@
     android:paddingLeft="40dp"
     android:paddingRight="40dp">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/logo" />
+    <androidx.cardview.widget.CardView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/logo" />
+    </androidx.cardview.widget.CardView>
 
     <EditText
         android:id="@+id/et_username"

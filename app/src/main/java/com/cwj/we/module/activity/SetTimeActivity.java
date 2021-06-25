@@ -130,7 +130,7 @@ public class SetTimeActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void done(List<Day> object, BmobException e) {
-                    if (e == null) {
+                    if (e == null && object.size() > 0) {
                         objectId = object.get(0).getObjectId();
                         tT = object.get(0).getTogetherTime();
                         gT = object.get(0).getGetMarriedTime();

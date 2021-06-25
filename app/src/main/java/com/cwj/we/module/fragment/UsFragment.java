@@ -204,7 +204,7 @@ public class UsFragment extends ImmersionFragment {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void done(List<Day> object, BmobException e) {
-                    if (e == null) {
+                    if (e == null && object.size() > 0) {
                         togetherTime = object.get(0).getTogetherTime();
                         getMarriedTime = object.get(0).getGetMarriedTime();
                         getMarriedTime2 = object.get(0).getGetMarriedTime2();
