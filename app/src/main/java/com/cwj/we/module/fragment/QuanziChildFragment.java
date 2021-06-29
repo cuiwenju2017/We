@@ -169,6 +169,7 @@ public class QuanziChildFragment extends Fragment {
                                     }
                                 }
                             } else {
+                                revealLayout.setChecked(false);
                                 tv_like_num.setVisibility(GONE);
                             }
                         } else {
