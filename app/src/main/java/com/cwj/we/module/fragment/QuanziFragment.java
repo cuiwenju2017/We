@@ -114,6 +114,12 @@ public class QuanziFragment extends ImmersionFragment {
                 holder.tab_item_title.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
                 //字体颜色
                 holder.tab_item_title.setTextColor(getResources().getColor(R.color.colorAccent));
+            } else {
+                holder.tab_item_title.setSelected(false);
+                holder.tab_item_title.setTextSize(15);
+                holder.tab_item_title.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+                //字体颜色
+                holder.tab_item_title.setTextColor(getResources().getColor(R.color.white));
             }
         }
 
@@ -141,7 +147,7 @@ public class QuanziFragment extends ImmersionFragment {
                 //字体类型、字体风格
                 holder.tab_item_title.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
                 //字体颜色
-                holder.tab_item_title.setTextColor(getResources().getColor(R.color.black));
+                holder.tab_item_title.setTextColor(getResources().getColor(R.color.white));
             }
 
             @Override
