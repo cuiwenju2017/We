@@ -208,7 +208,7 @@ public class QuanziChildFragment extends Fragment {
                             public void done(BmobException e) {
                                 if (e == null) {
                                     Log.i("bmob", "多对多关联添加成功");
-
+                                    // 查询喜欢这个帖子的所有用户，因此查询的是用户表
                                     BmobQuery<User> query = new BmobQuery<User>();
                                     post = new Post();
                                     post.setObjectId(data.getObjectId());
@@ -229,6 +229,7 @@ public class QuanziChildFragment extends Fragment {
                                                         }
                                                     }
                                                 } else {
+                                                    revealLayout.setChecked(false);
                                                     tv_like_num.setVisibility(GONE);
                                                 }
                                             } else {
@@ -254,7 +255,7 @@ public class QuanziChildFragment extends Fragment {
                             public void done(BmobException e) {
                                 if (e == null) {
                                     Log.i("bmob", "关联关系删除成功");
-
+                                    // 查询喜欢这个帖子的所有用户，因此查询的是用户表
                                     BmobQuery<User> query = new BmobQuery<User>();
                                     post = new Post();
                                     post.setObjectId(data.getObjectId());
@@ -275,6 +276,7 @@ public class QuanziChildFragment extends Fragment {
                                                         }
                                                     }
                                                 } else {
+                                                    revealLayout.setChecked(false);
                                                     tv_like_num.setVisibility(GONE);
                                                 }
                                             } else {
