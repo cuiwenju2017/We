@@ -109,7 +109,11 @@ public class QuanziChildFragment extends Fragment {
 
                 holder.setText(R.id.tv_title, data.getTitle());
                 holder.setText(R.id.tv_content, data.getContent());
-                holder.setText(R.id.tv_author, "" + data.getUsername());
+                if (data.getType() == 1) {
+                    holder.setText(R.id.tv_author, "树洞");
+                } else {
+                    holder.setText(R.id.tv_author, "" + data.getUsername());
+                }
                 holder.setText(R.id.tv_create_date, data.getCreatedAt());
 
                 if (username.equals(data.getUsername())) {
