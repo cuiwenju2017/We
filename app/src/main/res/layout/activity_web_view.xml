@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite">
+    android:background="@color/colorWhite"
+    android:fitsSystemWindows="true">
 
     <com.cwj.we.view.ProgressWebView
         android:id="@+id/wv"

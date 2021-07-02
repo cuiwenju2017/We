@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +29,19 @@ import com.cwj.we.bean.LatestBean;
 import com.cwj.we.bean.User;
 import com.cwj.we.module.activity.ChangePasswordActivity;
 import com.cwj.we.module.activity.LoginActivity;
+import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
+import com.huawei.hms.hmsscankit.ScanUtil;
+import com.huawei.hms.ml.scan.HmsScan;
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.core.CenterPopupView;
 import com.ycbjie.ycupdatelib.AppUpdateUtils;
 import com.ycbjie.ycupdatelib.PermissionUtils;
 import com.ycbjie.ycupdatelib.UpdateFragment;
@@ -41,7 +49,9 @@ import com.ycbjie.ycupdatelib.UpdateFragment;
 import java.io.File;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.UpdateListener;
@@ -51,6 +61,7 @@ import cn.bmob.v3.listener.UpdateListener;
  */
 public class AboutActivity extends BaseActivity<AboutPrensenter> implements AboutView {
 
+    Unbinder unbinder;
     @BindView(R.id.tv_version_number)
     TextView tvVersionNumber;
     @BindView(R.id.rl_check_updates)
@@ -79,6 +90,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     private static final String apkName = "yilu";
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE};
+    private BasePopupView basePopupView;
 
     @Override
     protected AboutPrensenter createPresenter() {
@@ -225,7 +237,9 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
                 break;
             case R.id.rl_share://分享
-                share();
+                basePopupView = new XPopup.Builder(this)
+                        .asCustom(new CustomPopup(this))
+                        .show();
                 break;
             case R.id.rl_feedback://用户反馈
                 Intent intent = new Intent(this, WebViewActivity.class);
@@ -246,6 +260,85 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                         })
                         .show();
                 break;
+        }
+    }
+
+    class CustomPopup extends CenterPopupView {
+        @BindView(R.id.btn_share)
+        Button btnShare;
+        @BindView(R.id.iv)
+        ImageView iv;
+
+        //注意：自定义弹窗本质是一个自定义View，但是只需重写一个参数的构造，其他的不要重写，所有的自定义弹窗都是这样。
+        public CustomPopup(@NonNull Context context) {
+            super(context);
+        }
+
+        // 返回自定义弹窗的布局
+        @Override
+        protected int getImplLayoutId() {
+            return R.layout.custom_popup_share;
+        }
+
+        // 执行初始化操作，比如：findView，设置点击，或者任何你弹窗内的业务逻辑
+        @Override
+        protected void onCreate() {
+            super.onCreate();
+            unbinder = ButterKnife.bind(this);
+            btnShare.setOnClickListener(v -> {
+                basePopupView.dismiss();
+                share();//分享
+            });
+
+            iv.setOnLongClickListener(v -> {//长按识别二维码
+                HmsScanAnalyzerOptions options = new HmsScanAnalyzerOptions.Creator().setPhotoMode(true).create();
+                HmsScan[] hmsScans = ScanUtil.decodeWithBitmap(AboutActivity.this, BitmapFactory.decodeResource(getResources(), R.drawable.icon_qr_code), options);
+                //处理扫码结果
+                if (hmsScans != null && hmsScans.length > 0) {
+                    //展示扫码结果
+                    Intent intent = new Intent(AboutActivity.this, VideoWebViewActivity.class);
+                    intent.putExtra("name", "识别结果");
+                    intent.putExtra("movieUrl", hmsScans[0].getOriginalValue());
+                    startActivity(intent);
+                }
+                return false;
+            });
+        }
+
+        // 设置最大宽度，看需要而定，
+        @Override
+        protected int getMaxWidth() {
+            return super.getMaxWidth();
+        }
+
+        // 设置最大高度，看需要而定
+        @Override
+        protected int getMaxHeight() {
+            return super.getMaxHeight();
+        }
+
+        // 设置自定义动画器，看需要而定
+        @Override
+        protected PopupAnimator getPopupAnimator() {
+            return super.getPopupAnimator();
+        }
+
+        /**
+         * 弹窗的宽度，用来动态设定当前弹窗的宽度，受getMaxWidth()限制
+         *
+         * @return
+         */
+        protected int getPopupWidth() {
+            return 0;
+        }
+
+        /**
+         * 弹窗的高度，用来动态设定当前弹窗的高度，受getMaxHeight()限制
+         *
+         * @return
+         */
+        protected int getPopupHeight() {
+            return 0;
         }
     }
 
