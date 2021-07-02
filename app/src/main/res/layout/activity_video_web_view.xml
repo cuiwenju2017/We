@@ -18,9 +18,20 @@
         android:layout_width="match_parent"
         android:layout_height="3dp" />
 
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textIsSelectable="true"
+        android:visibility="visible" />
+
     <com.ycbjie.webviewlib.view.X5WebView
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:visibility="gone" />
 </LinearLayout>

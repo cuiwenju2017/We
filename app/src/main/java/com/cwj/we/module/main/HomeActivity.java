@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
@@ -29,6 +30,7 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.LatestBean;
+import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.QuanziFragment;
 import com.cwj.we.module.fragment.ToolFragment;
@@ -36,6 +38,9 @@ import com.cwj.we.module.fragment.UsFragment;
 import com.cwj.we.utils.ToastUtil;
 import com.cwj.we.view.TabView;
 import com.gyf.immersionbar.ImmersionBar;
+import com.huawei.hms.hmsscankit.ScanUtil;
+import com.huawei.hms.ml.scan.HmsScan;
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 import com.ycbjie.ycupdatelib.AppUpdateUtils;
@@ -217,6 +222,41 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_SD) {
             updata();
+        }
+
+        //判断“requestCode”是否为申请权限时设置请求码CAMERA_REQ_CODE，然后校验权限开启状态
+        if (requestCode == CAMERA_REQ_CODE && grantResults.length == PERMISSIONS_LENGTH && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            doCode();
+        }
+    }
+
+    private void doCode() {
+        //调用扫码接口，构建扫码能力
+        HmsScanAnalyzerOptions options = new HmsScanAnalyzerOptions.Creator().create();
+        ScanUtil.startScan(this, REQUEST_CODE_SCAN_ONE, options);
+    }
+
+    private int REQUEST_CODE_SCAN_ONE = 202;
+    //实现“onRequestPermissionsResult”函数接收校验权限结果
+    final int PERMISSIONS_LENGTH = 2;
+    private int CAMERA_REQ_CODE = 201;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK || data == null) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_SCAN_ONE) {
+            //导入图片扫描返回结果
+            HmsScan obj = data.getParcelableExtra(ScanUtil.RESULT);
+            if (obj != null) {
+                //展示解码结果
+                Intent intent = new Intent(this, VideoWebViewActivity.class);
+                intent.putExtra("name", "扫码结果");
+                intent.putExtra("movieUrl", obj.getOriginalValue());
+                startActivity(intent);
+            }
         }
     }
 

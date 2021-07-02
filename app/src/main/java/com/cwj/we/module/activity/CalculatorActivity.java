@@ -82,7 +82,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
     private TextView tv_dian;
     private RelativeLayout rl_bg;
     // 将所有图片、资源储存到数组中
-    int[] imgId = {R.drawable.a1, R.drawable.a2, R.drawable.a3};
+    int[] imgId = {R.drawable.a1, R.drawable.we_bg};
     int p = 0;// 图片的索引
 
     @Override
@@ -485,7 +485,6 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
          */
         mResultText.setText(existedText);
     }
-
 
     /**
      * 进行运算，得到结果

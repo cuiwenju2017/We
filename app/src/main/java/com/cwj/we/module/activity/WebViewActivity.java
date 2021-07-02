@@ -10,7 +10,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.we.R;
 import com.cwj.we.view.ProgressWebView;
@@ -23,8 +22,6 @@ public class WebViewActivity extends AppCompatActivity {
 
     @BindView(R.id.wv)
     ProgressWebView wv;
-    @BindView(R.id.cl_view)
-    CoordinatorLayout clView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

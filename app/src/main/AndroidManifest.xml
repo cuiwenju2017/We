@@ -20,7 +20,6 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 硬件加速对X5视频播放非常重要，建议开启 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
-
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -75,10 +74,6 @@
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".module.about.AboutActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
-        <activity
-            android:name=".module.activity.ClockActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

@@ -1,6 +1,8 @@
 package com.cwj.we.module.activity;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +11,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -16,6 +20,7 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.utils.MarketUtils;
+import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
@@ -39,6 +44,9 @@ public class VideoWebViewActivity extends BaseActivity {
 
     @BindView(R.id.my_toolbar)
     Toolbar myToolbar;
+    @BindView(R.id.tv)
+    TextView tv;
+
     private X5WebView webView;
     private X5WebChromeClient x5WebChromeClient;
     private X5WebViewClient x5WebViewClient;
@@ -117,6 +125,16 @@ public class VideoWebViewActivity extends BaseActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
         movieUrl = getIntent().getStringExtra("movieUrl");
+
+        if (!movieUrl.startsWith("http://") && !movieUrl.startsWith("https://")) { //加载的url是http/https协议地址
+            tv.setVisibility(View.VISIBLE);
+            webView.setVisibility(GONE);
+            tv.setText("" + movieUrl);
+        } else {
+            webView.setVisibility(View.VISIBLE);
+            tv.setVisibility(GONE);
+        }
+
         webView.loadUrl(movieUrl);
         progress = findViewById(R.id.progress);
         progress.show();
@@ -162,13 +180,22 @@ public class VideoWebViewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_toolbar_demo, menu);
+        if (!movieUrl.startsWith("http://") && !movieUrl.startsWith("https://")) { //加载的url是http/https协议地址
+            getMenuInflater().inflate(R.menu.menu_toolbar_fuzhi, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.menu_toolbar_demo, menu);
+        }
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.toolbar_fuzhi://复制
+                ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                manager.setPrimaryClip(ClipData.newHtmlText(null, movieUrl, null));
+                ToastUtil.showTextToast(this, "复制成功");
+                break;
             case R.id.toolbar1://本地浏览器打开
                 if (urlStr == null) {
                     urlStr = movieUrl;
