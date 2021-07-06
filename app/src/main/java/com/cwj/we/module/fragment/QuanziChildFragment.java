@@ -488,6 +488,8 @@ public class QuanziChildFragment extends Fragment {
                                     loadingDialog.dismiss();
                                     enter.setText("");
                                     adapter.notifyItemChanged(pos);
+                                    srlTypePinglun = 0;
+                                    currentPage = 1;
                                     queryPinglun();
                                     commentBaseRVAdapter.notifyDataSetChanged();
                                 } else {
@@ -517,6 +519,8 @@ public class QuanziChildFragment extends Fragment {
     public void onEvent(EventBG eventBG) {
         switch (eventBG.getType()) {
             case "ADD_SUCCESS":
+                srlType = 0;
+                skip = 1;
                 equal(type);
                 break;
         }
