@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.fragment.app.Fragment;
 
 import com.cwj.we.R;
+import com.cwj.we.base.GlideEngine;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
@@ -25,6 +26,7 @@ public class PictureSelectorUtils {
     public static void ofImage(Fragment fragment, int requestCode) {
         PictureSelector.create(fragment)
                 .openGallery(PictureMimeType.ofImage())
+                .imageEngine(GlideEngine.createGlideEngine())
                 .theme(R.style.PictureSelectorStyle)
                 .selectionMode(PictureConfig.SINGLE)
                 .enableCrop(false)//是否裁剪

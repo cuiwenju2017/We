@@ -1,26 +1,38 @@
 package com.cwj.we.module.activity;
 
-import android.app.Activity;
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseActivity;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.game.aircraftbattle.GameView;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-public class GameActivity extends Activity {
+public class GameActivity extends BaseActivity {
 
     private GameView gameView;
     private boolean mBackKeyPressed = false;//记录是否有首次按键
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_game;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
                 .init();

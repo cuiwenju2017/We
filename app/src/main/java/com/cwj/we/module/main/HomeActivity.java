@@ -25,7 +25,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
-import com.cwj.we.BuildConfig;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.EventBG;
@@ -58,6 +57,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.liulishuo.filedownloader.BuildConfig.APPLICATION_ID;
+
 public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeView {
 
     @BindView(R.id.tab_tool)
@@ -84,7 +85,6 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private static final int INDEX_GAMES = 1;
     private static final int INDEX_TOOL = 2;
     private static final int INDEX_QUANZI = 3;
-
     //这个是你的包名
     private static final String apkName = "yilu";
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -332,7 +332,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
             } else {
                 //设置自定义下载文件路径
                 AppUpdateUtils.APP_UPDATE_DOWN_APK_PATH = "apk" + File.separator + "downApk";
-                UpdateFragment.showFragment(this, false, string, apkName, updataBean.getChangelog(), BuildConfig.APPLICATION_ID, null);
+                UpdateFragment.showFragment(this, false, string, apkName, updataBean.getChangelog(), APPLICATION_ID, null);
             }
         }
     }

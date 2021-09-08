@@ -39,8 +39,8 @@ public class App extends BaseApplication {
         Bmob.resetDomain("https://open3.bmob.cn/");
         //初始化Bmob
         Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
-
-        X5WebUtils.init(this);//初始化WebViewLib
+        //初始化WebViewLib
+        X5WebUtils.init(this);
 
         Context context = getApplicationContext();
         // 获取当前包名

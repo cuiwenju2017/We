@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.cwj.we.R;
+import com.cwj.we.base.BaseActivity;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.Day;
 import com.cwj.we.bean.User;
 import com.cwj.we.module.main.HomeActivity;
@@ -40,7 +40,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
@@ -49,7 +48,7 @@ import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.UpdateListener;
 
-public class SetTimeActivity extends AppCompatActivity {
+public class SetTimeActivity extends BaseActivity {
 
     @BindView(R.id.tv_together_time)
     TextView tvTogetherTime;
@@ -64,16 +63,23 @@ public class SetTimeActivity extends AppCompatActivity {
     private ChinaDate lunar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_set_time);
-        ButterKnife.bind(this);
-        initView();
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_set_time;
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     private int setTime;
 
-    private void initView() {
+    public void initView() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
                 .init();

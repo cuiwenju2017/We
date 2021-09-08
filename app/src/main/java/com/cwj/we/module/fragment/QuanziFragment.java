@@ -78,7 +78,7 @@ public class QuanziFragment extends ImmersionFragment {
         //设置适配器
         vp2.setAdapter(myAdapter);
         //设置abLayout点击时的水波效果
-        tabLayout.setTabRippleColor(ColorStateList.valueOf(getResources().getColor(R.color.transparent)));
+        tabLayout.setTabRippleColor(ColorStateList.valueOf(getResources().getColor(R.color.colorTransparent)));
         //TabLayout和Viewpager2进行关联
         new TabLayoutMediator(tabLayout, vp2, (tab, position) -> tab.setText(titles.get(position))).attach();
 

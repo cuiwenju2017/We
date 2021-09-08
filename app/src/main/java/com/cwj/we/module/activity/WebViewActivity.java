@@ -2,36 +2,41 @@ package com.cwj.we.module.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.cwj.we.R;
+import com.cwj.we.base.BaseActivity;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.view.ProgressWebView;
 import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends BaseActivity {
 
     @BindView(R.id.wv)
     ProgressWebView wv;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_view);
-        ButterKnife.bind(this);
-        initView();
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
-    private void initView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_web_view;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    public void initView() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
                 .init();

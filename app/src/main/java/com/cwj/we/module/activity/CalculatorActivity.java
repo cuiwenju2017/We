@@ -1,6 +1,5 @@
 package com.cwj.we.module.activity;
 
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -8,19 +7,19 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseActivity;
+import com.cwj.we.base.BasePresenter;
 import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 计算器
  */
-public class CalculatorActivity extends AppCompatActivity implements View.OnClickListener {
+public class CalculatorActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.cl_view)
     CoordinatorLayout clView;
@@ -86,20 +85,26 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
     int p = 0;// 图片的索引
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calculator);
-        ButterKnife.bind(this);
-        ImmersionBar.with(this)
-                .init();
-        initView();
-        initEvent();
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_calculator;
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     /**
      * 初始化控件
      */
-    private void initView() {
+    public void initView() {
+        ImmersionBar.with(this)
+                .init();
         /**
          * 数字
          */
@@ -138,7 +143,7 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
          * 已经输入的字符
          */
         existedText = mResultText.getText().toString();
-
+        initEvent();
     }
 
     /**

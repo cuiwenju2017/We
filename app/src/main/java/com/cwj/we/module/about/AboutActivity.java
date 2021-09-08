@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -116,7 +117,6 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
 
     @Override
     public void initData() {
-
     }
 
     /**
@@ -261,6 +261,13 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                         .show();
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 
     class CustomPopup extends CenterPopupView {

@@ -11,7 +11,6 @@ import retrofit2.http.Query;
 public class API {
 
     public static final String BASE_URL_UPDATA = "http://api.bq04.com/";
-
     public static final String BASE_URL_Qingyunke = "http://api.qingyunke.com/";
 
     public interface UPDATAApi {

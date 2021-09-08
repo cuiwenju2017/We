@@ -61,10 +61,10 @@ dependencies {
     //圆角图标库
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     //图片选择框架
-    implementation 'com.github.goweii:PictureSelector:v2.3.1'
+    implementation 'io.github.lucksiege:pictureselector:v2.7.3-rc08'
     //图片加载框架
-    implementation 'com.github.bumptech.glide:glide:4.6.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.6.1'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     //Bmob集成所需
     implementation 'io.github.bmob:android-sdk:3.8.4'
     implementation "io.reactivex.rxjava2:rxjava:2.2.8"

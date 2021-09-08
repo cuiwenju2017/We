@@ -4,22 +4,21 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseActivity;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.view.ChaosCompassView;
 import com.gyf.immersionbar.ImmersionBar;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * 指南针
  */
-public class CompassActivity extends AppCompatActivity {
+public class CompassActivity extends BaseActivity {
 
     @BindView(R.id.cl_view)
     CoordinatorLayout clView;
@@ -29,10 +28,22 @@ public class CompassActivity extends AppCompatActivity {
     private float val;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compass);
-        ButterKnife.bind(this);
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_compass;
+    }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
         ImmersionBar.with(this)
                 .init();
         chaosCompassView = (ChaosCompassView) findViewById(R.id.ccv);
