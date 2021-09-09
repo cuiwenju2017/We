@@ -75,7 +75,7 @@ public class PuzzleActivity extends BaseActivity {
 
     @OnClick(R.id.btn_chongzhi)
     public void onViewClicked() {//重置关卡
-        if (API.kv.decodeInt(GlobalConstant.Column) == 3) {
+        if (API.kv.decodeInt(GlobalConstant.Column) == 3 || API.kv.decodeInt(GlobalConstant.Column) == 0) {
             ToastUtil.showTextToast(this, "已是原始关卡");
         } else {
             new XPopup.Builder(this).asConfirm("提示", "确定重置关卡吗？",
