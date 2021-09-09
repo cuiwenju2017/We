@@ -18,9 +18,8 @@
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 硬件加速对X5视频播放非常重要，建议开启 -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
-
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.GET_TASKS" /><!-- 硬件加速对X5视频播放非常重要，建议开启 -->
     <uses-feature android:name="android.hardware.camera" />
 
     <application
