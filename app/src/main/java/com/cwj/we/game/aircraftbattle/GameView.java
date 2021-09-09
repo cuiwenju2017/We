@@ -14,6 +14,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.cwj.we.R;
+import com.cwj.we.common.GlobalConstant;
+import com.cwj.we.http.API;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -98,39 +100,39 @@ public class GameView extends View {
         borderSize *= density;
     }
 
-    public void start(int[] bitmapIds){
+    public void start(int[] bitmapIds) {
         destroy();
-        for(int bitmapId : bitmapIds){
+        for (int bitmapId : bitmapIds) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), bitmapId);
             bitmaps.add(bitmap);
         }
         startWhenBitmapsReady();
     }
-    
-    private void startWhenBitmapsReady(){
+
+    private void startWhenBitmapsReady() {
         combatAircraft = new CombatAircraft(bitmaps.get(0));
         //将游戏设置为开始状态
         status = STATUS_GAME_STARTED;
         postInvalidate();
     }
-    
-    private void restart(){
+
+    private void restart() {
         destroyNotRecyleBitmaps();
         startWhenBitmapsReady();
     }
 
-    public void pause(){
+    public void pause() {
         //将游戏设置为暂停状态
         status = STATUS_GAME_PAUSED;
     }
 
-    private void resume(){
+    private void resume() {
         //将游戏设置为运行状态
         status = STATUS_GAME_STARTED;
         postInvalidate();
     }
 
-    private long getScore(){
+    private long getScore() {
         //获取游戏得分
         return score;
     }
@@ -140,35 +142,35 @@ public class GameView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         //我们在每一帧都检测是否满足延迟触发单击事件的条件
-        if(isSingleClick()){
+        if (isSingleClick()) {
             onSingleClick(touchX, touchY);
         }
 
         super.onDraw(canvas);
 
-        if(status == STATUS_GAME_STARTED){
+        if (status == STATUS_GAME_STARTED) {
             drawGameStarted(canvas);
-        }else if(status == STATUS_GAME_PAUSED){
+        } else if (status == STATUS_GAME_PAUSED) {
             drawGamePaused(canvas);
-        }else if(status == STATUS_GAME_OVER){
+        } else if (status == STATUS_GAME_OVER) {
             drawGameOver(canvas);
         }
     }
 
     //绘制运行状态的游戏
-    private void drawGameStarted(Canvas canvas){
+    private void drawGameStarted(Canvas canvas) {
 
         drawScoreAndBombs(canvas);
 
         //第一次绘制时，将战斗机移到Canvas最下方，在水平方向的中心
-        if(frame == 0){
+        if (frame == 0) {
             float centerX = canvas.getWidth() / 2;
             float centerY = canvas.getHeight() - combatAircraft.getHeight() / 2;
             combatAircraft.centerTo(centerX, centerY);
         }
 
         //将spritesNeedAdded添加到sprites中
-        if(spritesNeedAdded.size() > 0){
+        if (spritesNeedAdded.size() > 0) {
             sprites.addAll(spritesNeedAdded);
             spritesNeedAdded.clear();
         }
@@ -180,32 +182,32 @@ public class GameView extends View {
         removeDestroyedSprites();
 
         //每隔30帧随机添加Sprite
-        if(frame % 30 == 0){
+        if (frame % 30 == 0) {
             createRandomSprites(canvas.getWidth());
         }
         frame++;
 
         //遍历sprites，绘制敌机、子弹、奖励、爆炸效果
         Iterator<Sprite> iterator = sprites.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Sprite s = iterator.next();
 
-            if(!s.isDestroyed()){
+            if (!s.isDestroyed()) {
                 //在Sprite的draw方法内有可能会调用destroy方法
                 s.draw(canvas, paint, this);
             }
 
             //我们此处要判断Sprite在执行了draw方法后是否被destroy掉了
-            if(s.isDestroyed()){
+            if (s.isDestroyed()) {
                 //如果Sprite被销毁了，那么从Sprites中将其移除
                 iterator.remove();
             }
         }
 
-        if(combatAircraft != null){
+        if (combatAircraft != null) {
             //最后绘制战斗机
             combatAircraft.draw(canvas, paint, this);
-            if(combatAircraft.isDestroyed()){
+            if (combatAircraft.isDestroyed()) {
                 //如果战斗机被击中销毁了，那么游戏结束
                 status = STATUS_GAME_OVER;
             }
@@ -215,36 +217,40 @@ public class GameView extends View {
     }
 
     //绘制暂停状态的游戏
-    private void drawGamePaused(Canvas canvas){
+    private void drawGamePaused(Canvas canvas) {
         drawScoreAndBombs(canvas);
 
         //调用Sprite的onDraw方法，而非draw方法，这样就能渲染静态的Sprite，而不让Sprite改变位置
-        for(Sprite s : sprites){
+        for (Sprite s : sprites) {
             s.onDraw(canvas, paint, this);
         }
-        if(combatAircraft != null){
+        if (combatAircraft != null) {
             combatAircraft.onDraw(canvas, paint, this);
         }
 
         //绘制Dialog，显示得分
         drawScoreDialog(canvas, "继续");
 
-        if(lastSingleClickTime > 0){
+        if (lastSingleClickTime > 0) {
             postInvalidate();
         }
     }
 
     //绘制结束状态的游戏
-    private void drawGameOver(Canvas canvas){
+    private void drawGameOver(Canvas canvas) {
         //Game Over之后只绘制弹出窗显示最终得分
         drawScoreDialog(canvas, "重新开始");
 
-        if(lastSingleClickTime > 0){
+        if (getScore() > API.kv.decodeLong(GlobalConstant.feijidazhanScore)) {
+            API.kv.encode(GlobalConstant.feijidazhanScore,getScore());
+        }
+
+        if (lastSingleClickTime > 0) {
             postInvalidate();
         }
     }
 
-    private void drawScoreDialog(Canvas canvas, String operation){
+    private void drawScoreDialog(Canvas canvas, String operation) {
         int canvasWidth = canvas.getWidth();
         int canvasHeight = canvas.getHeight();
         //存储原始值
@@ -264,15 +270,15 @@ public class GameView extends View {
         h3 = 124
         h4 = 76
         */
-        int w1 = (int)(20.0 / 360.0 * canvasWidth);
+        int w1 = (int) (20.0 / 360.0 * canvasWidth);
         int w2 = canvasWidth - 2 * w1;
-        int buttonWidth = (int)(140.0 / 360.0 * canvasWidth);
+        int buttonWidth = (int) (140.0 / 360.0 * canvasWidth);
 
-        int h1 = (int)(150.0 / 558.0 * canvasHeight);
-        int h2 = (int)(60.0 / 558.0 * canvasHeight);
-        int h3 = (int)(124.0 / 558.0 * canvasHeight);
-        int h4 = (int)(76.0 / 558.0 * canvasHeight);
-        int buttonHeight = (int)(42.0 / 558.0 * canvasHeight);
+        int h1 = (int) (150.0 / 558.0 * canvasHeight);
+        int h2 = (int) (60.0 / 558.0 * canvasHeight);
+        int h3 = (int) (124.0 / 558.0 * canvasHeight);
+        int h4 = (int) (76.0 / 558.0 * canvasHeight);
+        int buttonHeight = (int) (42.0 / 558.0 * canvasHeight);
 
         canvas.translate(w1, h1);
         //绘制背景色
@@ -324,7 +330,7 @@ public class GameView extends View {
     }
 
     //绘制左上角的得分和左下角炸弹的数量
-    private void drawScoreAndBombs(Canvas canvas){
+    private void drawScoreAndBombs(Canvas canvas) {
         //绘制左上角的暂停按钮
         Bitmap pauseBitmap = status == STATUS_GAME_STARTED ? bitmaps.get(9) : bitmaps.get(10);
         RectF pauseBitmapDstRecF = getPauseBitmapDstRecF();
@@ -337,9 +343,9 @@ public class GameView extends View {
         canvas.drawText(score + "", scoreLeft, scoreTop, textPaint);
 
         //绘制左下角
-        if(combatAircraft != null && !combatAircraft.isDestroyed()){
+        if (combatAircraft != null && !combatAircraft.isDestroyed()) {
             int bombCount = combatAircraft.getBombCount();
-            if(bombCount > 0){
+            if (bombCount > 0) {
                 //绘制左下角的炸弹
                 Bitmap bombBitmap = bitmaps.get(11);
                 float bombTop = canvas.getHeight() - bombBitmap.getHeight();
@@ -353,13 +359,13 @@ public class GameView extends View {
     }
 
     //检查战斗机跑到子弹前面的情况
-    private void destroyBulletsFrontOfCombatAircraft(){
-        if(combatAircraft != null){
+    private void destroyBulletsFrontOfCombatAircraft() {
+        if (combatAircraft != null) {
             float aircraftY = combatAircraft.getY();
             List<Bullet> aliveBullets = getAliveBullets();
-            for(Bullet bullet : aliveBullets){
+            for (Bullet bullet : aliveBullets) {
                 //如果战斗机跑到了子弹前面，那么就销毁子弹
-                if(aircraftY <= bullet.getY()){
+                if (aircraftY <= bullet.getY()) {
                     bullet.destroy();
                 }
             }
@@ -367,66 +373,62 @@ public class GameView extends View {
     }
 
     //移除掉已经destroyed的Sprite
-    private void removeDestroyedSprites(){
+    private void removeDestroyedSprites() {
         Iterator<Sprite> iterator = sprites.iterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Sprite s = iterator.next();
-            if(s.isDestroyed()){
+            if (s.isDestroyed()) {
                 iterator.remove();
             }
         }
     }
 
     //生成随机的Sprite
-    private void createRandomSprites(int canvasWidth){
+    private void createRandomSprites(int canvasWidth) {
         Sprite sprite = null;
         int speed = 2;
         //callTime表示createRandomSprites方法被调用的次数
         int callTime = Math.round(frame / 30);
-        if((callTime + 1) % 25 == 0){
+        if ((callTime + 1) % 25 == 0) {
             //发送道具奖品
-            if((callTime + 1) % 50 == 0){
+            if ((callTime + 1) % 50 == 0) {
                 //发送炸弹
                 sprite = new BombAward(bitmaps.get(7));
-            }
-            else{
+            } else {
                 //发送双子弹
                 sprite = new BulletAward(bitmaps.get(8));
             }
-        }
-        else{
+        } else {
             //发送敌机
-            int[] nums = {0,0,0,0,0,1,0,0,1,0,0,0,0,1,1,1,1,1,1,2};
-            int index = (int)Math.floor(nums.length*Math.random());
+            int[] nums = {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2};
+            int index = (int) Math.floor(nums.length * Math.random());
             int type = nums[index];
-            if(type == 0){
+            if (type == 0) {
                 //小敌机
                 sprite = new SmallEnemyPlane(bitmaps.get(4));
-            }
-            else if(type == 1){
+            } else if (type == 1) {
                 //中敌机
                 sprite = new MiddleEnemyPlane(bitmaps.get(5));
-            }
-            else if(type == 2){
+            } else if (type == 2) {
                 //大敌机
                 sprite = new BigEnemyPlane(bitmaps.get(6));
             }
-            if(type != 2){
-                if(Math.random() < 0.33){
+            if (type != 2) {
+                if (Math.random() < 0.33) {
                     speed = 4;
                 }
             }
         }
 
-        if(sprite != null){
+        if (sprite != null) {
             float spriteWidth = sprite.getWidth();
             float spriteHeight = sprite.getHeight();
-            float x = (float)((canvasWidth - spriteWidth)*Math.random());
+            float x = (float) ((canvasWidth - spriteWidth) * Math.random());
             float y = -spriteHeight;
             sprite.setX(x);
             sprite.setY(y);
-            if(sprite instanceof AutoSprite){
-                AutoSprite autoSprite = (AutoSprite)sprite;
+            if (sprite instanceof AutoSprite) {
+                AutoSprite autoSprite = (AutoSprite) sprite;
                 autoSprite.setSpeed(speed);
             }
             addSprite(sprite);
@@ -436,30 +438,30 @@ public class GameView extends View {
     /*-------------------------------touch------------------------------------*/
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(MotionEvent event) {
         //通过调用resolveTouchType方法，得到我们想要的事件类型
         //需要注意的是resolveTouchType方法不会返回TOUCH_SINGLE_CLICK类型
         //我们会在onDraw方法每次执行的时候，都会调用isSingleClick方法检测是否触发了单击事件
         int touchType = resolveTouchType(event);
-        if(status == STATUS_GAME_STARTED){
-            if(touchType == TOUCH_MOVE){
-                if(combatAircraft != null){
+        if (status == STATUS_GAME_STARTED) {
+            if (touchType == TOUCH_MOVE) {
+                if (combatAircraft != null) {
                     combatAircraft.centerTo(touchX, touchY);
                 }
-            }else if(touchType == TOUCH_DOUBLE_CLICK){
-                if(status == STATUS_GAME_STARTED){
-                    if(combatAircraft != null){
+            } else if (touchType == TOUCH_DOUBLE_CLICK) {
+                if (status == STATUS_GAME_STARTED) {
+                    if (combatAircraft != null) {
                         //双击会使得战斗机使用炸弹
                         combatAircraft.bomb(this);
                     }
                 }
             }
-        }else if(status == STATUS_GAME_PAUSED){
-            if(lastSingleClickTime > 0){
+        } else if (status == STATUS_GAME_PAUSED) {
+            if (lastSingleClickTime > 0) {
                 postInvalidate();
             }
-        }else if(status == STATUS_GAME_OVER){
-            if(lastSingleClickTime > 0){
+        } else if (status == STATUS_GAME_OVER) {
+            if (lastSingleClickTime > 0) {
                 postInvalidate();
             }
         }
@@ -467,32 +469,32 @@ public class GameView extends View {
     }
 
     //合成我们想要的事件类型
-    private int resolveTouchType(MotionEvent event){
+    private int resolveTouchType(MotionEvent event) {
         int touchType = -1;
         int action = event.getAction();
         touchX = event.getX();
         touchY = event.getY();
-        if(action == MotionEvent.ACTION_MOVE){
+        if (action == MotionEvent.ACTION_MOVE) {
             long deltaTime = System.currentTimeMillis() - touchDownTime;
-            if(deltaTime > singleClickDurationTime){
+            if (deltaTime > singleClickDurationTime) {
                 //触点移动
                 touchType = TOUCH_MOVE;
             }
-        }else if(action == MotionEvent.ACTION_DOWN){
+        } else if (action == MotionEvent.ACTION_DOWN) {
             //触点按下
             touchDownTime = System.currentTimeMillis();
-        }else if(action == MotionEvent.ACTION_UP){
+        } else if (action == MotionEvent.ACTION_UP) {
             //触点弹起
             touchUpTime = System.currentTimeMillis();
             //计算触点按下到触点弹起之间的时间差
             long downUpDurationTime = touchUpTime - touchDownTime;
             //如果此次触点按下和抬起之间的时间差小于一次单击事件指定的时间差，
             //那么我们就认为发生了一次单击
-            if(downUpDurationTime <= singleClickDurationTime){
+            if (downUpDurationTime <= singleClickDurationTime) {
                 //计算这次单击距离上次单击的时间差
                 long twoClickDurationTime = touchUpTime - lastSingleClickTime;
 
-                if(twoClickDurationTime <=  doubleClickDurationTime){
+                if (twoClickDurationTime <= doubleClickDurationTime) {
                     //如果两次单击的时间差小于一次双击事件执行的时间差，
                     //那么我们就认为发生了一次双击事件
                     touchType = TOUCH_DOUBLE_CLICK;
@@ -500,7 +502,7 @@ public class GameView extends View {
                     lastSingleClickTime = -1;
                     touchDownTime = -1;
                     touchUpTime = -1;
-                }else{
+                } else {
                     //如果这次形成了单击事件，但是没有形成双击事件，那么我们暂不触发此次形成的单击事件
                     //我们应该在doubleClickDurationTime毫秒后看一下有没有再次形成第二个单击事件
                     //如果那时形成了第二个单击事件，那么我们就与此次的单击事件合成一次双击事件
@@ -513,14 +515,14 @@ public class GameView extends View {
     }
 
     //在onDraw方法中调用该方法，在每一帧都检查是不是发生了单击事件
-    private boolean isSingleClick(){
+    private boolean isSingleClick() {
         boolean singleClick = false;
         //我们检查一下是不是上次的单击事件在经过了doubleClickDurationTime毫秒后满足触发单击事件的条件
-        if(lastSingleClickTime > 0){
+        if (lastSingleClickTime > 0) {
             //计算当前时刻距离上次发生单击事件的时间差
             long deltaTime = System.currentTimeMillis() - lastSingleClickTime;
 
-            if(deltaTime >= doubleClickDurationTime){
+            if (deltaTime >= doubleClickDurationTime) {
                 //如果时间差超过了一次双击事件所需要的时间差，
                 //那么就在此刻延迟触发之前本该发生的单击事件
                 singleClick = true;
@@ -533,19 +535,19 @@ public class GameView extends View {
         return singleClick;
     }
 
-    private void onSingleClick(float x, float y){
-        if(status == STATUS_GAME_STARTED){
-            if(isClickPause(x, y)){
+    private void onSingleClick(float x, float y) {
+        if (status == STATUS_GAME_STARTED) {
+            if (isClickPause(x, y)) {
                 //单击了暂停按钮
                 pause();
             }
-        }else if(status == STATUS_GAME_PAUSED){
-            if(isClickContinueButton(x, y)){
+        } else if (status == STATUS_GAME_PAUSED) {
+            if (isClickContinueButton(x, y)) {
                 //单击了“继续”按钮
                 resume();
             }
-        }else if(status == STATUS_GAME_OVER){
-            if(isClickRestartButton(x, y)){
+        } else if (status == STATUS_GAME_OVER) {
+            if (isClickRestartButton(x, y)) {
                 //单击了“重新开始”按钮
                 restart();
             }
@@ -553,22 +555,22 @@ public class GameView extends View {
     }
 
     //是否单击了左上角的暂停按钮
-    private boolean isClickPause(float x, float y){
+    private boolean isClickPause(float x, float y) {
         RectF pauseRecF = getPauseBitmapDstRecF();
         return pauseRecF.contains(x, y);
     }
 
     //是否单击了暂停状态下的“继续”那妞
-    private boolean isClickContinueButton(float x, float y){
-        return continueRect.contains((int)x, (int)y);
+    private boolean isClickContinueButton(float x, float y) {
+        return continueRect.contains((int) x, (int) y);
     }
 
     //是否单击了GAME OVER状态下的“重新开始”按钮
-    private boolean isClickRestartButton(float x, float y){
-        return continueRect.contains((int)x, (int)y);
+    private boolean isClickRestartButton(float x, float y) {
+        return continueRect.contains((int) x, (int) y);
     }
 
-    private RectF getPauseBitmapDstRecF(){
+    private RectF getPauseBitmapDstRecF() {
         Bitmap pauseBitmap = status == STATUS_GAME_STARTED ? bitmaps.get(9) : bitmaps.get(10);
         RectF recF = new RectF();
         recF.left = 15 * density;
@@ -579,8 +581,8 @@ public class GameView extends View {
     }
 
     /*-------------------------------destroy------------------------------------*/
-    
-    private void destroyNotRecyleBitmaps(){
+
+    private void destroyNotRecyleBitmaps() {
         //将游戏设置为销毁状态
         status = STATUS_GAME_DESTROYED;
 
@@ -591,23 +593,23 @@ public class GameView extends View {
         score = 0;
 
         //销毁战斗机
-        if(combatAircraft != null){
+        if (combatAircraft != null) {
             combatAircraft.destroy();
         }
         combatAircraft = null;
 
         //销毁敌机、子弹、奖励、爆炸
-        for(Sprite s : sprites){
+        for (Sprite s : sprites) {
             s.destroy();
         }
         sprites.clear();
     }
 
-    public void destroy(){
+    public void destroy() {
         destroyNotRecyleBitmaps();
 
         //释放Bitmap资源
-        for(Bitmap bitmap : bitmaps){
+        for (Bitmap bitmap : bitmaps) {
             bitmap.recycle();
         }
         bitmaps.clear();
@@ -616,41 +618,41 @@ public class GameView extends View {
     /*-------------------------------public methods-----------------------------------*/
 
     //向Sprites中添加Sprite
-    public void addSprite(Sprite sprite){
+    public void addSprite(Sprite sprite) {
         spritesNeedAdded.add(sprite);
     }
 
     //添加得分
-    public void addScore(int value){
+    public void addScore(int value) {
         score += value;
     }
 
-    public int getStatus(){
+    public int getStatus() {
         return status;
     }
 
-    public float getDensity(){
+    public float getDensity() {
         return density;
     }
 
-    public Bitmap getYellowBulletBitmap(){
+    public Bitmap getYellowBulletBitmap() {
         return bitmaps.get(2);
     }
 
-    public Bitmap getBlueBulletBitmap(){
+    public Bitmap getBlueBulletBitmap() {
         return bitmaps.get(3);
     }
 
-    public Bitmap getExplosionBitmap(){
+    public Bitmap getExplosionBitmap() {
         return bitmaps.get(1);
     }
 
     //获取处于活动状态的敌机
-    public List<EnemyPlane> getAliveEnemyPlanes(){
+    public List<EnemyPlane> getAliveEnemyPlanes() {
         List<EnemyPlane> enemyPlanes = new ArrayList<EnemyPlane>();
-        for(Sprite s : sprites){
-            if(!s.isDestroyed() && s instanceof EnemyPlane){
-                EnemyPlane sprite = (EnemyPlane)s;
+        for (Sprite s : sprites) {
+            if (!s.isDestroyed() && s instanceof EnemyPlane) {
+                EnemyPlane sprite = (EnemyPlane) s;
                 enemyPlanes.add(sprite);
             }
         }
@@ -658,11 +660,11 @@ public class GameView extends View {
     }
 
     //获得处于活动状态的炸弹奖励
-    public List<BombAward> getAliveBombAwards(){
+    public List<BombAward> getAliveBombAwards() {
         List<BombAward> bombAwards = new ArrayList<BombAward>();
-        for(Sprite s : sprites){
-            if(!s.isDestroyed() && s instanceof BombAward){
-                BombAward bombAward = (BombAward)s;
+        for (Sprite s : sprites) {
+            if (!s.isDestroyed() && s instanceof BombAward) {
+                BombAward bombAward = (BombAward) s;
                 bombAwards.add(bombAward);
             }
         }
@@ -670,11 +672,11 @@ public class GameView extends View {
     }
 
     //获取处于活动状态的子弹奖励
-    public List<BulletAward> getAliveBulletAwards(){
+    public List<BulletAward> getAliveBulletAwards() {
         List<BulletAward> bulletAwards = new ArrayList<BulletAward>();
-        for(Sprite s : sprites){
-            if(!s.isDestroyed() && s instanceof BulletAward){
-                BulletAward bulletAward = (BulletAward)s;
+        for (Sprite s : sprites) {
+            if (!s.isDestroyed() && s instanceof BulletAward) {
+                BulletAward bulletAward = (BulletAward) s;
                 bulletAwards.add(bulletAward);
             }
         }
@@ -682,11 +684,11 @@ public class GameView extends View {
     }
 
     //获取处于活动状态的子弹
-    public List<Bullet> getAliveBullets(){
+    public List<Bullet> getAliveBullets() {
         List<Bullet> bullets = new ArrayList<Bullet>();
-        for(Sprite s : sprites){
-            if(!s.isDestroyed() && s instanceof Bullet){
-                Bullet bullet = (Bullet)s;
+        for (Sprite s : sprites) {
+            if (!s.isDestroyed() && s instanceof Bullet) {
+                Bullet bullet = (Bullet) s;
                 bullets.add(bullet);
             }
         }

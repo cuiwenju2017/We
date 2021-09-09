@@ -1,11 +1,15 @@
 package com.cwj.we.module.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
+import com.cwj.we.common.GlobalConstant;
 import com.cwj.we.game.aircraftbattle.GameView;
+import com.cwj.we.http.API;
 import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.Timer;
@@ -95,6 +99,9 @@ public class GameActivity extends BaseActivity {
                 }
             }, 2000);
         } else {
+            Intent intent = new Intent();
+            intent.putExtra(GlobalConstant.feijidazhanScore, API.kv.decodeLong(GlobalConstant.feijidazhanScore));
+            setResult(Activity.RESULT_OK, intent);
             //结束Activity
             finish();
         }

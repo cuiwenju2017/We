@@ -14,6 +14,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.mmkv.MMKV;
 import com.ycbjie.webviewlib.utils.X5WebUtils;
 
 import java.io.BufferedReader;
@@ -41,6 +42,8 @@ public class App extends BaseApplication {
         Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
         //初始化WebViewLib
         X5WebUtils.init(this);
+        //初始化MMKV
+        MMKV.initialize(this);
 
         Context context = getApplicationContext();
         // 获取当前包名

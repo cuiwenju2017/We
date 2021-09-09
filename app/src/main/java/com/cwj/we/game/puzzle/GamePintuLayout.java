@@ -12,9 +12,14 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.cwj.we.R;
+import com.cwj.we.bean.EventBG;
+import com.cwj.we.common.GlobalConstant;
+import com.cwj.we.http.API;
+import com.cwj.we.utils.ToastUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +35,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
     /**
      * 设置Item的数量n*n；默认为3
      */
-    private int mColumn = 3;
+    private int mColumn = API.kv.decodeInt(GlobalConstant.Column, 3);
     /**
      * 布局的宽度
      */
@@ -341,8 +346,7 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
             }
         }
         if (isSuccess) {
-            Toast.makeText(getContext(), "成功 , 难度升级 !",
-                    Toast.LENGTH_LONG).show();
+            ToastUtil.showTextToast(getContext(), "成功 , 难度升级 !");
             nextLevel();
         }
     }
@@ -356,6 +360,20 @@ public class GamePintuLayout extends RelativeLayout implements View.OnClickListe
         this.removeAllViews();
         mAnimLayout = null;
         mColumn++;
+        API.kv.encode(GlobalConstant.Column, mColumn);
+        EventBG eventBG = new EventBG("Column_SUCCESS", "");
+        EventBus.getDefault().post(eventBG);
+        initBitmap();
+        initItem();
+    }
+
+    public void change() { //为了让外面调用
+        this.removeAllViews();
+        mAnimLayout = null;
+        mColumn = 3;
+        API.kv.encode(GlobalConstant.Column, mColumn);
+        EventBG eventBG = new EventBG("Column_SUCCESS", "");
+        EventBus.getDefault().post(eventBG);
         initBitmap();
         initItem();
     }

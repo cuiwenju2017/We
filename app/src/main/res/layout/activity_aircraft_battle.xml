@@ -15,6 +15,13 @@
         android:textSize="30dp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/tv_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="@color/black" />
+
     <Button
         android:id="@+id/btnGame"
         android:layout_width="wrap_content"

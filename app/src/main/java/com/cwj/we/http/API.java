@@ -2,6 +2,7 @@ package com.cwj.we.http;
 
 import com.cwj.we.bean.LatestBean;
 import com.cwj.we.bean.MsgBean;
+import com.tencent.mmkv.MMKV;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -12,6 +13,7 @@ public class API {
 
     public static final String BASE_URL_UPDATA = "http://api.bq04.com/";
     public static final String BASE_URL_Qingyunke = "http://api.qingyunke.com/";
+    public static final MMKV kv = MMKV.defaultMMKV();
 
     public interface UPDATAApi {
         //检测版本更新
