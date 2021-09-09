@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:fitsSystemWindows="true"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/grade1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/star_b"
+        android:text="简单"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/grade2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/star_g"
+        android:text="普通"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/grade3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/star_p"
+        android:text="中等"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/grade4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/star_r"
+        android:text="困难"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/grade5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/star_y"
+        android:text="超难"
+        android:textColor="@color/white" />
+</LinearLayout>

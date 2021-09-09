@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cwj.we.R;
 import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.AircraftBattleActivity;
+import com.cwj.we.module.activity.ELuoSiFangKuaiActivity;
 import com.cwj.we.module.activity.GobangActivity;
 import com.cwj.we.module.activity.PuzzleActivity;
 import com.cwj.we.module.activity.WebViewActivity;
@@ -89,6 +90,9 @@ public class GamesFragment extends ImmersionFragment {
             } else if (position == 9) {//智能机器人
                 intent = new Intent(getActivity(), JiqirenActivity.class);
                 startActivity(intent);
+            } else if (position == 10) {//俄罗斯方块
+                intent = new Intent(getActivity(), ELuoSiFangKuaiActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -116,6 +120,8 @@ public class GamesFragment extends ImmersionFragment {
         gameBeans.add(xbw);
         GameBean zhinengjiqiren = new GameBean("智能机器人", R.drawable.icon_jiqiren);
         gameBeans.add(zhinengjiqiren);
+        GameBean eluosifangkuan = new GameBean("俄罗斯方块", R.drawable.icon_eluosifangkuai);
+        gameBeans.add(eluosifangkuan);
     }
 
     @Override

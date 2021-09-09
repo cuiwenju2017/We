@@ -20,6 +20,7 @@
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 硬件加速对X5视频播放非常重要，建议开启 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -34,7 +35,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.activity.AddTieZiActivity"></activity>
+        <activity android:name=".module.activity.ELuoSiFangKuaiStartActivity"></activity>
+        <activity android:name=".module.activity.ELuoSiFangKuaiActivity" />
+        <activity android:name=".module.activity.AddTieZiActivity" />
         <activity android:name=".module.activity.VipJiexiActivity" />
         <activity android:name=".module.ljxj.PhotoViewActivity" />
         <activity android:name=".module.ljxj.PhotoListActivity" />
