@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +30,7 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.LatestBean;
+import com.cwj.we.bean.Post;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.QuanziFragment;
@@ -56,6 +58,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 
 import static com.liulishuo.filedownloader.BuildConfig.APPLICATION_ID;
 
@@ -90,7 +95,9 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE};
     private BasePopupView basePopupView;
-    SharedPreferences sprfMain;
+    private SharedPreferences sprfMain;
+    private int skip = 1;
+    private int limit = 15;
 
     @Override
     protected HomePrensenter createPresenter() {
@@ -112,11 +119,10 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                 .init();
 
         sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
-        //设置背景
         if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
-            Glide.with(this).load(R.drawable.we_bg).into(ivBg);
+            equal(-1);//查背景图
         } else {
-            Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
+            Glide.with(HomeActivity.this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
         }
 
         UsFragment usFragment = new UsFragment();
@@ -164,11 +170,32 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         }
     }
 
+    private void equal(int type) {
+        BmobQuery<Post> query = new BmobQuery<>();
+        query.addWhereEqualTo("type", type);
+        query.setPage(skip, limit).order("-createdAt")
+                .findObjects(new FindListener<Post>() {
+                    @Override
+                    public void done(List<Post> object, BmobException e) {
+                        if (e == null) {
+                            if ("".equals(object.get(0).getContent()) || object.get(0).getContent() == null) {
+                                Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
+                            } else {
+                                Glide.with(HomeActivity.this).load(object.get(0).getContent()).into(ivBg);
+                            }
+                        } else {
+                            Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
+                            Log.e("BMOB", e.toString());
+                        }
+                    }
+                });
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventBG eventBG) {
         switch (eventBG.getType()) {
             case "EVENT_CZ_BG":
-                Glide.with(this).load(R.drawable.we_bg).into(ivBg);
+                equal(-1);//查背景图
                 break;
             case "EVENT_SZ_BG":
                 Glide.with(this).load(Uri.fromFile(new File(eventBG.getUserIconPath()))).into(ivBg);
