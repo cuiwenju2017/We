@@ -24,6 +24,7 @@ import com.cwj.we.module.activity.CompassActivity;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.VipJiexiActivity;
 import com.cwj.we.module.adapter.GameAdapter;
+import com.cwj.we.module.chenghu.ChengHuJiSuanQiActivity;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
 import com.cwj.we.utils.ToastUtil;
@@ -69,11 +70,13 @@ public class ToolFragment extends ImmersionFragment {
         adapter.setOnclick((view1, position) -> {
             if (position == 0) {//计算器
                 startActivity(new Intent(getActivity(), CalculatorActivity.class));
-            } else if (position == 1) {//指南针
+            } else if (position == 1) {//称呼计算器
+                startActivity(new Intent(getActivity(), ChengHuJiSuanQiActivity.class));
+            } else if (position == 2) {//指南针
                 startActivity(new Intent(getActivity(), CompassActivity.class));
-            } else if (position == 2) {//轮盘时中
+            } else if (position == 3) {//轮盘时中
                 startActivity(new Intent(getActivity(), LPClockActivity.class));
-            } else if (position == 3) {//滤镜相机
+            } else if (position == 4) {//滤镜相机
                 PermissionX.init(this)
                         .permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
@@ -84,25 +87,25 @@ public class ToolFragment extends ImmersionFragment {
                                 ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                             }
                         });
-            } else if (position == 4) {//扒一剧
+            } else if (position == 5) {//扒一剧
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
                 intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://www.ddyybb.com/");
                 startActivity(intent);
-            } else if (position == 5) {//视频解析
+            } else if (position == 6) {//视频解析
                 intent = new Intent(getActivity(), VipJiexiActivity.class);
                 startActivity(intent);
-            } else if (position == 6) {//人人视频
+            } else if (position == 7) {//人人视频
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
                 intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://m.rr.tv/");
                 startActivity(intent);
-            } else if (position == 7) {//电视直播
+            } else if (position == 8) {//电视直播
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
                 intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://m.hao5.net/");
                 startActivity(intent);
-            } else if (position == 8) {//扫一扫
+            } else if (position == 9) {//扫一扫
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                         //没有权限则申请权限
@@ -129,6 +132,8 @@ public class ToolFragment extends ImmersionFragment {
     private void initData() {
         GameBean jsq = new GameBean("计算器", R.drawable.counter_logo);
         gameBeans.add(jsq);
+        GameBean chjsq = new GameBean("称呼计算器", R.drawable.icon_chenghu);
+        gameBeans.add(chjsq);
         GameBean znz = new GameBean("指南针", R.drawable.icon_compass);
         gameBeans.add(znz);
         GameBean lpsz = new GameBean("轮盘时钟", R.drawable.icon_lp_shizhong);

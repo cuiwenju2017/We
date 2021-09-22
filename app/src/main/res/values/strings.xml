@@ -37,13 +37,11 @@
     <string name="filter_skinwhiten">美白</string>
     <string name="filter_crayon">蜡笔</string>
     <string name="filter_sketch">素描</string>
-
     <string name="edit_filter">滤镜</string>
     <string name="edit_edit">编辑</string>
     <string name="edit_adds">装饰</string>
     <string name="edit_frame">边框</string>
     <string name="edit_beauty">美颜</string>
-
     <string name="edit_contrast">对比度</string>
     <string name="edit_exposure">曝光</string>
     <string name="edit_vibrance">自然饱和度</string>
