@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
@@ -15,16 +15,14 @@
             android:id="@+id/result_text"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_gravity="end"
+            android:gravity="bottom|end"
             android:layout_weight="1"
             android:background="@color/colorTransparent"
             android:editable="false"
             android:padding="20dp"
-            android:singleLine="true"
             android:text="0"
-            android:textAlignment="textEnd"
             android:textColor="@color/colorWhite"
-            android:textSize="30sp"
+            android:textSize="26sp"
             android:textStyle="bold" />
 
         <TableLayout

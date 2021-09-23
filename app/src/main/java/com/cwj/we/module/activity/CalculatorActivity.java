@@ -1,6 +1,5 @@
 package com.cwj.we.module.activity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,6 +12,8 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.gyf.immersionbar.ImmersionBar;
+
+import java.math.BigDecimal;
 
 import butterknife.BindView;
 
@@ -181,7 +182,6 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
      */
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             /**
              * 数字
@@ -234,16 +234,13 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                  * 否 添加运算符
                  */
                 if (!existedText.contains("e")) {
-
                     if (judgeExpression()) {
                         existedText = getResult();
                         if (existedText.equals("error")) {
-
                         } else {
                             existedText += "+";
                         }
                     } else {
-
                         if (isCounted) {
                             isCounted = false;
                         }
@@ -261,10 +258,8 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                 } else {
                     existedText = "0";
                 }
-
                 break;
             case R.id.subtract_btn:
-
                 if (!existedText.contains("e")) {
                     if (judgeExpression()) {
                         existedText = getResult();
@@ -274,13 +269,11 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                             existedText += "-";
                         }
                     } else {
-
                         if (isCounted) {
                             isCounted = false;
                         }
 
                         if ((existedText.substring(existedText.length() - 1)).equals("+")) {
-//                    Log.d("Anonymous", "onClick: " + "进入减法方法");
                             existedText = existedText.replace("+", "-");
                         } else if ((existedText.substring(existedText.length() - 1)).equals("×")) {
                             existedText = existedText.replace("×", "-");
@@ -295,7 +288,6 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.multiply_btn:
-
                 if (!existedText.contains("e")) {
                     if (judgeExpression()) {
                         existedText = getResult();
@@ -304,9 +296,7 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                         } else {
                             existedText += "×";
                         }
-
                     } else {
-
                         if (isCounted) {
                             isCounted = false;
                         }
@@ -326,16 +316,13 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                 }
                 break;
             case R.id.divide_btn:
-
                 if (!existedText.contains("e")) {
                     if (judgeExpression()) {
                         existedText = getResult();
                         if (existedText.equals("error")) {
-
                         } else {
                             existedText += "÷";
                         }
-
                     } else {
 
                         if (isCounted) {
@@ -374,7 +361,6 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                  *   字符串置为 0.
                  */
                 if (!isCounted) {
-
                     if (existedText.contains("+") || existedText.contains("-") ||
                             existedText.contains("×") || existedText.contains("÷")) {
 
@@ -394,13 +380,9 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                             param1 = existedText.substring(0, existedText.indexOf("÷"));
                             param2 = existedText.substring(existedText.indexOf("÷") + 1);
                         }
-                        Log.d("Anonymous param1", param1);
-                        Log.d("Anonymous param2", param2);
 
                         boolean isContainedDot = param2.contains(".");
-                        if (param2.length() >= 9) {
-
-                        } else if (!isContainedDot) {
+                        if (!isContainedDot) {
                             if (param2.equals("")) {
                                 existedText += "0.";
                             } else {
@@ -411,9 +393,7 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                         }
                     } else {
                         boolean isContainedDot = existedText.contains(".");
-                        if (existedText.length() >= 9) {
-
-                        } else if (!isContainedDot) {
+                        if (!isContainedDot) {
                             existedText += ".";
                         } else {
                             return;
@@ -425,8 +405,6 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                     existedText = "0.";
                     isCounted = false;
                 }
-
-
                 break;
             case R.id.percent_btn:
                 /**
@@ -443,7 +421,6 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                 if (existedText.equals("error")) {
 
                 } else {
-
                     getCondition();
 
                     if (startWithOperator || startWithSubtract || noStartWithOperator) {
@@ -488,7 +465,12 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
         /**
          * 设置显示
          */
-        mResultText.setText(existedText);
+        if (existedText.indexOf("e") != -1 || existedText.indexOf("E") != -1) {//是科学计数法时
+            BigDecimal bd = new BigDecimal(existedText);
+            mResultText.setText(bd.toPlainString());
+        } else {//其他
+            mResultText.setText(existedText);
+        }
     }
 
     /**
@@ -520,7 +502,6 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
          * 没有运算符，则把已经存在的数据再传出去
          */
         if (startWithOperator || noStartWithOperator || startWithSubtract) {
-
             if (existedText.contains("+")) {
                 /**
                  * 先获取两个参数
@@ -541,27 +522,40 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                     arg1 = Double.parseDouble(param1);
                     arg2 = Double.parseDouble(param2);
                     result = arg1 + arg2;
-                    tempResult = String.format("%f", result);
-                    tempResult = subZeroAndDot(tempResult);
+                    tempResult = subZeroAndDot(String.valueOf(result));
                 }
-
             } else if (existedText.contains("×")) {
-
                 param1 = existedText.substring(0, existedText.indexOf("×"));
                 param2 = existedText.substring(existedText.indexOf("×") + 1);
 
                 if (param2.equals("")) {
                     tempResult = existedText;
                 } else {
-                    arg1 = Double.parseDouble(param1);
-                    arg2 = Double.parseDouble(param2);
-                    result = arg1 * arg2;
-                    tempResult = String.format("%f", result);
-                    tempResult = subZeroAndDot(tempResult);
+                    //获取小数点的位置
+                    int bitPos1 = param1.indexOf(".");
+                    //字符串总长度减去小数点位置，再减去1，就是小数位数
+                    int numOfBits1 = param1.length() - bitPos1 - 1;
+
+                    //获取小数点的位置
+                    int bitPos2 = param2.indexOf(".");
+                    //字符串总长度减去小数点位置，再减去1，就是小数位数
+                    int numOfBits2 = param2.length() - bitPos2 - 1;
+
+                    if (numOfBits1 < 3 && numOfBits2 < 3) {
+                        float arg3 = Float.parseFloat(param1);
+                        float arg4 = Float.parseFloat(param2);
+                        BigDecimal bigDecimal = new BigDecimal(arg3 * arg4);
+                        BigDecimal result2 = bigDecimal.setScale(numOfBits1 + numOfBits2, BigDecimal.ROUND_HALF_UP);
+                        tempResult = subZeroAndDot(String.valueOf(result2));
+                    } else {
+                        arg1 = Double.parseDouble(param1);
+                        arg2 = Double.parseDouble(param2);
+                        BigDecimal bigDecimal = new BigDecimal(arg1 * arg2);
+                        BigDecimal result1 = bigDecimal.setScale(numOfBits1 + numOfBits2, BigDecimal.ROUND_HALF_UP);
+                        tempResult = subZeroAndDot(String.valueOf(result1));
+                    }
                 }
-
             } else if (existedText.contains("÷")) {
-
                 param1 = existedText.substring(0, existedText.indexOf("÷"));
                 param2 = existedText.substring(existedText.indexOf("÷") + 1);
 
@@ -573,12 +567,9 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                     arg1 = Double.parseDouble(param1);
                     arg2 = Double.parseDouble(param2);
                     result = arg1 / arg2;
-                    tempResult = String.format("%f", result);
-                    tempResult = subZeroAndDot(tempResult);
+                    tempResult = subZeroAndDot(String.valueOf(result));
                 }
-
             } else if (existedText.contains("-")) {
-
                 /**
                  * 这里是以最后一个 - 号为分隔去取出两个参数
                  * 进到这个方法，必须满足有运算公式
@@ -593,30 +584,16 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                     arg1 = Double.parseDouble(param1);
                     arg2 = Double.parseDouble(param2);
                     result = arg1 - arg2;
-                    tempResult = String.format("%f", result);
-                    tempResult = subZeroAndDot(tempResult);
-                }
-
-            }
-            /**
-             * 如果数据长度大于等于10位，进行科学计数
-             *
-             * 如果有小数点，再判断小数点前是否有十个数字，有则进行科学计数
-             */
-            if (tempResult.length() >= 10) {
-                tempResult = String.format("%e", Double.parseDouble(tempResult));
-            } else if (tempResult.contains(".")) {
-                if (tempResult.substring(0, tempResult.indexOf(".")).length() >= 10) {
-                    tempResult = String.format("%e", Double.parseDouble(tempResult));
+                    tempResult = subZeroAndDot(String.valueOf(result));
                 }
             }
+            tempResult = String.valueOf(tempResult);
         } else {
             tempResult = existedText;
         }
 
         return tempResult;
     }
-
 
     /**
      * 先判断是否按过等于号
@@ -685,17 +662,9 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                     existedText += s;
                 } else {
                     if (param2.contains(".")) {
-                        if (param2.length() >= 10) {
-
-                        } else {
-                            existedText += s;
-                        }
+                        existedText += s;
                     } else {
-                        if (param2.length() >= 9) {
-
-                        } else {
-                            existedText += s;
-                        }
+                        existedText += s;
                     }
                 }
             } else {
@@ -703,32 +672,19 @@ public class CalculatorActivity extends BaseActivity implements View.OnClickList
                  * 不包括运算符时 一个数字
                  */
                 if (existedText.contains(".")) {
-                    if (existedText.length() >= 10) {
-
-                    } else {
-                        existedText += s;
-                    }
+                    existedText += s;
                 } else {
-                    if (existedText.length() >= 9) {
-
-                    } else {
-                        existedText += s;
-                    }
+                    existedText += s;
                 }
             }
 
             isCounted = false;
-
         } else {
-
             existedText = s;
             isCounted = false;
-
         }
-
         return existedText;
     }
-
 
     /**
      * 使用java正则表达式去掉多余的.与0
