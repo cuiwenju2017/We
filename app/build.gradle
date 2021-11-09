@@ -13,8 +13,8 @@ android {
         applicationId "com.cwj.we"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 63
-        versionName "1.4.13"
+        versionCode 64
+        versionName "1.4.14"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
     }
@@ -123,4 +123,7 @@ dependencies {
     implementation 'com.zly.widget:collapsed-textview:1.0.4'
     //mmkv数据存储
     implementation 'com.tencent:mmkv-static:1.2.10'
+    //camera
+    implementation 'androidx.camera:camera-core:1.0.0-rc05'
+    implementation 'androidx.camera:camera-lifecycle:1.0.0-rc05'
 }

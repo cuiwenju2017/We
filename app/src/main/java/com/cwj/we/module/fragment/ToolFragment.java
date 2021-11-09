@@ -87,13 +87,13 @@ public class ToolFragment extends ImmersionFragment {
                                 ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                             }
                         });
-            } else if (position == 5) {//扒一剧
+            } else if (position == 5) {//视频解析
+                intent = new Intent(getActivity(), VipJiexiActivity.class);
+                startActivity(intent);
+            } else if (position == 6) {//热影库
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
                 intent.putExtra("name", gameBeans.get(position).getName());
-                intent.putExtra("movieUrl", "http://www.ddyybb.com/");
-                startActivity(intent);
-            } else if (position == 6) {//视频解析
-                intent = new Intent(getActivity(), VipJiexiActivity.class);
+                intent.putExtra("movieUrl", "http://www.reyingku.cc/");
                 startActivity(intent);
             } else if (position == 7) {//人人视频
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
@@ -140,10 +140,10 @@ public class ToolFragment extends ImmersionFragment {
         gameBeans.add(lpsz);
         GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
         gameBeans.add(ljxj);
-        GameBean ddt = new GameBean("扒一剧", R.drawable.icon_byj);
-        gameBeans.add(ddt);
         GameBean spjx = new GameBean("视频解析", R.drawable.icon_byj);
         gameBeans.add(spjx);
+        GameBean ddt = new GameBean("热影库", R.drawable.icon_byj);
+        gameBeans.add(ddt);
         GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
         gameBeans.add(rrsp);
         GameBean dszb = new GameBean("电视直播", R.drawable.icon_byj);
