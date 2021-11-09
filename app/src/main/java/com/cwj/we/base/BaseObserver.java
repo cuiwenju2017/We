@@ -38,7 +38,7 @@ public abstract class BaseObserver<T> extends DisposableObserver<T> {
     public void onError(Throwable e) {
         BaseException be;
 
-        Log.i("aaa", "onError: " + e);
+        Log.i("onError", "onError: " + e);
 
         if (e != null) {
             //自定义异常

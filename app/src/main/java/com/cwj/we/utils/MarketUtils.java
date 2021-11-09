@@ -8,7 +8,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -114,7 +113,6 @@ public class MarketUtils {
             ToastUtil.showTextToast(mContext, "要跳转的应用不存在,请先安装!");
         } catch (Exception e) {
             ToastUtil.showTextToast(mContext, "" + e.getMessage());
-            Log.i("aaa", "openInstalledApp: " + e.getMessage());
         }
     }
 

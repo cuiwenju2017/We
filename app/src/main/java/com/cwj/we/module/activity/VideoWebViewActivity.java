@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -106,6 +107,8 @@ public class VideoWebViewActivity extends BaseActivity {
 
     @Override
     protected int getLayoutId() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//设置屏幕常亮
         return R.layout.activity_video_web_view;
     }
 
@@ -290,13 +293,11 @@ public class VideoWebViewActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Log.d("aaa", url);
             return super.shouldOverrideUrlLoading(view, url);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            Log.d("bbb", request.getUrl().toString());
             urlStr = request.getUrl().toString();
             return super.shouldOverrideUrlLoading(view, request);
         }
