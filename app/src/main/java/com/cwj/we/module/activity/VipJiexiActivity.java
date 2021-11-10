@@ -71,21 +71,25 @@ public class VipJiexiActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.iv_tengxun://腾讯视频
                 intent = new Intent(this, VideoWebViewActivity.class);
+                intent.putExtra("name", "腾讯视频");
                 intent.putExtra("movieUrl", "https://m.v.qq.com/");
                 startActivity(intent);
                 break;
             case R.id.iv_aiqiyi://爱奇艺
                 intent = new Intent(this, VideoWebViewActivity.class);
+                intent.putExtra("name", "爱奇艺");
                 intent.putExtra("movieUrl", "https://m.iqiyi.com/");
                 startActivity(intent);
                 break;
             case R.id.iv_youku://优酷
                 intent = new Intent(this, VideoWebViewActivity.class);
+                intent.putExtra("name", "优酷");
                 intent.putExtra("movieUrl", "https://youku.com/");
                 startActivity(intent);
                 break;
             case R.id.iv_mangguo://芒果tv
                 intent = new Intent(this, VideoWebViewActivity.class);
+                intent.putExtra("name", "芒果TV");
                 intent.putExtra("movieUrl", "https://m.mgtv.com/channel/home");
                 startActivity(intent);
                 break;

@@ -20,4 +20,10 @@
         android:title="UC浏览器打开"
         app:showAsAction="never"
         tools:ignore="DuplicateIds" />
+
+    <item
+        android:id="@+id/toolbar4"
+        android:title="复制当前链接"
+        app:showAsAction="never"
+        tools:ignore="DuplicateIds" />
 </menu>

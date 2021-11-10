@@ -55,11 +55,11 @@ public class VideoWebViewActivity extends BaseActivity {
     private WebProgress progress;
     private Toolbar toolbar;
     private String name;
-    private String urlStr;
     private Intent intent;
     private String movieUrl;
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE};
+    private ClipboardManager manager;
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -197,7 +197,7 @@ public class VideoWebViewActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!movieUrl.startsWith("http://") && !movieUrl.startsWith("https://")) { //加载的url是http/https协议地址
+        if (!movieUrl.startsWith("http://") && !movieUrl.startsWith("https://")) { //加载的url不是http/https协议地址
             getMenuInflater().inflate(R.menu.menu_toolbar_fuzhi, menu);
         } else {
             getMenuInflater().inflate(R.menu.menu_toolbar_demo, menu);
@@ -208,37 +208,42 @@ public class VideoWebViewActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.toolbar_fuzhi://复制
-                ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            case R.id.toolbar4://复制当前链接
+                manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+                manager.setPrimaryClip(ClipData.newHtmlText(null, (!webView.getUrl().startsWith("http://") && !webView.getUrl().startsWith("https://")) ? movieUrl : webView.getUrl(),
+                        null));
+                ToastUtil.showTextToast(this, "复制成功");
+                break;
+            case R.id.toolbar_fuzhi://复制内容
+                manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                 manager.setPrimaryClip(ClipData.newHtmlText(null, movieUrl, null));
                 ToastUtil.showTextToast(this, "复制成功");
                 break;
             case R.id.toolbar1://本地浏览器打开
-                if (urlStr == null) {
-                    urlStr = movieUrl;
-                }
                 intent = new Intent();
                 intent.setAction("android.intent.action.VIEW");
-                intent.setData(Uri.parse(urlStr));
+                if (!webView.getUrl().startsWith("http://") && !webView.getUrl().startsWith("https://")) { //加载的url不是http/https协议地址
+                    intent.setData(Uri.parse(movieUrl));
+                } else {
+                    intent.setData(Uri.parse(webView.getUrl()));
+                }
                 startActivity(intent);
                 break;
             case R.id.toolbar2://QQ浏览器打开
-                if (urlStr == null) {
-                    urlStr = movieUrl;
-                }
                 if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
-                    MarketUtils.getTools().openInstalledAppInURL(VideoWebViewActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", urlStr);
+                    MarketUtils.getTools().openInstalledAppInURL(VideoWebViewActivity.this,
+                            "com.tencent.mtt", "com.tencent.mtt.MainActivity",
+                            (!webView.getUrl().startsWith("http://") && !webView.getUrl().startsWith("https://")) ? movieUrl : webView.getUrl());
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
                     MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
                 }
                 break;
             case R.id.toolbar3://UC浏览器打开
-                if (urlStr == null) {
-                    urlStr = movieUrl;
-                }
                 if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
-                    MarketUtils.getTools().openInstalledAppInURL(VideoWebViewActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", urlStr);
+                    MarketUtils.getTools().openInstalledAppInURL(VideoWebViewActivity.this,
+                            "com.UCMobile", "com.UCMobile.main.UCMobile",
+                            (!webView.getUrl().startsWith("http://") && !webView.getUrl().startsWith("https://")) ? movieUrl : webView.getUrl());
                 } else {
                     //没有安装通过应用包名到应用市场搜索下载安装
                     MarketUtils.getTools().openMarket(this, "com.UCMobile");
@@ -298,7 +303,6 @@ public class VideoWebViewActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            urlStr = request.getUrl().toString();
             return super.shouldOverrideUrlLoading(view, request);
         }
 
