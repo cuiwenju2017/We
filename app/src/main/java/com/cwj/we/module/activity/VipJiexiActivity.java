@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
+import com.cwj.we.http.API;
 import com.cwj.we.utils.MarketUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -36,6 +37,8 @@ public class VipJiexiActivity extends BaseActivity {
     ImageView ivYouku;
     @BindView(R.id.iv_mangguo)
     ImageView ivMangguo;
+    @BindView(R.id.btn_open)
+    Button btnOpen;
 
     private Intent intent;
 
@@ -61,35 +64,35 @@ public class VipJiexiActivity extends BaseActivity {
                 .init();
     }
 
-    private String vip1 = "https://www.administratorw.com/index/qqvod.php?url=";
-    private String vip2 = "https://www.administratorw.com/video.php?url=";
-    private String vip3 = "http://www.82190555.com/video.php?url=";
-    private String vip4 = "http://www.sfsft.com/video.php?url=";
-
-    @OnClick({R.id.btn_jiexi, R.id.iv_tengxun, R.id.iv_aiqiyi, R.id.iv_youku, R.id.iv_mangguo})
+    @OnClick({R.id.btn_jiexi, R.id.iv_tengxun, R.id.iv_aiqiyi, R.id.iv_youku, R.id.iv_mangguo, R.id.btn_open})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.btn_open://直接打开网址
+                if (TextUtils.isEmpty(etUrl.getText().toString())) {
+                    ToastUtil.showTextToast(this, "视频地址不能为空");
+                } else {
+                    intent = new Intent(this, VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", etUrl.getText().toString());
+                    startActivity(intent);
+                }
+                break;
             case R.id.iv_tengxun://腾讯视频
                 intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("name", "腾讯视频");
                 intent.putExtra("movieUrl", "https://m.v.qq.com/");
                 startActivity(intent);
                 break;
             case R.id.iv_aiqiyi://爱奇艺
                 intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("name", "爱奇艺");
                 intent.putExtra("movieUrl", "https://m.iqiyi.com/");
                 startActivity(intent);
                 break;
             case R.id.iv_youku://优酷
                 intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("name", "优酷");
                 intent.putExtra("movieUrl", "https://youku.com/");
                 startActivity(intent);
                 break;
             case R.id.iv_mangguo://芒果tv
                 intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("name", "芒果TV");
                 intent.putExtra("movieUrl", "https://m.mgtv.com/channel/home");
                 startActivity(intent);
                 break;
@@ -109,13 +112,13 @@ public class VipJiexiActivity extends BaseActivity {
                                                                 intent = new Intent();
                                                                 intent.setAction("android.intent.action.VIEW");
                                                                 if (position1 == 0) {
-                                                                    intent.setData(Uri.parse(vip1 + etUrl.getText().toString()));
+                                                                    intent.setData(Uri.parse(API.vip1 + etUrl.getText().toString()));
                                                                 } else if (position1 == 1) {
-                                                                    intent.setData(Uri.parse(vip2 + etUrl.getText().toString()));
+                                                                    intent.setData(Uri.parse(API.vip2 + etUrl.getText().toString()));
                                                                 } else if (position1 == 2) {
-                                                                    intent.setData(Uri.parse(vip3 + etUrl.getText().toString()));
+                                                                    intent.setData(Uri.parse(API.vip3 + etUrl.getText().toString()));
                                                                 } else if (position1 == 3) {
-                                                                    intent.setData(Uri.parse(vip4 + etUrl.getText().toString()));
+                                                                    intent.setData(Uri.parse(API.vip4 + etUrl.getText().toString()));
                                                                 }
                                                                 startActivity(intent);
                                                             })
@@ -126,13 +129,13 @@ public class VipJiexiActivity extends BaseActivity {
                                                         .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
                                                                 (position1, text1) -> {
                                                                     if (position1 == 0) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", vip1 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip1 + etUrl.getText().toString());
                                                                     } else if (position1 == 1) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", vip2 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip2 + etUrl.getText().toString());
                                                                     } else if (position1 == 2) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", vip3 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip3 + etUrl.getText().toString());
                                                                     } else if (position1 == 3) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", vip4 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip4 + etUrl.getText().toString());
                                                                     }
                                                                 })
                                                         .show();
@@ -146,13 +149,13 @@ public class VipJiexiActivity extends BaseActivity {
                                                         .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
                                                                 (position1, text1) -> {
                                                                     if (position1 == 0) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", vip1 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
                                                                     } else if (position1 == 1) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", vip1 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
                                                                     } else if (position1 == 2) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", vip1 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
                                                                     } else if (position1 == 3) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", vip1 + etUrl.getText().toString());
+                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
                                                                     }
                                                                 })
                                                         .show();
@@ -167,13 +170,13 @@ public class VipJiexiActivity extends BaseActivity {
                                                                 intent = new Intent(this, VideoWebViewActivity.class);
                                                                 intent.putExtra("name", "视频解析");
                                                                 if (position1 == 0) {
-                                                                    intent.putExtra("movieUrl", vip1 + etUrl.getText().toString());
+                                                                    intent.putExtra("movieUrl", API.vip1 + etUrl.getText().toString());
                                                                 } else if (position1 == 1) {
-                                                                    intent.putExtra("movieUrl", vip2 + etUrl.getText().toString());
+                                                                    intent.putExtra("movieUrl", API.vip2 + etUrl.getText().toString());
                                                                 } else if (position1 == 2) {
-                                                                    intent.putExtra("movieUrl", vip3 + etUrl.getText().toString());
+                                                                    intent.putExtra("movieUrl", API.vip3 + etUrl.getText().toString());
                                                                 } else if (position1 == 3) {
-                                                                    intent.putExtra("movieUrl", vip4 + etUrl.getText().toString());
+                                                                    intent.putExtra("movieUrl", API.vip4 + etUrl.getText().toString());
                                                                 }
                                                                 startActivity(intent);
                                                             })

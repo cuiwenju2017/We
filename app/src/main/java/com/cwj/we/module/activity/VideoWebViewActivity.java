@@ -21,9 +21,11 @@ import androidx.appcompat.widget.Toolbar;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
+import com.cwj.we.http.API;
 import com.cwj.we.utils.MarketUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
+import com.lxj.xpopup.XPopup;
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
 import com.tencent.smtt.sdk.WebView;
@@ -208,6 +210,92 @@ public class VideoWebViewActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.toolbar5://解析
+                // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
+                new XPopup.Builder(this)
+                        .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开", "应用内打开"},
+                                (position, text) -> {
+                                    if (position == 0) {
+                                        // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
+                                        new XPopup.Builder(this)
+                                                .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
+                                                        (position1, text1) -> {
+                                                            intent = new Intent();
+                                                            intent.setAction("android.intent.action.VIEW");
+                                                            if (position1 == 0) {
+                                                                intent.setData(Uri.parse(API.vip1 + webView.getUrl()));
+                                                            } else if (position1 == 1) {
+                                                                intent.setData(Uri.parse(API.vip2 + webView.getUrl()));
+                                                            } else if (position1 == 2) {
+                                                                intent.setData(Uri.parse(API.vip3 + webView.getUrl()));
+                                                            } else if (position1 == 3) {
+                                                                intent.setData(Uri.parse(API.vip4 + webView.getUrl()));
+                                                            }
+                                                            startActivity(intent);
+                                                        })
+                                                .show();
+                                    } else if (position == 1) {
+                                        if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
+                                            new XPopup.Builder(this)
+                                                    .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
+                                                            (position1, text1) -> {
+                                                                if (position1 == 0) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip1 + webView.getUrl());
+                                                                } else if (position1 == 1) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip2 + webView.getUrl());
+                                                                } else if (position1 == 2) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip3 + webView.getUrl());
+                                                                } else if (position1 == 3) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip4 + webView.getUrl());
+                                                                }
+                                                            })
+                                                    .show();
+                                        } else {
+                                            //没有安装通过应用包名到应用市场搜索下载安装
+                                            MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
+                                        }
+                                    } else if (position == 2) {
+                                        if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
+                                            new XPopup.Builder(this)
+                                                    .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
+                                                            (position1, text1) -> {
+                                                                if (position1 == 0) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + webView.getUrl());
+                                                                } else if (position1 == 1) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + webView.getUrl());
+                                                                } else if (position1 == 2) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + webView.getUrl());
+                                                                } else if (position1 == 3) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + webView.getUrl());
+                                                                }
+                                                            })
+                                                    .show();
+                                        } else {
+                                            //没有安装通过应用包名到应用市场搜索下载安装
+                                            MarketUtils.getTools().openMarket(this, "com.UCMobile");
+                                        }
+                                    } else if (position == 3) {
+                                        new XPopup.Builder(this)
+                                                .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
+                                                        (position1, text1) -> {
+                                                            intent = new Intent(this, VideoWebViewActivity.class);
+                                                            intent.putExtra("name", "视频解析");
+                                                            if (position1 == 0) {
+                                                                intent.putExtra("movieUrl", API.vip1 + webView.getUrl());
+                                                            } else if (position1 == 1) {
+                                                                intent.putExtra("movieUrl", API.vip2 + webView.getUrl());
+                                                            } else if (position1 == 2) {
+                                                                intent.putExtra("movieUrl", API.vip3 + webView.getUrl());
+                                                            } else if (position1 == 3) {
+                                                                intent.putExtra("movieUrl", API.vip4 + webView.getUrl());
+                                                            }
+                                                            startActivity(intent);
+                                                        })
+                                                .show();
+                                    }
+                                })
+                        .show();
+                break;
             case R.id.toolbar4://复制当前链接
                 manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
                 manager.setPrimaryClip(ClipData.newHtmlText(null, (!webView.getUrl().startsWith("http://") && !webView.getUrl().startsWith("https://")) ? movieUrl : webView.getUrl(),
@@ -349,6 +437,7 @@ public class VideoWebViewActivity extends BaseActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
+            toolbar.setTitle(title);
         }
 
         @Override

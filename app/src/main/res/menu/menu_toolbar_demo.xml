@@ -26,4 +26,10 @@
         android:title="复制当前链接"
         app:showAsAction="never"
         tools:ignore="DuplicateIds" />
+
+    <item
+        android:id="@+id/toolbar5"
+        android:title="解析"
+        app:showAsAction="never"
+        tools:ignore="DuplicateIds" />
 </menu>

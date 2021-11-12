@@ -119,17 +119,14 @@ public class ToolFragment extends BaseFragment {
                 startActivity(intent);
             } else if (position == 6) {//热影库
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://www.reyingku.cc/");
                 startActivity(intent);
             } else if (position == 7) {//人人视频
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://m.rr.tv/");
                 startActivity(intent);
             } else if (position == 8) {//电视直播
                 intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("name", gameBeans.get(position).getName());
                 intent.putExtra("movieUrl", "http://m.hao5.net/");
                 startActivity(intent);
             } else if (position == 9) {//扫一扫
