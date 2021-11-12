@@ -151,12 +151,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="4a3033d5b5a2d77d1bec36d7ecd9f7aa" /><!--高德地图开发者申请的key-->
-
-        <service android:name="com.amap.api.location.APSService" /><!--高德地图Service-->
     </application>
 
 </manifest>
