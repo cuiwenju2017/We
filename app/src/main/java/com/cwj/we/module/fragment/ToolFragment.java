@@ -4,13 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseFragment;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.CompassActivity;
@@ -29,7 +25,6 @@ import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
-import com.gyf.immersionbar.components.ImmersionFragment;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.permissionx.guolindev.PermissionX;
@@ -38,15 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 工具
  */
-public class ToolFragment extends ImmersionFragment {
+public class ToolFragment extends BaseFragment {
 
-    Unbinder unbinder;
     @BindView(R.id.rv_game)
     RecyclerView rvGame;
 
@@ -55,12 +47,47 @@ public class ToolFragment extends ImmersionFragment {
     private int CAMERA_REQ_CODE = 201;
     private int REQUEST_CODE_SCAN_ONE = 202;
 
-    @Nullable
+    private void doCode() {
+        //调用扫码接口，构建扫码能力
+        HmsScanAnalyzerOptions options = new HmsScanAnalyzerOptions.Creator().create();
+        ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN_ONE, options);
+    }
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_tool, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        initData();
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_tool;
+    }
+
+    @Override
+    protected void initView() {
+        GameBean jsq = new GameBean("计算器", R.drawable.counter_logo);
+        gameBeans.add(jsq);
+        GameBean chjsq = new GameBean("称呼计算器", R.drawable.icon_chenghu);
+        gameBeans.add(chjsq);
+        GameBean znz = new GameBean("指南针", R.drawable.icon_compass);
+        gameBeans.add(znz);
+        GameBean lpsz = new GameBean("轮盘时钟", R.drawable.icon_lp_shizhong);
+        gameBeans.add(lpsz);
+        GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
+        gameBeans.add(ljxj);
+        GameBean spjx = new GameBean("视频解析", R.drawable.icon_byj);
+        gameBeans.add(spjx);
+        GameBean ddt = new GameBean("热影库", R.drawable.icon_byj);
+        gameBeans.add(ddt);
+        GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
+        gameBeans.add(rrsp);
+        GameBean dszb = new GameBean("电视直播", R.drawable.icon_byj);
+        gameBeans.add(dszb);
+        GameBean sys = new GameBean("扫一扫", R.drawable.icon_qr_code);
+        gameBeans.add(sys);
+    }
+
+    protected void initData() {
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvGame.setLayoutManager(layoutManager);
@@ -120,36 +147,6 @@ public class ToolFragment extends ImmersionFragment {
                 }
             }
         });
-        return view;
-    }
-
-    private void doCode() {
-        //调用扫码接口，构建扫码能力
-        HmsScanAnalyzerOptions options = new HmsScanAnalyzerOptions.Creator().create();
-        ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN_ONE, options);
-    }
-
-    private void initData() {
-        GameBean jsq = new GameBean("计算器", R.drawable.counter_logo);
-        gameBeans.add(jsq);
-        GameBean chjsq = new GameBean("称呼计算器", R.drawable.icon_chenghu);
-        gameBeans.add(chjsq);
-        GameBean znz = new GameBean("指南针", R.drawable.icon_compass);
-        gameBeans.add(znz);
-        GameBean lpsz = new GameBean("轮盘时钟", R.drawable.icon_lp_shizhong);
-        gameBeans.add(lpsz);
-        GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
-        gameBeans.add(ljxj);
-        GameBean spjx = new GameBean("视频解析", R.drawable.icon_byj);
-        gameBeans.add(spjx);
-        GameBean ddt = new GameBean("热影库", R.drawable.icon_byj);
-        gameBeans.add(ddt);
-        GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
-        gameBeans.add(rrsp);
-        GameBean dszb = new GameBean("电视直播", R.drawable.icon_byj);
-        gameBeans.add(dszb);
-        GameBean sys = new GameBean("扫一扫", R.drawable.icon_qr_code);
-        gameBeans.add(sys);
     }
 
     @Override

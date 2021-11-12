@@ -4,10 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -15,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseFragment;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.module.activity.AddTieZiActivity;
 import com.cwj.we.module.adapter.MyAdapter;
@@ -22,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.gyf.immersionbar.ImmersionBar;
-import com.gyf.immersionbar.components.ImmersionFragment;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,38 +29,38 @@ import java.util.List;
 import java.util.Objects;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 
 /**
  * 圈子
  */
-public class QuanziFragment extends ImmersionFragment {
+public class QuanziFragment extends BaseFragment {
 
-    Unbinder unbinder;
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
     @BindView(R.id.vp2)
     ViewPager2 vp2;
-    List<String> titles = new ArrayList<>();
-    List<Fragment> fragments = new ArrayList<>();
     @BindView(R.id.fab_add)
     FloatingActionButton fabAdd;
+
     private ViewHolder holder = null;
     private Intent intent;
+    List<String> titles = new ArrayList<>();
+    List<Fragment> fragments = new ArrayList<>();
     private int ADD_TIEZI = 201;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_quanzi, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        initData();
-        return view;
+    protected BasePresenter createPresenter() {
+        return null;
     }
 
-    private void initData() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_quanzi;
+    }
+
+    @Override
+    protected void initView() {
         //添加标题
         titles.add("段子");
         titles.add("树洞");
@@ -155,6 +153,10 @@ public class QuanziFragment extends ImmersionFragment {
 
             }
         });
+    }
+
+    protected void initData() {
+
     }
 
     @OnClick({R.id.fab_add})

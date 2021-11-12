@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -85,6 +87,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     private String string;
     private int REQUEST_SD = 200;
     private int REQUEST_SHARE = 202;
+    private static final int REQUEST_LOCATION = 203;
     private LatestBean updataBean;
     //这个是你的包名
     private static final String apkName = "yilu";
@@ -114,6 +117,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
         tvUsername.setText(username);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void initData() {
     }

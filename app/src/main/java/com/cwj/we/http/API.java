@@ -15,15 +15,13 @@ public class API {
     public static final String BASE_URL_Qingyunke = "http://api.qingyunke.com/";
     public static final MMKV kv = MMKV.defaultMMKV();
 
-    public interface UPDATAApi {
+    public interface Api {
         //检测版本更新
         @GET("apps/latest/{id}")
         Observable<LatestBean> latest(@Path("id") String id, @Query("api_token") String api_token);
-    }
 
-    public interface QingyunkeApi {
         //智能机器人
-        @GET("api.php?key=free&appid=0")
+        @GET(BASE_URL_Qingyunke + "api.php?key=free&appid=0")
         Observable<MsgBean> msg(@Query("msg") String msg);
     }
 }

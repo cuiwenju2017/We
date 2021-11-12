@@ -9,12 +9,9 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -22,12 +19,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseFragment;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.Day;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.User;
@@ -40,8 +38,8 @@ import com.cwj.we.utils.PictureSelectorUtils;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
-import com.gyf.immersionbar.components.ImmersionFragment;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -49,9 +47,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
@@ -63,9 +59,8 @@ import me.samlss.broccoli.PlaceholderParameter;
 /**
  * 我们
  */
-public class UsFragment extends ImmersionFragment {
+public class UsFragment extends BaseFragment {
 
-    Unbinder unbinder;
     @BindView(R.id.tv)
     TextView tv;
     @BindView(R.id.tv_time)
@@ -120,17 +115,7 @@ public class UsFragment extends ImmersionFragment {
     private boolean isFrist = true;
     private boolean isFrist2 = true;
     private Broccoli mBroccoli;
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_us, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        queryPostAuthor();
-        initView();
-        return view;
-    }
+    private BasePopupView popupView;
 
     private void initPlaceholders() {
         mBroccoli = new Broccoli();
@@ -240,8 +225,24 @@ public class UsFragment extends ImmersionFragment {
         }
     }
 
-    private void initView() {
+    @Override
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_us;
+    }
+
+    protected void initView() {
+        queryPostAuthor();
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     private Handler handler = new Handler();
@@ -415,7 +416,6 @@ public class UsFragment extends ImmersionFragment {
         }
     }
 
-
     public static final int REQUEST_SEARCH = 100;
     private static final int REQUEST_CODE_SELECT_USER_ICON = 100;
 
@@ -460,7 +460,24 @@ public class UsFragment extends ImmersionFragment {
                             .show();
                 }
                 break;
+            default:
+                break;
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

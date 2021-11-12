@@ -15,7 +15,7 @@ public class JiqirenPrensenter extends BasePresenter<JiqirenView> {
      * @param msg
      */
     public void msg(String msg) {
-        addDisposable(qingyunkeApi.msg(msg), new BaseObserver<MsgBean>() {
+        addDisposable(apiServer.msg(msg), new BaseObserver<MsgBean>() {
             @Override
             public void onSuccess(MsgBean bean) {
                 baseView.msgData(bean);

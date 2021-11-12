@@ -15,13 +15,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
  * @author XuCanyou666
  * @date 2020/2/8
  */
-
-
 public class RetrofitService {
 
     private volatile static RetrofitService apiRetrofit;
-    private API.UPDATAApi apiServer;
-    private API.QingyunkeApi qingyunkeApi;
+    private API.Api apiServer;
 
     /**
      * 单例调用
@@ -44,12 +41,8 @@ public class RetrofitService {
      *
      * @return api对象
      */
-    public API.UPDATAApi getApiService() {
+    public API.Api getApiService() {
         return apiServer;
-    }
-
-    public API.QingyunkeApi getQingyunkeApi() {
-        return qingyunkeApi;
     }
 
     /**
@@ -75,15 +68,6 @@ public class RetrofitService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(API.BASE_URL_UPDATA)
                 .build();
-        apiServer = retrofit.create(API.UPDATAApi.class);
-
-        Retrofit retrofitQingyunke = new Retrofit.Builder()
-                .client(okHttpClient)
-                .addConverterFactory(BaseConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(API.BASE_URL_Qingyunke)
-                .build();
-        qingyunkeApi = retrofitQingyunke.create(API.QingyunkeApi.class);
+        apiServer = retrofit.create(API.Api.class);
     }
-
 }

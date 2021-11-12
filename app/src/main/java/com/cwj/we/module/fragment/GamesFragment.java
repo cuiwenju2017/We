@@ -1,18 +1,14 @@
 package com.cwj.we.module.fragment;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cwj.we.R;
+import com.cwj.we.base.BaseFragment;
+import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.AircraftBattleActivity;
 import com.cwj.we.module.activity.ELuoSiFangKuaiActivity;
@@ -22,33 +18,60 @@ import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.jiqiren.JiqirenActivity;
 import com.gyf.immersionbar.ImmersionBar;
-import com.gyf.immersionbar.components.ImmersionFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * 小游戏
  */
-public class GamesFragment extends ImmersionFragment {
+public class GamesFragment extends BaseFragment {
 
-    Unbinder unbinder;
     @BindView(R.id.rv_game)
     RecyclerView rvGame;
 
     private List<GameBean> gameBeans = new ArrayList<>();
     private Intent intent;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_games, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        initData();
+    protected BasePresenter createPresenter() {
+        return null;
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_games;
+    }
+
+    @Override
+    protected void initView() {
+        GameBean gdqq = new GameBean("滚动的球球", R.drawable.loader);
+        gameBeans.add(gdqq);
+        GameBean fkyx = new GameBean("方块英雄", R.drawable.icon_fangkuaiyingxiong);
+        gameBeans.add(fkyx);
+        GameBean fjdz = new GameBean("飞机大战", R.drawable.plane);
+        gameBeans.add(fjdz);
+        GameBean pt = new GameBean("拼图", R.drawable.bb);
+        gameBeans.add(pt);
+        GameBean wzq = new GameBean("五子棋", R.drawable.chess);
+        gameBeans.add(wzq);
+        GameBean xmtt = new GameBean("熊猫弹跳", R.drawable.panda_bounce);
+        gameBeans.add(xmtt);
+        GameBean dfz = new GameBean("叠房子", R.drawable.diefangzi);
+        gameBeans.add(dfz);
+        GameBean mfyx = new GameBean("魔方游戏", R.drawable.mofantg);
+        gameBeans.add(mfyx);
+        GameBean xbw = new GameBean("小霸王", R.drawable.icon_xbw);
+        gameBeans.add(xbw);
+        GameBean zhinengjiqiren = new GameBean("智能机器人", R.drawable.icon_jiqiren);
+        gameBeans.add(zhinengjiqiren);
+        GameBean eluosifangkuan = new GameBean("俄罗斯方块", R.drawable.icon_eluosifangkuai);
+        gameBeans.add(eluosifangkuan);
+    }
+
+    protected void initData() {
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rvGame.setLayoutManager(layoutManager);
@@ -95,33 +118,6 @@ public class GamesFragment extends ImmersionFragment {
                 startActivity(intent);
             }
         });
-
-        return view;
-    }
-
-    private void initData() {
-        GameBean gdqq = new GameBean("滚动的球球", R.drawable.loader);
-        gameBeans.add(gdqq);
-        GameBean fkyx = new GameBean("方块英雄", R.drawable.icon_fangkuaiyingxiong);
-        gameBeans.add(fkyx);
-        GameBean fjdz = new GameBean("飞机大战", R.drawable.plane);
-        gameBeans.add(fjdz);
-        GameBean pt = new GameBean("拼图", R.drawable.bb);
-        gameBeans.add(pt);
-        GameBean wzq = new GameBean("五子棋", R.drawable.chess);
-        gameBeans.add(wzq);
-        GameBean xmtt = new GameBean("熊猫弹跳", R.drawable.panda_bounce);
-        gameBeans.add(xmtt);
-        GameBean dfz = new GameBean("叠房子", R.drawable.diefangzi);
-        gameBeans.add(dfz);
-        GameBean mfyx = new GameBean("魔方游戏", R.drawable.mofantg);
-        gameBeans.add(mfyx);
-        GameBean xbw = new GameBean("小霸王", R.drawable.icon_xbw);
-        gameBeans.add(xbw);
-        GameBean zhinengjiqiren = new GameBean("智能机器人", R.drawable.icon_jiqiren);
-        gameBeans.add(zhinengjiqiren);
-        GameBean eluosifangkuan = new GameBean("俄罗斯方块", R.drawable.icon_eluosifangkuai);
-        gameBeans.add(eluosifangkuan);
     }
 
     @Override

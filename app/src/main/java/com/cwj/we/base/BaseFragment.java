@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import com.gyf.immersionbar.components.ImmersionFragment;
 import com.yechaoa.yutils.ActivityUtil;
 
 import butterknife.ButterKnife;
@@ -20,9 +20,7 @@ import butterknife.Unbinder;
  * @author XuCanyou666
  * @date 2020/2/7
  */
-
-
-public abstract class BaseFragment<P extends BasePresenter> extends Fragment implements BaseView {
+public abstract class BaseFragment<P extends BasePresenter> extends ImmersionFragment implements BaseView {
 
     private Unbinder unbinder;
     protected Context mContext;

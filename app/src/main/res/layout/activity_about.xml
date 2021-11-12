@@ -68,7 +68,7 @@
                 android:id="@+id/rl_check_updates"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/ripple_water_more"
                 android:clickable="true">
 
@@ -94,7 +94,7 @@
                 android:id="@+id/rl_share"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/ripple_water_more"
                 android:clickable="true">
 
@@ -120,7 +120,7 @@
                 android:id="@+id/rl_change_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/ripple_water_more"
                 android:clickable="true">
 
@@ -146,7 +146,7 @@
                 android:id="@+id/rl_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/ripple_water_more"
                 android:clickable="true">
 
@@ -172,7 +172,7 @@
                 android:id="@+id/rl_logout"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="1dp"
                 android:background="@drawable/ripple_water_more"
                 android:clickable="true">
 
