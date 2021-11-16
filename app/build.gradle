@@ -96,8 +96,7 @@ dependencies {
     //recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     //下载更新
-    implementation 'cn.yc:YCUpdateLib:1.1.0'
-    api 'com.liulishuo.filedownloader:library:1.7.5'
+    implementation 'com.github.azhon:AppUpdate:3.0.5'
     //bugly异常上报
     implementation 'com.tencent.bugly:crashreport:3.2.3'
     //滤镜相机

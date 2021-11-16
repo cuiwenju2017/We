@@ -25,6 +25,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.azhon.appupdate.config.UpdateConfiguration;
+import com.azhon.appupdate.manager.DownloadManager;
 import com.bumptech.glide.Glide;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
@@ -44,9 +46,6 @@ import com.huawei.hms.ml.scan.HmsScan;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
-import com.ycbjie.ycupdatelib.AppUpdateUtils;
-import com.ycbjie.ycupdatelib.PermissionUtils;
-import com.ycbjie.ycupdatelib.UpdateFragment;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -61,8 +60,6 @@ import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
-
-import static com.liulishuo.filedownloader.BuildConfig.APPLICATION_ID;
 
 public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeView {
 
@@ -337,30 +334,20 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
 
     private void updata() {
         if (getLocalVersion(HomeActivity.this) < Integer.parseInt(updataBean.getBuild())) {
-            PermissionUtils.init(this);
-            boolean granted = PermissionUtils.isGranted(mPermission);
-            if (!granted) {
-                PermissionUtils permission = PermissionUtils.permission(mPermission);
-                permission.callback(new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        if (basePopupView == null) {
-                            presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
-                        }
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        PermissionUtils.openAppSettings();
-                        ToastUtil.showTextToast(HomeActivity.this, "请允许存储权限");
-                    }
-                });
-                permission.request();
-            } else {
-                //设置自定义下载文件路径
-                AppUpdateUtils.APP_UPDATE_DOWN_APK_PATH = "apk" + File.separator + "downApk";
-                UpdateFragment.showFragment(this, false, string, apkName, updataBean.getChangelog(), APPLICATION_ID, null);
-            }
+            UpdateConfiguration configuration = new UpdateConfiguration();
+            configuration.setForcedUpgrade(false);//强制更新
+            DownloadManager manager = DownloadManager.getInstance(this);
+            manager.setApkName("we.apk")
+                    .setApkSize(updataBean.getBinary().getFsize() / 1024 / 1024 + "." + updataBean.getBinary().getFsize() / 1024 % 1024)
+                    .setApkUrl(string)
+                    .setSmallIcon(R.drawable.logo)
+                    //非必须参数
+                    .setConfiguration(configuration)
+                    //设置了此参数，那么会自动判断是否需要更新弹出提示框
+                    .setApkVersionCode(Integer.parseInt(updataBean.getBuild()))
+                    .setApkVersionName(updataBean.getVersionShort())
+                    .setApkDescription(updataBean.getChangelog())
+                    .download();
         }
     }
 

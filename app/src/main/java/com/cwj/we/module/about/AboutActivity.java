@@ -24,7 +24,8 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.cwj.we.BuildConfig;
+import com.azhon.appupdate.config.UpdateConfiguration;
+import com.azhon.appupdate.manager.DownloadManager;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.LatestBean;
@@ -44,11 +45,6 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.animator.PopupAnimator;
 import com.lxj.xpopup.core.BasePopupView;
 import com.lxj.xpopup.core.CenterPopupView;
-import com.ycbjie.ycupdatelib.AppUpdateUtils;
-import com.ycbjie.ycupdatelib.PermissionUtils;
-import com.ycbjie.ycupdatelib.UpdateFragment;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -357,28 +353,20 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
 
     private void updata() {
         if (getLocalVersion(AboutActivity.this) < Integer.parseInt(updataBean.getBuild())) {
-            PermissionUtils.init(this);
-            boolean granted = PermissionUtils.isGranted(mPermission);
-            if (!granted) {
-                PermissionUtils permission = PermissionUtils.permission(mPermission);
-                permission.callback(new PermissionUtils.SimpleCallback() {
-                    @Override
-                    public void onGranted() {
-                        presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
-                    }
-
-                    @Override
-                    public void onDenied() {
-                        PermissionUtils.openAppSettings();
-                        ToastUtil.showTextToast(AboutActivity.this, "请允许存储权限");
-                    }
-                });
-                permission.request();
-            } else {
-                //设置自定义下载文件路径
-                AppUpdateUtils.APP_UPDATE_DOWN_APK_PATH = "apk" + File.separator + "downApk";
-                UpdateFragment.showFragment(this, false, string, apkName, updataBean.getChangelog(), BuildConfig.APPLICATION_ID, null);
-            }
+            UpdateConfiguration configuration = new UpdateConfiguration();
+            configuration.setForcedUpgrade(false);//强制更新
+            DownloadManager manager = DownloadManager.getInstance(this);
+            manager.setApkName("we.apk")
+                    .setApkSize(updataBean.getBinary().getFsize() / 1024 / 1024 + "." + updataBean.getBinary().getFsize() / 1024 % 1024)
+                    .setApkUrl(string)
+                    .setSmallIcon(R.drawable.logo)
+                    //非必须参数
+                    .setConfiguration(configuration)
+                    //设置了此参数，那么会自动判断是否需要更新弹出提示框
+                    .setApkVersionCode(Integer.parseInt(updataBean.getBuild()))
+                    .setApkVersionName(updataBean.getVersionShort())
+                    .setApkDescription(updataBean.getChangelog())
+                    .download();
         } else {
             ToastUtil.showTextToast(AboutActivity.this, "已是最新版本");
         }

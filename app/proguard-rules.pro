@@ -77,3 +77,6 @@
 #导航
 -keep class com.amap.api.navi.**{*;}
 -keep class com.autonavi.**{*;}
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Service
