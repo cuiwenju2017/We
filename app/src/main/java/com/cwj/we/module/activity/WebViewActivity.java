@@ -1,5 +1,6 @@
 package com.cwj.we.module.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -36,6 +37,7 @@ public class WebViewActivity extends BaseActivity {
 
     }
 
+    @SuppressLint({"WrongConstant", "SetJavaScriptEnabled"})
     public void initView() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色

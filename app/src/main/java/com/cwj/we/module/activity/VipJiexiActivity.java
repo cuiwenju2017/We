@@ -102,7 +102,7 @@ public class VipJiexiActivity extends BaseActivity {
                 } else {
                     // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
                     new XPopup.Builder(this)
-                            .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开", "应用内打开"},
+                            .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开"},
                                     (position, text) -> {
                                         if (position == 0) {
                                             // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
@@ -163,24 +163,6 @@ public class VipJiexiActivity extends BaseActivity {
                                                 //没有安装通过应用包名到应用市场搜索下载安装
                                                 MarketUtils.getTools().openMarket(this, "com.UCMobile");
                                             }
-                                        } else if (position == 3) {
-                                            new XPopup.Builder(VipJiexiActivity.this)
-                                                    .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
-                                                            (position1, text1) -> {
-                                                                intent = new Intent(this, VideoWebViewActivity.class);
-                                                                intent.putExtra("name", "视频解析");
-                                                                if (position1 == 0) {
-                                                                    intent.putExtra("movieUrl", API.vip1 + etUrl.getText().toString());
-                                                                } else if (position1 == 1) {
-                                                                    intent.putExtra("movieUrl", API.vip2 + etUrl.getText().toString());
-                                                                } else if (position1 == 2) {
-                                                                    intent.putExtra("movieUrl", API.vip3 + etUrl.getText().toString());
-                                                                } else if (position1 == 3) {
-                                                                    intent.putExtra("movieUrl", API.vip4 + etUrl.getText().toString());
-                                                                }
-                                                                startActivity(intent);
-                                                            })
-                                                    .show();
                                         }
                                     })
                             .show();

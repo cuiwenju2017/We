@@ -1,6 +1,7 @@
 package com.cwj.we.module.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -115,6 +116,7 @@ public class VideoWebViewActivity extends BaseActivity {
         return R.layout.activity_video_web_view;
     }
 
+    @SuppressLint({"SetJavaScriptEnabled", "WrongConstant"})
     @Override
     public void initView() {
         name = getIntent().getStringExtra("name");
@@ -214,7 +216,7 @@ public class VideoWebViewActivity extends BaseActivity {
             case R.id.toolbar5://解析
                 // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
                 new XPopup.Builder(this)
-                        .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开", "应用内打开"},
+                        .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开"},
                                 (position, text) -> {
                                     if (position == 0) {
                                         // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
@@ -275,24 +277,6 @@ public class VideoWebViewActivity extends BaseActivity {
                                             //没有安装通过应用包名到应用市场搜索下载安装
                                             MarketUtils.getTools().openMarket(this, "com.UCMobile");
                                         }
-                                    } else if (position == 3) {
-                                        new XPopup.Builder(this)
-                                                .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
-                                                        (position1, text1) -> {
-                                                            intent = new Intent(this, VideoWebViewActivity.class);
-                                                            intent.putExtra("name", "视频解析");
-                                                            if (position1 == 0) {
-                                                                intent.putExtra("movieUrl", API.vip1 + webView.getUrl());
-                                                            } else if (position1 == 1) {
-                                                                intent.putExtra("movieUrl", API.vip2 + webView.getUrl());
-                                                            } else if (position1 == 2) {
-                                                                intent.putExtra("movieUrl", API.vip3 + webView.getUrl());
-                                                            } else if (position1 == 3) {
-                                                                intent.putExtra("movieUrl", API.vip4 + webView.getUrl());
-                                                            }
-                                                            startActivity(intent);
-                                                        })
-                                                .show();
                                     }
                                 })
                         .show();
