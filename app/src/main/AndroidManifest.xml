@@ -14,18 +14,19 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 读取设备外部存储空间（内置SDcard和外置SDCard）的文件 -->
     <uses-permission android:name="android.permission.REPLACE_EXISTING_PACKAGE" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> <!-- 8.0必要权限 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /><!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 硬件加速对X5视频播放非常重要，建议开启 -->
     <uses-feature android:name="android.hardware.camera" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /><!--用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!--用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!--用于申请调用A-GPS模块-->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /><!--如果设置了target >= 28 如果需要启动后台定位则必须声明这个权限-->
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /><!--如果您的应用需要后台定位权限，且有可能运行在Android Q设备上,并且设置了target>28，必须增加这个权限声明-->
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" /> <!-- 用于申请调用A-GPS模块 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- 如果设置了target >= 28 如果需要启动后台定位则必须声明这个权限 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:name=".app.App"
@@ -39,6 +40,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".module.activity.SettingZhouqiActivity"></activity>
+        <activity android:name=".module.activity.DayimaActivity" />
         <activity
             android:name=".module.chenghu.ChengHuJiSuanQiActivity"
             android:screenOrientation="portrait" />

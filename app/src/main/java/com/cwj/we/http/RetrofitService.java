@@ -56,7 +56,7 @@ public class RetrofitService {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
                 //设置超时时间
-                .connectTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
                 //设置Cookie持久化
 //                .cookieJar(new CookiesManager(YUtils.getApplication()))
                 .build();

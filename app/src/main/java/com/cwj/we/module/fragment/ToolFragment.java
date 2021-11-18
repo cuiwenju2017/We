@@ -17,6 +17,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.CompassActivity;
+import com.cwj.we.module.activity.DayimaActivity;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.VipJiexiActivity;
 import com.cwj.we.module.adapter.GameAdapter;
@@ -85,6 +86,8 @@ public class ToolFragment extends BaseFragment {
         gameBeans.add(dszb);
         GameBean sys = new GameBean("扫一扫", R.drawable.icon_qr_code);
         gameBeans.add(sys);
+        GameBean dym = new GameBean("大姨妈", R.drawable.logo);
+        gameBeans.add(dym);
     }
 
     protected void initData() {
@@ -142,6 +145,9 @@ public class ToolFragment extends BaseFragment {
                     //小于6.0，不用申请权限，直接执行
                     doCode();
                 }
+            }else if (position == 10){//大姨妈
+                intent = new Intent(getActivity(), DayimaActivity.class);
+                startActivity(intent);
             }
         });
     }
