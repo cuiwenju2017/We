@@ -32,6 +32,7 @@ import com.cwj.we.bean.User;
 import com.cwj.we.module.about.AboutActivity;
 import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.SetTimeActivity;
+import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LunarUtils;
 import com.cwj.we.utils.NotificationUtils;
 import com.cwj.we.utils.PictureSelectorUtils;
@@ -116,6 +117,7 @@ public class UsFragment extends BaseFragment {
     private boolean isFrist2 = true;
     private Broccoli mBroccoli;
     private BasePopupView popupView;
+    private int ABOUT = 201;
 
     private void initPlaceholders() {
         mBroccoli = new Broccoli();
@@ -264,7 +266,6 @@ public class UsFragment extends BaseFragment {
                 nextyearGetMarriedDate, getLunarnowTime = null, thisYearDate;
         try {
             nowTime = TimeUtils.getTimeStame();//当前时间戳
-
             startTime = Long.parseLong(TimeUtils.dateToStamp2(togetherTime));//在一起的时间
             apartTime = (nowTime - startTime) / (1000 * 60 * 60 * 24);//天数
             remainderHour = ((nowTime - startTime) / (1000 * 60 * 60)) % 24;//小时
@@ -414,6 +415,15 @@ public class UsFragment extends BaseFragment {
                 }
             }
         }
+
+        if (requestCode == ABOUT && resultCode == Activity.RESULT_OK) {
+            //停止计时
+            handler.removeCallbacks(runnable);
+            BmobUser.logOut();//退出登录，同时清除缓存用户对象。
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+            //结束之前所有的Activity
+            ActivityCollector.finishall();
+        }
     }
 
     public static final int REQUEST_SEARCH = 100;
@@ -428,7 +438,8 @@ public class UsFragment extends BaseFragment {
                 startActivityForResult(intent, REQUEST_SEARCH);
                 break;
             case R.id.tv_about://关于
-                startActivity(new Intent(getActivity(), AboutActivity.class));
+                intent = new Intent(getActivity(), AboutActivity.class);
+                startActivityForResult(intent, ABOUT);
                 break;
             case R.id.tv_set_backgground://设置背景
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

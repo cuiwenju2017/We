@@ -177,8 +177,12 @@ public class DayimaActivity extends BaseActivity {
                                     long longLastTime = Long.parseLong(TimeUtils.dateToStamp2(lastTime));//最后一条数据时间戳
                                     Date date = new Date(longLastTime);
                                     long longZou = Long.parseLong(TimeUtils.dateToStamp2(convDate2Str(datePlus(date, jingqiDay), "yyyy-MM-dd")));//大姨妈走的时间戳
-                                    tvTip.setText("大姨妈预计" + convDate2Str(datePlus(date, jingqiDay), "yyyy-MM-dd") + "走," +
-                                            "还有" + ((longZou - TimeUtils.getTimeStame()) / (24 * 60 * 60 * 1000) + 1) + "天");
+                                    if (((longZou - TimeUtils.getTimeStame()) / (24 * 60 * 60 * 1000) + 1) >= 0) {
+                                        tvTip.setText("大姨妈预计" + convDate2Str(datePlus(date, jingqiDay), "yyyy-MM-dd") + "走," +
+                                                "还有" + ((longZou - TimeUtils.getTimeStame()) / (24 * 60 * 60 * 1000) + 1) + "天");
+                                    } else {
+                                        tvTip.setText("大姨妈预计" + convDate2Str(datePlus(date, jingqiDay), "yyyy-MM-dd") + "走");
+                                    }
                                 } catch (ParseException ex) {
                                     ex.printStackTrace();
                                 }
@@ -187,8 +191,12 @@ public class DayimaActivity extends BaseActivity {
                                     long longLastTime = Long.parseLong(TimeUtils.dateToStamp2(lastTime));//最后一条数据时间戳
                                     Date date = new Date(longLastTime);
                                     long longLai = Long.parseLong(TimeUtils.dateToStamp2(convDate2Str(datePlus(date, zhouqiDay), "yyyy-MM-dd")));//大姨妈来的时间戳
-                                    tvTip.setText("大姨妈预计" + convDate2Str(datePlus(date, zhouqiDay), "yyyy-MM-dd") + "来," +
-                                            "还有" + ((longLai - TimeUtils.getTimeStame()) / (24 * 60 * 60 * 1000) + 1) + "天");
+                                    if (((longLai - TimeUtils.getTimeStame()) / (24 * 60 * 60 * 1000) + 1) >= 0) {
+                                        tvTip.setText("大姨妈预计" + convDate2Str(datePlus(date, zhouqiDay), "yyyy-MM-dd") + "来," +
+                                                "还有" + ((longLai - TimeUtils.getTimeStame()) / (24 * 60 * 60 * 1000) + 1) + "天");
+                                    } else {
+                                        tvTip.setText("大姨妈预计" + convDate2Str(datePlus(date, zhouqiDay), "yyyy-MM-dd") + "来");
+                                    }
                                 } catch (ParseException ex) {
                                     ex.printStackTrace();
                                 }

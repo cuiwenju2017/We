@@ -1,6 +1,7 @@
 package com.cwj.we.module.about;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,10 +32,8 @@ import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.LatestBean;
 import com.cwj.we.bean.User;
 import com.cwj.we.module.activity.ChangePasswordActivity;
-import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.WebViewActivity;
-import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -90,6 +89,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE};
     private BasePopupView basePopupView;
+    private Intent intent;
 
     @Override
     protected AboutPrensenter createPresenter() {
@@ -241,7 +241,7 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                         .show();
                 break;
             case R.id.rl_feedback://用户反馈
-                Intent intent = new Intent(this, WebViewActivity.class);
+                intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra("url", "https://support.qq.com/product/136399");
                 startActivity(intent);
                 break;
@@ -251,11 +251,9 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
             case R.id.rl_logout://退出登录
                 new XPopup.Builder(this).asConfirm("提示", "确定退出登录吗？",
                         () -> {
-                            BmobUser.logOut();//退出登录，同时清除缓存用户对象。
-                            startActivity(new Intent(AboutActivity.this, LoginActivity.class));
+                            intent = new Intent();
+                            setResult(Activity.RESULT_OK, intent);
                             finish();
-                            //结束之前所有的Activity
-                            ActivityCollector.finishall();
                         })
                         .show();
                 break;
