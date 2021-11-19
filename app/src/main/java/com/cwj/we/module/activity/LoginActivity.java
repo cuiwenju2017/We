@@ -15,6 +15,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.User;
 import com.cwj.we.module.main.HomeActivity;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.hyb.library.PreventKeyboardBlockUtil;
@@ -110,8 +111,12 @@ public class LoginActivity extends BaseActivity {
                 if (TextUtils.isEmpty(etUsername.getText().toString()) || TextUtils.isEmpty(etPassword.getText().toString())) {
                     ToastUtil.showTextToast(LoginActivity.this, "账号或密码不能为空");
                 } else {
-                    loadingDialog.show();
-                    loginByAccount(view);
+                    if (!OneClickThree.isFastClick()) {
+                        loadingDialog.show();
+                        loginByAccount(view);
+                    } else {
+                        ToastUtil.showTextToast(this, "请不要频繁操作");
+                    }
                 }
                 break;
             case R.id.tv_register:

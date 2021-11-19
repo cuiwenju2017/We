@@ -27,6 +27,7 @@ import com.cwj.we.bean.User;
 import com.cwj.we.module.main.HomeActivity;
 import com.cwj.we.utils.ChinaDate;
 import com.cwj.we.utils.ChinaDate2;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -344,17 +345,21 @@ public class SetTimeActivity extends BaseActivity {
                     if (startTime > getMarried) {
                         Toast.makeText(this, "结婚时间不能早于在一起的时间", Toast.LENGTH_SHORT).show();
                     } else {
-                        popupView = new XPopup.Builder(this)
-                                .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
-                                .asLoading("")
-                                .show();
-                        if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
-                            Intent intent = new Intent(this, HomeActivity.class);
-                            savePost();//新增数据
-                            startActivity(intent);
-                            finish();
+                        if (!OneClickThree.isFastClick()) {
+                            popupView = new XPopup.Builder(this)
+                                    .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
+                                    .asLoading("")
+                                    .show();
+                            if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
+                                Intent intent = new Intent(this, HomeActivity.class);
+                                savePost();//新增数据
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                updatePostAuthor();//修改数据
+                            }
                         } else {
-                            updatePostAuthor();//修改数据
+                            ToastUtil.showTextToast(this, "请不要频繁操作");
                         }
                     }
                 } catch (ParseException e) {

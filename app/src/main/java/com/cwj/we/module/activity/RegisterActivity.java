@@ -12,6 +12,7 @@ import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.User;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -99,8 +100,12 @@ public class RegisterActivity extends BaseActivity {
                 } else if (!etPassword.getText().toString().equals(etVerifyPassword.getText().toString())) {
                     ToastUtil.showTextToast(RegisterActivity.this, "两次密码输入不一致");
                 } else {
-                    loadingDialog.show();
-                    signUp(view);
+                    if (!OneClickThree.isFastClick()) {
+                        loadingDialog.show();
+                        signUp(view);
+                    } else {
+                        ToastUtil.showTextToast(this, "请不要频繁操作");
+                    }
                 }
                 break;
         }

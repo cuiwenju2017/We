@@ -22,6 +22,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.User;
 import com.cwj.we.bean.Zhouqi;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.core.BasePopupView;
@@ -176,12 +177,16 @@ public class SettingZhouqiActivity extends BaseActivity {
                 } else if (TextUtils.isEmpty(tvJingqiDay.getText())) {
                     ToastUtil.showTextToast(this, "经期天数不能为空");
                 } else {
-                    if (objectId == null) {
-                        loadingDialog.show();
-                        addZhouqi();
+                    if (!OneClickThree.isFastClick()) {
+                        if (objectId == null) {
+                            loadingDialog.show();
+                            addZhouqi();
+                        } else {
+                            loadingDialog.show();
+                            updataZhouqi();
+                        }
                     } else {
-                        loadingDialog.show();
-                        updataZhouqi();
+                        ToastUtil.showTextToast(this, "请不要频繁操作");
                     }
                 }
                 break;
@@ -239,6 +244,7 @@ public class SettingZhouqiActivity extends BaseActivity {
                         ToastUtil.showTextToast(SettingZhouqiActivity.this, "保存成功");
                         intent = new Intent();
                         setResult(Activity.RESULT_OK, intent);
+                        queryZhouqi();
                     } else {
                         ToastUtil.showTextToast(SettingZhouqiActivity.this, e.getMessage());
                     }
