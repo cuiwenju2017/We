@@ -16,6 +16,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.Post;
 import com.cwj.we.bean.User;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
@@ -94,8 +95,10 @@ public class AddTieZiActivity extends BaseActivity {
                 } else if (TextUtils.isEmpty(etContent.getText().toString())) {
                     ToastUtil.showTextToast(this, "内容不能为空");
                 } else {
-                    loadingDialog.show();
-                    savePost();
+                    if (!OneClickThree.isFastClick()) {
+                        loadingDialog.show();
+                        savePost();
+                    }
                 }
                 break;
             case R.id.ll_back:

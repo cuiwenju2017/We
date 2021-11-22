@@ -27,6 +27,7 @@ import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.Post;
 import com.cwj.we.bean.User;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BottomPopupView;
@@ -123,13 +124,15 @@ public class QuanziChildFragment extends Fragment {
                 }
 
                 tv_delect_tiezi.setOnClickListener(v -> {//删除帖子
-                    new XPopup.Builder(getContext()).asConfirm("提示", "确定删除该帖子吗？",
-                            () -> {
-                                loadingDialog.show();
-                                pos = position;
-                                removePostAuthor(data.getObjectId());
-                            })
-                            .show();
+                    if (!OneClickThree.isFastClick()) {
+                        new XPopup.Builder(getContext()).asConfirm("提示", "确定删除该帖子吗？",
+                                () -> {
+                                    loadingDialog.show();
+                                    pos = position;
+                                    removePostAuthor(data.getObjectId());
+                                })
+                                .show();
+                    }
                 });
 
                 //查询出某个帖子的所有评论,同时将该评论的作者的信息也查询出来
@@ -183,16 +186,20 @@ public class QuanziChildFragment extends Fragment {
                 });
 
                 holder.getView(R.id.iv_share).setOnClickListener(v -> {//分享
-                    showLocationShare(data.getContent());
+                    if (!OneClickThree.isFastClick()) {
+                        showLocationShare(data.getContent());
+                    }
                 });
 
                 holder.getView(R.id.iv_pinglun).setOnClickListener(v -> {//评论
-                    pos = position;
-                    new XPopup.Builder(getContext())
-                            .hasShadowBg(false) // 是否有半透明的背景，默认为true
-                            .autoOpenSoftInput(false) //是否弹窗显示的同时打开输入法，只在包含输入框的弹窗内才有效，默认为false
-                            .asCustom(new ZhihuCommentPopup(getContext(), data))
-                            .show();
+                    if (!OneClickThree.isFastClick()) {
+                        pos = position;
+                        new XPopup.Builder(getContext())
+                                .hasShadowBg(false) // 是否有半透明的背景，默认为true
+                                .autoOpenSoftInput(false) //是否弹窗显示的同时打开输入法，只在包含输入框的弹窗内才有效，默认为false
+                                .asCustom(new ZhihuCommentPopup(getContext(), data))
+                                .show();
+                    }
                 });
 
                 revealLayout.setOnCheckedChangeListener((revealLayout1, isChecked) -> {//点赞
@@ -473,34 +480,40 @@ public class QuanziChildFragment extends Fragment {
                     if (TextUtils.isEmpty(enter.getText().toString())) {
                         ToastUtil.showTextToast(getActivity(), "评论内容不能为空");
                     } else {
-                        loadingDialog.show();
-                        User user = BmobUser.getCurrentUser(User.class);
-                        post = new Post();
-                        post.setObjectId(data.getObjectId());
-                        final Comment comment = new Comment();
-                        comment.setContent(enter.getText().toString());
-                        comment.setPost(post);
-                        comment.setUser(user);
-                        comment.save(new SaveListener<String>() {
-                            @Override
-                            public void done(String objectId, BmobException e) {
-                                if (e == null) {
-                                    loadingDialog.dismiss();
-                                    enter.setText("");
-                                    adapter.notifyItemChanged(pos);
-                                    srlTypePinglun = 0;
-                                    currentPage = 1;
-                                    queryPinglun();
-                                    commentBaseRVAdapter.notifyDataSetChanged();
-                                } else {
-                                    loadingDialog.dismiss();
-                                    ToastUtil.showTextToast(getActivity(), e.getMessage());
-                                }
-                            }
-                        });
+                        if (!OneClickThree.isFastClick()) {
+                            pinglun();
+                        }
                     }
                     break;
             }
+        }
+
+        private void pinglun() {
+            loadingDialog.show();
+            User user = BmobUser.getCurrentUser(User.class);
+            post = new Post();
+            post.setObjectId(data.getObjectId());
+            final Comment comment = new Comment();
+            comment.setContent(enter.getText().toString());
+            comment.setPost(post);
+            comment.setUser(user);
+            comment.save(new SaveListener<String>() {
+                @Override
+                public void done(String objectId, BmobException e) {
+                    if (e == null) {
+                        loadingDialog.dismiss();
+                        enter.setText("");
+                        adapter.notifyItemChanged(pos);
+                        srlTypePinglun = 0;
+                        currentPage = 1;
+                        queryPinglun();
+                        commentBaseRVAdapter.notifyDataSetChanged();
+                    } else {
+                        loadingDialog.dismiss();
+                        ToastUtil.showTextToast(getActivity(), e.getMessage());
+                    }
+                }
+            });
         }
     }
 

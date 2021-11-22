@@ -185,8 +185,6 @@ public class SettingZhouqiActivity extends BaseActivity {
                             loadingDialog.show();
                             updataZhouqi();
                         }
-                    } else {
-                        ToastUtil.showTextToast(this, "请不要频繁操作");
                     }
                 }
                 break;

@@ -24,6 +24,7 @@ import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.chenghu.ChengHuJiSuanQiActivity;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.huawei.hms.hmsscankit.ScanUtil;
@@ -98,56 +99,58 @@ public class ToolFragment extends BaseFragment {
         rvGame.setAdapter(adapter);
 
         adapter.setOnclick((view1, position) -> {
-            if (position == 0) {//计算器
-                startActivity(new Intent(getActivity(), CalculatorActivity.class));
-            } else if (position == 1) {//称呼计算器
-                startActivity(new Intent(getActivity(), ChengHuJiSuanQiActivity.class));
-            } else if (position == 2) {//指南针
-                startActivity(new Intent(getActivity(), CompassActivity.class));
-            } else if (position == 3) {//轮盘时中
-                startActivity(new Intent(getActivity(), LPClockActivity.class));
-            } else if (position == 4) {//滤镜相机
-                PermissionX.init(this)
-                        .permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
-                        .request((allGranted, grantedList, deniedList) -> {
-                            if (allGranted) {
-                                startActivity(new Intent(getActivity(), OpenCameraActivity.class));
-                            } else {
-                                ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
-                            }
-                        });
-            } else if (position == 5) {//视频解析
-                intent = new Intent(getActivity(), VipJiexiActivity.class);
-                startActivity(intent);
-            } else if (position == 6) {//热影库
-                intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "http://www.reyingku.cc/");
-                startActivity(intent);
-            } else if (position == 7) {//人人视频
-                intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "http://m.rr.tv/");
-                startActivity(intent);
-            } else if (position == 8) {//电视直播
-                intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "http://m.hao5.net/");
-                startActivity(intent);
-            } else if (position == 9) {//扫一扫
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        //没有权限则申请权限
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_REQ_CODE);
+            if (!OneClickThree.isFastClick()) {
+                if (position == 0) {//计算器
+                    startActivity(new Intent(getActivity(), CalculatorActivity.class));
+                } else if (position == 1) {//称呼计算器
+                    startActivity(new Intent(getActivity(), ChengHuJiSuanQiActivity.class));
+                } else if (position == 2) {//指南针
+                    startActivity(new Intent(getActivity(), CompassActivity.class));
+                } else if (position == 3) {//轮盘时中
+                    startActivity(new Intent(getActivity(), LPClockActivity.class));
+                } else if (position == 4) {//滤镜相机
+                    PermissionX.init(this)
+                            .permissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                    Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO)
+                            .request((allGranted, grantedList, deniedList) -> {
+                                if (allGranted) {
+                                    startActivity(new Intent(getActivity(), OpenCameraActivity.class));
+                                } else {
+                                    ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
+                                }
+                            });
+                } else if (position == 5) {//视频解析
+                    intent = new Intent(getActivity(), VipJiexiActivity.class);
+                    startActivity(intent);
+                } else if (position == 6) {//热影库
+                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "http://www.reyingku.cc/");
+                    startActivity(intent);
+                } else if (position == 7) {//人人视频
+                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "http://m.rr.tv/");
+                    startActivity(intent);
+                } else if (position == 8) {//电视直播
+                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "http://m.hao5.net/");
+                    startActivity(intent);
+                } else if (position == 9) {//扫一扫
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                            //没有权限则申请权限
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE}, CAMERA_REQ_CODE);
+                        } else {
+                            //有权限直接执行,docode()不用做处理
+                            doCode();
+                        }
                     } else {
-                        //有权限直接执行,docode()不用做处理
+                        //小于6.0，不用申请权限，直接执行
                         doCode();
                     }
-                } else {
-                    //小于6.0，不用申请权限，直接执行
-                    doCode();
+                } else if (position == 10) {//大姨妈
+                    intent = new Intent(getActivity(), DayimaActivity.class);
+                    startActivity(intent);
                 }
-            }else if (position == 10){//大姨妈
-                intent = new Intent(getActivity(), DayimaActivity.class);
-                startActivity(intent);
             }
         });
     }

@@ -17,6 +17,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.module.activity.AddTieZiActivity;
 import com.cwj.we.module.adapter.MyAdapter;
+import com.cwj.we.utils.OneClickThree;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -163,8 +164,10 @@ public class QuanziFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.fab_add://发布帖子
-                intent = new Intent(getActivity(), AddTieZiActivity.class);
-                startActivityForResult(intent, ADD_TIEZI);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(getActivity(), AddTieZiActivity.class);
+                    startActivityForResult(intent, ADD_TIEZI);
+                }
                 break;
         }
     }

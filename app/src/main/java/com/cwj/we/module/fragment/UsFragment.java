@@ -35,6 +35,7 @@ import com.cwj.we.module.activity.SetTimeActivity;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LunarUtils;
 import com.cwj.we.utils.NotificationUtils;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.PictureSelectorUtils;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
@@ -118,6 +119,7 @@ public class UsFragment extends BaseFragment {
     private Broccoli mBroccoli;
     private BasePopupView popupView;
     private int ABOUT = 201;
+    private Intent intent;
 
     private void initPlaceholders() {
         mBroccoli = new Broccoli();
@@ -433,42 +435,50 @@ public class UsFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_change_date://日期修改
-                Intent intent = new Intent(getActivity(), SetTimeActivity.class);
-                intent.putExtra("setTime", 2);
-                startActivityForResult(intent, REQUEST_SEARCH);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(getActivity(), SetTimeActivity.class);
+                    intent.putExtra("setTime", 2);
+                    startActivityForResult(intent, REQUEST_SEARCH);
+                }
                 break;
             case R.id.tv_about://关于
-                intent = new Intent(getActivity(), AboutActivity.class);
-                startActivityForResult(intent, ABOUT);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(getActivity(), AboutActivity.class);
+                    startActivityForResult(intent, ABOUT);
+                }
                 break;
             case R.id.tv_set_backgground://设置背景
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        //没有权限则申请权限
-                        this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                if (!OneClickThree.isFastClick()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                            //没有权限则申请权限
+                            this.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                        } else {
+                            //有权限直接执行,docode()不用做处理
+                            doCode();
+                        }
                     } else {
-                        //有权限直接执行,docode()不用做处理
+                        //小于6.0，不用申请权限，直接执行
                         doCode();
                     }
-                } else {
-                    //小于6.0，不用申请权限，直接执行
-                    doCode();
                 }
                 break;
             case R.id.tv_reset://重置背景
                 if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
                     ToastUtil.showTextToast(getActivity(), "已经是原始背景,请勿重试！");
                 } else {
-                    new XPopup.Builder(getActivity()).asConfirm("提示", "确定重置当前背景吗？",
-                            () -> {
-                                editorMain = sprfMain.edit();
-                                editorMain.putString("path", "");
-                                editorMain.commit();
+                    if (!OneClickThree.isFastClick()) {
+                        new XPopup.Builder(getActivity()).asConfirm("提示", "确定重置当前背景吗？",
+                                () -> {
+                                    editorMain = sprfMain.edit();
+                                    editorMain.putString("path", "");
+                                    editorMain.commit();
 
-                                EventBG eventBG = new EventBG("EVENT_CZ_BG", "");
-                                EventBus.getDefault().post(eventBG);
-                            })
-                            .show();
+                                    EventBG eventBG = new EventBG("EVENT_CZ_BG", "");
+                                    EventBus.getDefault().post(eventBG);
+                                })
+                                .show();
+                    }
                 }
                 break;
             default:

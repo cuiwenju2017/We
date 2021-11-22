@@ -16,6 +16,7 @@ import com.atech.glcamera.utils.FileUtils;
 import com.atech.glcamera.utils.FilterFactory;
 import com.atech.glcamera.views.GLCameraView;
 import com.cwj.we.R;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -134,7 +135,9 @@ public class OpenCameraActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv://相册
-                startActivity(new Intent(this, PhotoListActivity.class));
+                if (!OneClickThree.isFastClick()) {
+                    startActivity(new Intent(this, PhotoListActivity.class));
+                }
                 break;
             case R.id.img_switch:
                 mCameraView.switchCamera();

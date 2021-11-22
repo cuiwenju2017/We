@@ -103,8 +103,6 @@ public class RegisterActivity extends BaseActivity {
                     if (!OneClickThree.isFastClick()) {
                         loadingDialog.show();
                         signUp(view);
-                    } else {
-                        ToastUtil.showTextToast(this, "请不要频繁操作");
                     }
                 }
                 break;

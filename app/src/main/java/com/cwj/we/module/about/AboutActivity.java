@@ -35,6 +35,7 @@ import com.cwj.we.module.activity.ChangePasswordActivity;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.huawei.hms.hmsscankit.ScanUtil;
@@ -218,44 +219,56 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_username://修改用户名
-                popupView = new XPopup.Builder(this)
-                        .autoDismiss(false) // 操作完毕后是否自动关闭弹窗，默认为true；比如点击ConfirmPopup的确认按钮，默认自动关闭；如果为false，则不会关闭
-                        .asInputConfirm("修改用户名", "请输入新的用户名",
-                                text -> {
-                                    if (TextUtils.isEmpty(text)) {
-                                        ToastUtil.showTextToast(AboutActivity.this, "用户名不能为空");
-                                    } else {
-                                        loadingDialog.show();
-                                        updateUser(text);
-                                    }
-                                })
-                        .show();
+                if (!OneClickThree.isFastClick()) {
+                    popupView = new XPopup.Builder(this)
+                            .autoDismiss(false) // 操作完毕后是否自动关闭弹窗，默认为true；比如点击ConfirmPopup的确认按钮，默认自动关闭；如果为false，则不会关闭
+                            .asInputConfirm("修改用户名", "请输入新的用户名",
+                                    text -> {
+                                        if (TextUtils.isEmpty(text)) {
+                                            ToastUtil.showTextToast(AboutActivity.this, "用户名不能为空");
+                                        } else {
+                                            loadingDialog.show();
+                                            updateUser(text);
+                                        }
+                                    })
+                            .show();
+                }
                 break;
             case R.id.rl_check_updates://检查更新
-                loadingDialog.show();
-                presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
+                if (!OneClickThree.isFastClick()) {
+                    loadingDialog.show();
+                    presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
+                }
                 break;
             case R.id.rl_share://分享
-                basePopupView = new XPopup.Builder(this)
-                        .asCustom(new CustomPopup(this))
-                        .show();
+                if (!OneClickThree.isFastClick()) {
+                    basePopupView = new XPopup.Builder(this)
+                            .asCustom(new CustomPopup(this))
+                            .show();
+                }
                 break;
             case R.id.rl_feedback://用户反馈
-                intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra("url", "https://support.qq.com/product/136399");
-                startActivity(intent);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", "https://support.qq.com/product/136399");
+                    startActivity(intent);
+                }
                 break;
             case R.id.rl_change_password://修改密码
-                startActivity(new Intent(this, ChangePasswordActivity.class));
+                if (!OneClickThree.isFastClick()) {
+                    startActivity(new Intent(this, ChangePasswordActivity.class));
+                }
                 break;
             case R.id.rl_logout://退出登录
-                new XPopup.Builder(this).asConfirm("提示", "确定退出登录吗？",
-                        () -> {
-                            intent = new Intent();
-                            setResult(Activity.RESULT_OK, intent);
-                            finish();
-                        })
-                        .show();
+                if (!OneClickThree.isFastClick()) {
+                    new XPopup.Builder(this).asConfirm("提示", "确定退出登录吗？",
+                            () -> {
+                                intent = new Intent();
+                                setResult(Activity.RESULT_OK, intent);
+                                finish();
+                            })
+                            .show();
+                }
                 break;
         }
     }

@@ -13,6 +13,7 @@ import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 
@@ -102,8 +103,10 @@ public class ChangePasswordActivity extends BaseActivity {
                 } else if (!etNewPassword.getText().toString().equals(etVerifyPassword.getText().toString())) {
                     ToastUtil.showTextToast(ChangePasswordActivity.this, "两次密码输入不一致");
                 } else {
-                    loadingDialog.show();
-                    updatePassword(view);
+                    if (!OneClickThree.isFastClick()) {
+                        loadingDialog.show();
+                        updatePassword(view);
+                    }
                 }
                 break;
         }

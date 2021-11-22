@@ -358,8 +358,6 @@ public class SetTimeActivity extends BaseActivity {
                             } else {
                                 updatePostAuthor();//修改数据
                             }
-                        } else {
-                            ToastUtil.showTextToast(this, "请不要频繁操作");
                         }
                     }
                 } catch (ParseException e) {

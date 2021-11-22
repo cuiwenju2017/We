@@ -13,6 +13,7 @@ import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.http.API;
 import com.cwj.we.utils.MarketUtils;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
@@ -71,101 +72,113 @@ public class VipJiexiActivity extends BaseActivity {
                 if (TextUtils.isEmpty(etUrl.getText().toString())) {
                     ToastUtil.showTextToast(this, "视频地址不能为空");
                 } else {
-                    intent = new Intent(this, VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", etUrl.getText().toString());
-                    startActivity(intent);
+                    if (!OneClickThree.isFastClick()) {
+                        intent = new Intent(this, VideoWebViewActivity.class);
+                        intent.putExtra("movieUrl", etUrl.getText().toString());
+                        startActivity(intent);
+                    }
                 }
                 break;
             case R.id.iv_tengxun://腾讯视频
-                intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "https://m.v.qq.com/");
-                startActivity(intent);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(this, VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "https://m.v.qq.com/");
+                    startActivity(intent);
+                }
                 break;
             case R.id.iv_aiqiyi://爱奇艺
-                intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "https://m.iqiyi.com/");
-                startActivity(intent);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(this, VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "https://m.iqiyi.com/");
+                    startActivity(intent);
+                }
                 break;
             case R.id.iv_youku://优酷
-                intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "https://youku.com/");
-                startActivity(intent);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(this, VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "https://youku.com/");
+                    startActivity(intent);
+                }
                 break;
             case R.id.iv_mangguo://芒果tv
-                intent = new Intent(this, VideoWebViewActivity.class);
-                intent.putExtra("movieUrl", "https://m.mgtv.com/channel/home");
-                startActivity(intent);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(this, VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", "https://m.mgtv.com/channel/home");
+                    startActivity(intent);
+                }
                 break;
             case R.id.btn_jiexi://解析
                 if (TextUtils.isEmpty(etUrl.getText().toString())) {
                     ToastUtil.showTextToast(this, "视频地址不能为空");
                 } else {
-                    // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
-                    new XPopup.Builder(this)
-                            .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开"},
-                                    (position, text) -> {
-                                        if (position == 0) {
-                                            // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
-                                            new XPopup.Builder(VipJiexiActivity.this)
-                                                    .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
-                                                            (position1, text1) -> {
-                                                                intent = new Intent();
-                                                                intent.setAction("android.intent.action.VIEW");
-                                                                if (position1 == 0) {
-                                                                    intent.setData(Uri.parse(API.vip1 + etUrl.getText().toString()));
-                                                                } else if (position1 == 1) {
-                                                                    intent.setData(Uri.parse(API.vip2 + etUrl.getText().toString()));
-                                                                } else if (position1 == 2) {
-                                                                    intent.setData(Uri.parse(API.vip3 + etUrl.getText().toString()));
-                                                                } else if (position1 == 3) {
-                                                                    intent.setData(Uri.parse(API.vip4 + etUrl.getText().toString()));
-                                                                }
-                                                                startActivity(intent);
-                                                            })
-                                                    .show();
-                                        } else if (position == 1) {
-                                            if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
+                    if (!OneClickThree.isFastClick()) {
+                        // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
+                        new XPopup.Builder(this)
+                                .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开"},
+                                        (position, text) -> {
+                                            if (position == 0) {
+                                                // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
                                                 new XPopup.Builder(VipJiexiActivity.this)
                                                         .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
                                                                 (position1, text1) -> {
+                                                                    intent = new Intent();
+                                                                    intent.setAction("android.intent.action.VIEW");
                                                                     if (position1 == 0) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip1 + etUrl.getText().toString());
+                                                                        intent.setData(Uri.parse(API.vip1 + etUrl.getText().toString()));
                                                                     } else if (position1 == 1) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip2 + etUrl.getText().toString());
+                                                                        intent.setData(Uri.parse(API.vip2 + etUrl.getText().toString()));
                                                                     } else if (position1 == 2) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip3 + etUrl.getText().toString());
+                                                                        intent.setData(Uri.parse(API.vip3 + etUrl.getText().toString()));
                                                                     } else if (position1 == 3) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip4 + etUrl.getText().toString());
+                                                                        intent.setData(Uri.parse(API.vip4 + etUrl.getText().toString()));
                                                                     }
+                                                                    startActivity(intent);
                                                                 })
                                                         .show();
-                                            } else {
-                                                //没有安装通过应用包名到应用市场搜索下载安装
-                                                MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
+                                            } else if (position == 1) {
+                                                if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
+                                                    new XPopup.Builder(VipJiexiActivity.this)
+                                                            .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
+                                                                    (position1, text1) -> {
+                                                                        if (position1 == 0) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip1 + etUrl.getText().toString());
+                                                                        } else if (position1 == 1) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip2 + etUrl.getText().toString());
+                                                                        } else if (position1 == 2) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip3 + etUrl.getText().toString());
+                                                                        } else if (position1 == 3) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.tencent.mtt", "com.tencent.mtt.MainActivity", API.vip4 + etUrl.getText().toString());
+                                                                        }
+                                                                    })
+                                                            .show();
+                                                } else {
+                                                    //没有安装通过应用包名到应用市场搜索下载安装
+                                                    MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
+                                                }
+                                            } else if (position == 2) {
+                                                if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
+                                                    new XPopup.Builder(VipJiexiActivity.this)
+                                                            .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
+                                                                    (position1, text1) -> {
+                                                                        if (position1 == 0) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
+                                                                        } else if (position1 == 1) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
+                                                                        } else if (position1 == 2) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
+                                                                        } else if (position1 == 3) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
+                                                                        }
+                                                                    })
+                                                            .show();
+                                                } else {
+                                                    //没有安装通过应用包名到应用市场搜索下载安装
+                                                    MarketUtils.getTools().openMarket(this, "com.UCMobile");
+                                                }
                                             }
-                                        } else if (position == 2) {
-                                            if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
-                                                new XPopup.Builder(VipJiexiActivity.this)
-                                                        .asBottomList("请选择一项", new String[]{"解析通道1", "解析通道2", "解析通道3", "解析通道4"},
-                                                                (position1, text1) -> {
-                                                                    if (position1 == 0) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
-                                                                    } else if (position1 == 1) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
-                                                                    } else if (position1 == 2) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
-                                                                    } else if (position1 == 3) {
-                                                                        MarketUtils.getTools().openInstalledAppInURL(VipJiexiActivity.this, "com.UCMobile", "com.UCMobile.main.UCMobile", API.vip1 + etUrl.getText().toString());
-                                                                    }
-                                                                })
-                                                        .show();
-                                            } else {
-                                                //没有安装通过应用包名到应用市场搜索下载安装
-                                                MarketUtils.getTools().openMarket(this, "com.UCMobile");
-                                            }
-                                        }
-                                    })
-                            .show();
+                                        })
+                                .show();
+                    }
                 }
                 break;
             default:

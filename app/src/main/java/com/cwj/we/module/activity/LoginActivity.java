@@ -114,13 +114,13 @@ public class LoginActivity extends BaseActivity {
                     if (!OneClickThree.isFastClick()) {
                         loadingDialog.show();
                         loginByAccount(view);
-                    } else {
-                        ToastUtil.showTextToast(this, "请不要频繁操作");
                     }
                 }
                 break;
             case R.id.tv_register:
-                startActivity(new Intent(this, RegisterActivity.class));
+                if (!OneClickThree.isFastClick()) {
+                    startActivity(new Intent(this, RegisterActivity.class));
+                }
                 break;
         }
     }

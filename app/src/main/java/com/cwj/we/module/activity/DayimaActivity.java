@@ -29,6 +29,7 @@ import com.cwj.we.bean.JingqiTime;
 import com.cwj.we.bean.User;
 import com.cwj.we.bean.Zhouqi;
 import com.cwj.we.utils.LoadingDialog;
+import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -343,8 +344,10 @@ public class DayimaActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.iv_setting://设置周期
-                intent = new Intent(this, SettingZhouqiActivity.class);
-                startActivityForResult(intent, ZQ_SETTING);
+                if (!OneClickThree.isFastClick()) {
+                    intent = new Intent(this, SettingZhouqiActivity.class);
+                    startActivityForResult(intent, ZQ_SETTING);
+                }
                 break;
             case R.id.tv_time://时间选择
                 Calendar startDate = Calendar.getInstance();
