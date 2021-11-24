@@ -18,6 +18,7 @@ import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.CompassActivity;
 import com.cwj.we.module.activity.DayimaActivity;
+import com.cwj.we.module.activity.ShoudiantongActivity;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.VipJiexiActivity;
 import com.cwj.we.module.adapter.GameAdapter;
@@ -89,6 +90,8 @@ public class ToolFragment extends BaseFragment {
         gameBeans.add(sys);
         GameBean dym = new GameBean("大姨妈", R.drawable.logo);
         gameBeans.add(dym);
+        GameBean sdt = new GameBean("手电筒", R.drawable.icon_shoudiantong);
+        gameBeans.add(sdt);
     }
 
     protected void initData() {
@@ -149,6 +152,9 @@ public class ToolFragment extends BaseFragment {
                     }
                 } else if (position == 10) {//大姨妈
                     intent = new Intent(getActivity(), DayimaActivity.class);
+                    startActivity(intent);
+                } else if (position == 11) {//手电筒
+                    intent = new Intent(getActivity(), ShoudiantongActivity.class);
                     startActivity(intent);
                 }
             }

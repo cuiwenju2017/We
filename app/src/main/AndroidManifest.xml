@@ -40,8 +40,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.activity.SettingZhouqiActivity"></activity>
-        <activity android:name=".module.activity.DayimaActivity" />
+        <activity
+            android:name=".module.activity.ShoudiantongActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.activity.SettingZhouqiActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.activity.DayimaActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".module.chenghu.ChengHuJiSuanQiActivity"
             android:screenOrientation="portrait" />

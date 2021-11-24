@@ -1,6 +1,8 @@
 package com.cwj.we.module.main;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -95,6 +97,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private SharedPreferences sprfMain;
     private int skip = 1;
     private int limit = 15;
+    private NotificationManager manager;
+    private NotificationChannel channel;
 
     @Override
     protected HomePrensenter createPresenter() {
@@ -155,15 +159,33 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         //底部导航背景透明度设置0~255
         llBottom.getBackground().setAlpha(100);
 
+        showNotify();
+
+        if (basePopupView == null) {
+            presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
+        }
+    }
+
+    private void showNotify() {
         //通知用户开启通知
         NotificationManagerCompat notification = NotificationManagerCompat.from(this);
         boolean isEnabled = notification.areNotificationsEnabled();
         if (!isEnabled) {
-            openTongzhi();
-        }
-
-        if (basePopupView == null) {
-            presenter.latest("5fc866b023389f0c69e23c24", "6570963ae9a308ca993393518f865887");
+            openNotification();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            // 通知渠道的id。
+            String id = "1";
+            // 用户可以看到的通知渠道的名字。
+            CharSequence name = getResources().getString(R.string.app_name);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(id, name, importance);
+            // 最后在notificationmanager中创建该通知渠道。
+            manager.createNotificationChannel(mChannel);
+            channel = manager.getNotificationChannel(id);
+            if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+                openNotification();
+            }
         }
     }
 
@@ -200,7 +222,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         }
     }
 
-    private void openTongzhi() {
+    private void openNotification() {
         //未打开通知
         basePopupView = new XPopup.Builder(this).asConfirm("提示", "请在“通知”中打开通知权限以便观察应用更新进度",
                 () -> {
@@ -208,6 +230,9 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
                         intent.putExtra("android.provider.extra.APP_PACKAGE", HomeActivity.this.getPackageName());
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            intent.putExtra(Settings.EXTRA_CHANNEL_ID, 1);
+                        }
                     } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {  //5.0
                         intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
                         intent.putExtra("app_package", HomeActivity.this.getPackageName());
