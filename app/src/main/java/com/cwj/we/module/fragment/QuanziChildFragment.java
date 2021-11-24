@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.cwj.we.bean.Comment;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.Post;
 import com.cwj.we.bean.User;
+import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
@@ -77,6 +79,7 @@ public class QuanziChildFragment extends Fragment {
     private LoadingDialog loadingDialog;
     private int pos;
     private String username;
+    private Intent intent;
 
     public QuanziChildFragment(Integer type) {
         Bundle b = new Bundle();
@@ -107,6 +110,7 @@ public class QuanziChildFragment extends Fragment {
                 TextView tv_like_num = holder.getView(R.id.tv_like_num);
                 TextView tv_pinglun_num = holder.getView(R.id.tv_pinglun_num);
                 TextView tv_delect_tiezi = holder.getView(R.id.tv_delect_tiezi);
+                ImageView iv_open = holder.getView(R.id.iv_open);
 
                 holder.setText(R.id.tv_title, data.getTitle());
                 holder.setText(R.id.tv_content, data.getContent());
@@ -122,6 +126,18 @@ public class QuanziChildFragment extends Fragment {
                 } else {
                     tv_delect_tiezi.setVisibility(GONE);
                 }
+
+                if (data.getContent().startsWith("http://") || data.getContent().startsWith("https://")) {//加载的url是http/https协议地址
+                    iv_open.setVisibility(VISIBLE);
+                } else {
+                    iv_open.setVisibility(GONE);
+                }
+
+                iv_open.setOnClickListener(v -> {//打开链接
+                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
+                    intent.putExtra("movieUrl", data.getContent());
+                    startActivity(intent);
+                });
 
                 tv_delect_tiezi.setOnClickListener(v -> {//删除帖子
                     if (!OneClickThree.isFastClick()) {

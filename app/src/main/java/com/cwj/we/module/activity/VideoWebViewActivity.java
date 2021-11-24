@@ -137,7 +137,7 @@ public class VideoWebViewActivity extends BaseActivity {
 
         movieUrl = getIntent().getStringExtra("movieUrl");
 
-        if (!movieUrl.startsWith("http://") && !movieUrl.startsWith("https://")) { //加载的url是http/https协议地址
+        if (!movieUrl.startsWith("http://") && !movieUrl.startsWith("https://")) { //加载的url不是http/https协议地址
             tv.setVisibility(View.VISIBLE);
             webView.setVisibility(GONE);
             tv.setText("" + movieUrl);
