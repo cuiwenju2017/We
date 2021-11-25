@@ -11,11 +11,15 @@ import android.widget.TextView;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
+import com.cwj.we.bean.EventBG;
+import com.cwj.we.common.GlobalConstant;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -74,6 +78,8 @@ public class ChangePasswordActivity extends BaseActivity {
             @Override
             public void done(BmobException e) {
                 if (e == null) {
+                    EventBG eventBG = new EventBG(GlobalConstant.ChangePassword_SUCCESS, "");
+                    EventBus.getDefault().post(eventBG);
                     ToastUtil.showTextToast(ChangePasswordActivity.this, "修改成功");
                     loadingDialog.dismiss();
                     BmobUser.logOut();//退出登录，同时清除缓存用户对象。

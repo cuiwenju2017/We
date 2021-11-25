@@ -29,6 +29,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.Day;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.User;
+import com.cwj.we.common.GlobalConstant;
 import com.cwj.we.module.about.AboutActivity;
 import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.SetTimeActivity;
@@ -44,6 +45,8 @@ import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.ParseException;
 import java.util.List;
@@ -240,6 +243,7 @@ public class UsFragment extends BaseFragment {
     }
 
     protected void initView() {
+        EventBus.getDefault().register(this);
         queryPostAuthor();
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
     }
@@ -249,8 +253,8 @@ public class UsFragment extends BaseFragment {
 
     }
 
-    private Handler handler = new Handler();
-    private Runnable runnable = new Runnable() {
+    public static Handler handler = new Handler();
+    public Runnable runnable = new Runnable() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void run() {
             update();//获取新数据
@@ -428,6 +432,16 @@ public class UsFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(EventBG eventBG) {
+        switch (eventBG.getType()) {
+            case GlobalConstant.ChangePassword_SUCCESS://修改密码成功
+                //停止计时
+                handler.removeCallbacks(runnable);
+                break;
+        }
+    }
+
     public static final int REQUEST_SEARCH = 100;
     private static final int REQUEST_CODE_SELECT_USER_ICON = 100;
 
@@ -494,6 +508,7 @@ public class UsFragment extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
