@@ -11,6 +11,7 @@ import com.cwj.we.base.BaseFragment;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.AircraftBattleActivity;
+import com.cwj.we.module.activity.DaanzhishuActivity;
 import com.cwj.we.module.activity.ELuoSiFangKuaiActivity;
 import com.cwj.we.module.activity.GobangActivity;
 import com.cwj.we.module.activity.PuzzleActivity;
@@ -70,6 +71,8 @@ public class GamesFragment extends BaseFragment {
         gameBeans.add(zhinengjiqiren);
         GameBean eluosifangkuan = new GameBean("俄罗斯方块", R.drawable.icon_eluosifangkuai);
         gameBeans.add(eluosifangkuan);
+        GameBean daanzhishu = new GameBean("答案之书", R.drawable.icon_daanzhishu);
+        gameBeans.add(daanzhishu);
     }
 
     protected void initData() {
@@ -117,6 +120,9 @@ public class GamesFragment extends BaseFragment {
                     startActivity(intent);
                 } else if (position == 10) {//俄罗斯方块
                     intent = new Intent(getActivity(), ELuoSiFangKuaiActivity.class);
+                    startActivity(intent);
+                } else if (position == 11) {//答案之书
+                    intent = new Intent(getActivity(), DaanzhishuActivity.class);
                     startActivity(intent);
                 }
             }

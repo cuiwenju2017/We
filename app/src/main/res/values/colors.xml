@@ -203,6 +203,7 @@
     <color name="mediumblue">#0000CD</color><!--中兰色 -->
     <color name="darkblue">#00008B</color><!--暗蓝色 -->
     <color name="navy">#000080</color><!--海军色 -->
-
     <color name="content_background">#f2f2f2</color>
+    <color name="colorDaanbg">#272822</color>
+    <color name="colorDaanTextcolor">#BFAD6F</color>
 </resources>
