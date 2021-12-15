@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,8 +67,8 @@ import me.samlss.broccoli.PlaceholderParameter;
  */
 public class UsFragment extends BaseFragment {
 
-    @BindView(R.id.tv)
-    TextView tv;
+    @BindView(R.id.tv_together_time)
+    TextView tv_together_time;
     @BindView(R.id.tv_time)
     TextView tvTime;
     @BindView(R.id.tv_in_harness_year)
@@ -114,6 +115,10 @@ public class UsFragment extends BaseFragment {
     TextView tvYincang3;
     @BindView(R.id.tv_yincang4)
     TextView tvYincang4;
+    @BindView(R.id.rl)
+    RelativeLayout rl;
+    @BindView(R.id.ic)
+    View ic;
 
     private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
     SharedPreferences sprfMain;
@@ -125,6 +130,9 @@ public class UsFragment extends BaseFragment {
     private Intent intent;
 
     private void initPlaceholders() {
+        if (mBroccoli != null) {
+            mBroccoli.clearAllPlaceholders();
+        }
         mBroccoli = new Broccoli();
 
         mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
@@ -134,7 +142,7 @@ public class UsFragment extends BaseFragment {
                 .build());
 
         mBroccoli.addPlaceholder(new PlaceholderParameter.Builder()
-                .setView(tv)
+                .setView(tv_together_time)
                 .setDrawable(new BroccoliGradientDrawable(Color.parseColor("#33000000"),
                         Color.parseColor("#ffffff"), 0, 1000, new LinearInterpolator()))
                 .build());
@@ -196,7 +204,19 @@ public class UsFragment extends BaseFragment {
                 @RequiresApi(api = Build.VERSION_CODES.O)
                 @Override
                 public void done(List<Day> object, BmobException e) {
+                    popupView.smartDismiss();
                     if (e == null && object.size() > 0) {
+                        mBroccoli.clearAllPlaceholders();
+                        tvYincang1.setVisibility(View.VISIBLE);
+                        tvYincang2.setVisibility(View.VISIBLE);
+                        tvYincang3.setVisibility(View.VISIBLE);
+                        tvYincang4.setVisibility(View.VISIBLE);
+                        tvJh.setVisibility(View.VISIBLE);
+                        tvY.setVisibility(View.VISIBLE);
+                        tvWeddingDayTip.setVisibility(View.VISIBLE);
+
+                        rl.setVisibility(View.VISIBLE);
+                        ic.setVisibility(View.GONE);
                         togetherTime = object.get(0).getTogetherTime();
                         getMarriedTime = object.get(0).getGetMarriedTime();
                         getMarriedTime2 = object.get(0).getGetMarriedTime2();
@@ -209,23 +229,19 @@ public class UsFragment extends BaseFragment {
                         //handler.removeCallbacks(runnable);
                         isFrist = true;
                         isFrist2 = true;
-                    } else {
+                    } else if (e == null && object.size() < 1) {//无日期去设置日期
                         startActivity(new Intent(getActivity(), SetTimeActivity.class));
                         getActivity().finish();
+                    } else {
+                        ic.setVisibility(View.VISIBLE);
+                        rl.setVisibility(View.GONE);
+                        TextView tv = ic.findViewById(R.id.tv);
+                        tv.setText("数据获取失败，请重试");
                     }
-
-                    mBroccoli.clearAllPlaceholders();
-                    tvYincang1.setVisibility(View.VISIBLE);
-                    tvYincang2.setVisibility(View.VISIBLE);
-                    tvYincang3.setVisibility(View.VISIBLE);
-                    tvYincang4.setVisibility(View.VISIBLE);
-                    tvJh.setVisibility(View.VISIBLE);
-                    tvY.setVisibility(View.VISIBLE);
-                    tvWeddingDayTip.setVisibility(View.VISIBLE);
                 }
-
             });
         } else {
+            popupView.smartDismiss();
             ToastUtil.showTextToast(getActivity(), "请先登录");
             startActivity(new Intent(getActivity(), LoginActivity.class));
             getActivity().finish();
@@ -246,11 +262,21 @@ public class UsFragment extends BaseFragment {
         EventBus.getDefault().register(this);
         queryPostAuthor();
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
+        popupView = new XPopup.Builder(getActivity())
+                .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
+                .asLoading("")
+                .show();
     }
 
     @Override
     protected void initData() {
-
+        ic.setOnClickListener(v -> {//刷新
+            queryPostAuthor();
+            popupView = new XPopup.Builder(getActivity())
+                    .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
+                    .asLoading("")
+                    .show();
+        });
     }
 
     public static Handler handler = new Handler();
@@ -277,7 +303,7 @@ public class UsFragment extends BaseFragment {
             remainderHour = ((nowTime - startTime) / (1000 * 60 * 60)) % 24;//小时
             remainderMinute = ((nowTime - startTime) / (1000 * 60)) % 60;//分钟
             remainderSecond = ((nowTime - startTime) / 1000) % 60;//秒
-            tv.setText(apartTime + "天" + remainderHour + "小时" + remainderMinute + "分" + remainderSecond + "秒");
+            tv_together_time.setText(apartTime + "天" + remainderHour + "小时" + remainderMinute + "分" + remainderSecond + "秒");
 
             setTogetherTime = Integer.parseInt(togetherTime.substring(0, 4));//取出在一起年
             setGetMarriedTime = Integer.parseInt(getMarriedTime.substring(3, 7));//取出结婚年
