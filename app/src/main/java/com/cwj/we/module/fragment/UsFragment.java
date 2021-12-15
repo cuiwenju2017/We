@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -276,10 +277,16 @@ public class UsFragment extends BaseFragment {
                     .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
                     .asLoading("")
                     .show();
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                if (popupView.isShow()) {
+                    popupView.smartDismiss();
+                }
+            }, 1000 * 3);
         });
     }
 
-    public static Handler handler = new Handler();
+    public static Handler handler = new Handler(Looper.getMainLooper());
+
     public Runnable runnable = new Runnable() {
         @RequiresApi(api = Build.VERSION_CODES.O)
         public void run() {
