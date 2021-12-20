@@ -19,8 +19,6 @@ import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.CompassActivity;
 import com.cwj.we.module.activity.DayimaActivity;
 import com.cwj.we.module.activity.ShoudiantongActivity;
-import com.cwj.we.module.activity.VideoWebViewActivity;
-import com.cwj.we.module.activity.VipJiexiActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.chenghu.ChengHuJiSuanQiActivity;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
@@ -78,14 +76,6 @@ public class ToolFragment extends BaseFragment {
         gameBeans.add(lpsz);
         GameBean ljxj = new GameBean("滤镜相机", R.drawable.filter_thumb_original);
         gameBeans.add(ljxj);
-        GameBean spjx = new GameBean("视频解析", R.drawable.icon_byj);
-        gameBeans.add(spjx);
-        GameBean ddt = new GameBean("热影库", R.drawable.icon_byj);
-        gameBeans.add(ddt);
-        GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
-        gameBeans.add(rrsp);
-        GameBean dszb = new GameBean("电视直播", R.drawable.icon_byj);
-        gameBeans.add(dszb);
         GameBean sys = new GameBean("扫一扫", R.drawable.icon_qr_code);
         gameBeans.add(sys);
         GameBean dym = new GameBean("大姨妈", R.drawable.logo);
@@ -122,22 +112,7 @@ public class ToolFragment extends BaseFragment {
                                     ToastUtil.showTextToast(getActivity(), "同意权限后才能操作哦");
                                 }
                             });
-                } else if (position == 5) {//视频解析
-                    intent = new Intent(getActivity(), VipJiexiActivity.class);
-                    startActivity(intent);
-                } else if (position == 6) {//热影库
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://www.reyingku.cc/");
-                    startActivity(intent);
-                } else if (position == 7) {//人人视频
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://m.rr.tv/");
-                    startActivity(intent);
-                } else if (position == 8) {//电视直播
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://m.hao5.net/");
-                    startActivity(intent);
-                } else if (position == 9) {//扫一扫
+                } else if (position == 5) {//扫一扫
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                             //没有权限则申请权限
@@ -150,10 +125,10 @@ public class ToolFragment extends BaseFragment {
                         //小于6.0，不用申请权限，直接执行
                         doCode();
                     }
-                } else if (position == 10) {//大姨妈
+                } else if (position == 6) {//大姨妈
                     intent = new Intent(getActivity(), DayimaActivity.class);
                     startActivity(intent);
-                } else if (position == 11) {//手电筒
+                } else if (position == 7) {//手电筒
                     intent = new Intent(getActivity(), ShoudiantongActivity.class);
                     startActivity(intent);
                 }

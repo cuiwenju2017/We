@@ -55,6 +55,16 @@
             bxll:tabTitle="工具" />
 
         <com.cwj.we.view.TabView
+            android:id="@+id/tab_yingshi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            bxll:tabColor="@color/colorAccent"
+            bxll:tabImage="@drawable/yingshi_list_normal"
+            bxll:tabSelectedImage="@drawable/yingshi_list_pressed"
+            bxll:tabTitle="影视" />
+
+        <com.cwj.we.view.TabView
             android:id="@+id/tab_quanzi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

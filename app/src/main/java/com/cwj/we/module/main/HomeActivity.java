@@ -40,6 +40,7 @@ import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.QuanziFragment;
 import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
+import com.cwj.we.module.fragment.YingshiFragment;
 import com.cwj.we.utils.ToastUtil;
 import com.cwj.we.view.TabView;
 import com.gyf.immersionbar.ImmersionBar;
@@ -79,6 +80,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     ImageView ivBg;
     @BindView(R.id.tab_quanzi)
     TabView tabQuanzi;
+    @BindView(R.id.tab_yingshi)
+    TabView tabYingshi;
 
     private List<TabView> mTabViews = new ArrayList<>();
     private List<Fragment> fragments = new ArrayList<>();
@@ -88,7 +91,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private static final int INDEX_US = 0;
     private static final int INDEX_GAMES = 1;
     private static final int INDEX_TOOL = 2;
-    private static final int INDEX_QUANZI = 3;
+    private static final int INDEX_YINGSHI = 3;
+    private static final int INDEX_QUANZI = 4;
     //这个是你的包名
     private static final String apkName = "yilu";
     private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -129,16 +133,19 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         UsFragment usFragment = new UsFragment();
         GamesFragment gamesFragment = new GamesFragment();
         ToolFragment toolFragment = new ToolFragment();
+        YingshiFragment yingshiFragment = new YingshiFragment();
         QuanziFragment quanziFragment = new QuanziFragment();
 
         fragments.add(usFragment);
         fragments.add(gamesFragment);
         fragments.add(toolFragment);
+        fragments.add(yingshiFragment);
         fragments.add(quanziFragment);
 
         mTabViews.add(tabUs);
         mTabViews.add(tabGames);
         mTabViews.add(tabTool);
+        mTabViews.add(tabYingshi);
         mTabViews.add(tabQuanzi);
 
         viewpager.setOffscreenPageLimit(fragments.size() - 1);
@@ -326,7 +333,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick({R.id.tab_tool, R.id.tab_games, R.id.tab_us, R.id.tab_quanzi})
+    @OnClick({R.id.tab_tool, R.id.tab_games, R.id.tab_us, R.id.tab_yingshi, R.id.tab_quanzi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tab_tool:
@@ -341,9 +348,15 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                 viewpager.setCurrentItem(INDEX_US, false);
                 updateCurrentTab(INDEX_US);
                 break;
+            case R.id.tab_yingshi:
+                viewpager.setCurrentItem(INDEX_YINGSHI, false);
+                updateCurrentTab(INDEX_YINGSHI);
+                break;
             case R.id.tab_quanzi:
                 viewpager.setCurrentItem(INDEX_QUANZI, false);
                 updateCurrentTab(INDEX_QUANZI);
+                break;
+            default:
                 break;
         }
     }
