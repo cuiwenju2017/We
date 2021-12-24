@@ -18,6 +18,9 @@ import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -74,7 +77,15 @@ public class VipJiexiActivity extends BaseActivity {
                 } else {
                     if (!OneClickThree.isFastClick()) {
                         intent = new Intent(this, VideoWebViewActivity.class);
-                        intent.putExtra("movieUrl", etUrl.getText().toString());
+                        if (etUrl.getText().toString().trim().startsWith("http://") || etUrl.getText().toString().trim().startsWith("https://")) {
+                            intent.putExtra("movieUrl", etUrl.getText().toString().trim());//打开网址
+                        } else {
+                            try {//百多搜索
+                                intent.putExtra("movieUrl", "http://www.baidu.com/s?&ie=utf-8&oe=UTF-8&wd=" + URLEncoder.encode(etUrl.getText().toString().trim(), "UTF-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         startActivity(intent);
                     }
                 }
