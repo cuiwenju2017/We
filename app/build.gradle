@@ -134,4 +134,6 @@ dependencies {
     implementation 'com.github.zcweng:switch-button:0.0.3@aar'
     //SwipeDelMenuLayout侧滑删除
     implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
+    //Weather_Bg天气背景
+    implementation 'com.github.Rainvvy:Weather_Bg:v1.1'
 }

@@ -40,6 +40,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".module.tianqi.AddressChooseActivity"></activity>
+        <activity android:name=".module.tianqi.TianqiActivity" />
         <activity
             android:name=".module.activity.DaanzhishuActivity"
             android:screenOrientation="portrait" />

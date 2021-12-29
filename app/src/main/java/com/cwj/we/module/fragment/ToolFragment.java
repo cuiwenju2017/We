@@ -23,6 +23,7 @@ import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.chenghu.ChengHuJiSuanQiActivity;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
+import com.cwj.we.module.tianqi.TianqiActivity;
 import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
@@ -82,6 +83,8 @@ public class ToolFragment extends BaseFragment {
         gameBeans.add(dym);
         GameBean sdt = new GameBean("手电筒", R.drawable.icon_shoudiantong);
         gameBeans.add(sdt);
+        GameBean tq = new GameBean("天气", R.drawable.icon_tianqi);
+        gameBeans.add(tq);
     }
 
     protected void initData() {
@@ -130,6 +133,9 @@ public class ToolFragment extends BaseFragment {
                     startActivity(intent);
                 } else if (position == 7) {//手电筒
                     intent = new Intent(getActivity(), ShoudiantongActivity.class);
+                    startActivity(intent);
+                }else if (position == 8) {//天气
+                    intent = new Intent(getActivity(), TianqiActivity.class);
                     startActivity(intent);
                 }
             }

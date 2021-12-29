@@ -2,6 +2,7 @@ package com.cwj.we.http;
 
 import com.cwj.we.bean.LatestBean;
 import com.cwj.we.bean.MsgBean;
+import com.cwj.we.bean.WeatherBean;
 import com.tencent.mmkv.MMKV;
 
 import io.reactivex.Observable;
@@ -19,6 +20,7 @@ public class API {
     public static final String vip3 = "http://www.82190555.com/video.php?url=";//vip3
     public static final String vip4 = "http://www.sfsft.com/video.php?url=";//vip4
     public static final String vip5 = "https://wannengrun.com/";//vip5
+    public static final String tianqi = "https://wis.qq.com/weather/";//天气
 
     public interface Api {
         //检测版本更新
@@ -28,5 +30,9 @@ public class API {
         //智能机器人
         @GET(BASE_URL_Qingyunke + "api.php?key=free&appid=0")
         Observable<MsgBean> msg(@Query("msg") String msg);
+
+        //腾讯天气
+        @GET(tianqi + "common?source=xw&weather_type=forecast_24h|index|limit|tips")
+        Observable<WeatherBean> weather(@Query("province") String province, @Query("city") String city, @Query("county") String county);
     }
 }
