@@ -3,7 +3,6 @@ package com.cwj.we.module.tianqi;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +20,6 @@ import com.gyf.immersionbar.ImmersionBar;
 import com.rainy.weahter_bg_plug.WeatherBg;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -291,12 +289,5 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             default:
                 break;
         }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
     }
 }

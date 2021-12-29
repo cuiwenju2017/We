@@ -1829,7 +1829,7 @@ public class WeatherBean {
                  */
 
                 @SerializedName("")
-                private String _$44; // FIXME check this code
+                private String _$44;
                 private String detail;
                 private String info;
                 private String name;
@@ -2452,7 +2452,7 @@ public class WeatherBean {
                  */
 
                 @SerializedName("")
-                private String _$7; // FIXME check this code
+                private String _$7;
                 private String detail;
                 private String info;
                 private String name;
@@ -2499,7 +2499,7 @@ public class WeatherBean {
                  */
 
                 @SerializedName("")
-                private String _$193; // FIXME check this code
+                private String _$193;
                 private String detail;
                 private String info;
                 private String name;
