@@ -63,60 +63,27 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_day_weather"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/colorWhite" />
-
-                        <TextView
-                            android:id="@+id/tv_degree"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/colorWhite" />
-
-                        <TextView
-                            android:id="@+id/tv_day_wind_direction"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textColor="@color/colorWhite" />
-
-                        <TextView
-                            android:id="@+id/tv_time"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="end"
-                            android:textColor="@color/colorWhite" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
                             android:id="@+id/tv_day_weather1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textColor="@color/colorAccent" />
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_degree1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textColor="@color/colorAccent" />
+                            android:textColor="@color/white" />
 
                         <TextView
                             android:id="@+id/tv_day_wind_direction1"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:textColor="@color/colorAccent" />
+                            android:textColor="@color/white" />
 
                         <TextView
                             android:id="@+id/tv_time1"
@@ -124,12 +91,13 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="end"
-                            android:textColor="@color/colorAccent" />
+                            android:textColor="@color/white" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -165,6 +133,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -200,6 +169,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -235,6 +205,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -270,6 +241,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -305,6 +277,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -347,264 +320,6 @@
                     android:background="@drawable/shape_translucence"
                     android:orientation="vertical"
                     android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="洗车"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_xiche"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="穿衣"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_chuanyi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="舒适度"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_shushidu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="路况"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_lukuang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="晾晒"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_liangshai"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="钓鱼"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_diaoyu"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="化妆"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_huazhuang"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="运动"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_yundong"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="旅游"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_lvyou"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="今日限行"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_xianxing"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/shape_translucence"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="提示"
-                        android:textColor="@color/white"
-                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/tv_tip"

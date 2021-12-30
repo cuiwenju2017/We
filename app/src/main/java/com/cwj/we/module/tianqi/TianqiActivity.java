@@ -15,6 +15,7 @@ import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.WeatherBean;
 import com.cwj.we.common.GlobalConstant;
 import com.cwj.we.http.API;
+import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.rainy.weahter_bg_plug.WeatherBg;
@@ -38,14 +39,6 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
     NestedScrollView nsv;
     @BindView(R.id.ll)
     LinearLayout ll;
-    @BindView(R.id.tv_day_weather)
-    TextView tvDayWeather;
-    @BindView(R.id.tv_degree)
-    TextView tvDegree;
-    @BindView(R.id.tv_day_wind_direction)
-    TextView tvDayWindDirection;
-    @BindView(R.id.tv_time)
-    TextView tvTime;
     @BindView(R.id.tv_day_weather1)
     TextView tvDayWeather1;
     @BindView(R.id.tv_degree1)
@@ -102,26 +95,6 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
     TextView tvDayWindDirection7;
     @BindView(R.id.tv_time7)
     TextView tvTime7;
-    @BindView(R.id.tv_xiche)
-    TextView tvXiche;
-    @BindView(R.id.tv_chuanyi)
-    TextView tvChuanyi;
-    @BindView(R.id.tv_shushidu)
-    TextView tvShushidu;
-    @BindView(R.id.tv_lukuang)
-    TextView tvLukuang;
-    @BindView(R.id.tv_liangshai)
-    TextView tvLiangshai;
-    @BindView(R.id.tv_diaoyu)
-    TextView tvDiaoyu;
-    @BindView(R.id.tv_huazhuang)
-    TextView tvHuazhuang;
-    @BindView(R.id.tv_yundong)
-    TextView tvYundong;
-    @BindView(R.id.tv_lvyou)
-    TextView tvLvyou;
-    @BindView(R.id.tv_xianxing)
-    TextView tvXianxing;
     @BindView(R.id.tv_tip)
     TextView tvTip;
     private String province, city, county;
@@ -162,7 +135,7 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
     @SuppressLint("SetTextI18n")
     @Override
     public void weatherData(WeatherBean.DataBean data) {
-        if (data != null) {
+        if (data != null && data.getForecast_24h() != null && data.getForecast_24h().get_$1() != null) {
             nsv.setVisibility(View.VISIBLE);
             if ("大雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 // heavyRainy：大雨（雷雨）
@@ -194,9 +167,21 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             } else if ("雷阵雨".equals(data.getForecast_24h().get_$1().getDay_weather()) || "阵雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("thunder");
             } else if ("晴".equals(data.getForecast_24h().get_$1().getDay_weather())) {
-                wb.changeWeather("sunny");
+                int time = Integer.parseInt(TimeUtils.dateToString(TimeUtils.getTimeStame(), "HH"));
+                if (time == 0 || time == 1 || time == 2 || time == 3 || time == 4 || time == 5 || time == 6 ||
+                        time == 18 || time == 19 || time == 20 || time == 21 || time == 22 || time == 23) {
+                    wb.changeWeather("sunnyNight");
+                } else {
+                    wb.changeWeather("sunny");
+                }
             } else if ("多云".equals(data.getForecast_24h().get_$1().getDay_weather())) {
-                wb.changeWeather("cloudy");
+                int time = Integer.parseInt(TimeUtils.dateToString(TimeUtils.getTimeStame(), "HH"));
+                if (time == 0 || time == 1 || time == 2 || time == 3 || time == 4 || time == 5 || time == 6 ||
+                        time == 18 || time == 19 || time == 20 || time == 21 || time == 22 || time == 23) {
+                    wb.changeWeather("cloudyNight");
+                } else {
+                    wb.changeWeather("cloudy");
+                }
             } else if ("阴".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("overcast");
             } else if ("雾".equals(data.getForecast_24h().get_$1().getDay_weather())) {
@@ -207,7 +192,6 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
                 wb.changeWeather("dusty");
             }
 
-            tvDayWeather.setText(data.getForecast_24h().get_$0().getDay_weather());
             tvDayWeather1.setText(data.getForecast_24h().get_$1().getDay_weather());
             tvDayWeather2.setText(data.getForecast_24h().get_$2().getDay_weather());
             tvDayWeather3.setText(data.getForecast_24h().get_$3().getDay_weather());
@@ -216,7 +200,6 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             tvDayWeather6.setText(data.getForecast_24h().get_$6().getDay_weather());
             tvDayWeather7.setText(data.getForecast_24h().get_$7().getDay_weather());
 
-            tvDegree.setText(data.getForecast_24h().get_$0().getMax_degree() + "/" + data.getForecast_24h().get_$0().getMin_degree() + "℃");
             tvDegree1.setText(data.getForecast_24h().get_$1().getMax_degree() + "/" + data.getForecast_24h().get_$1().getMin_degree() + "℃");
             tvDegree2.setText(data.getForecast_24h().get_$2().getMax_degree() + "/" + data.getForecast_24h().get_$2().getMin_degree() + "℃");
             tvDegree3.setText(data.getForecast_24h().get_$3().getMax_degree() + "/" + data.getForecast_24h().get_$3().getMin_degree() + "℃");
@@ -225,7 +208,6 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             tvDegree6.setText(data.getForecast_24h().get_$6().getMax_degree() + "/" + data.getForecast_24h().get_$6().getMin_degree() + "℃");
             tvDegree7.setText(data.getForecast_24h().get_$7().getMax_degree() + "/" + data.getForecast_24h().get_$7().getMin_degree() + "℃");
 
-            tvDayWindDirection.setText(data.getForecast_24h().get_$0().getDay_wind_direction());
             tvDayWindDirection1.setText(data.getForecast_24h().get_$1().getDay_wind_direction());
             tvDayWindDirection2.setText(data.getForecast_24h().get_$2().getDay_wind_direction());
             tvDayWindDirection3.setText(data.getForecast_24h().get_$3().getDay_wind_direction());
@@ -234,7 +216,6 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             tvDayWindDirection6.setText(data.getForecast_24h().get_$6().getDay_wind_direction());
             tvDayWindDirection7.setText(data.getForecast_24h().get_$7().getDay_wind_direction());
 
-            tvTime.setText(data.getForecast_24h().get_$0().getTime());
             tvTime1.setText(data.getForecast_24h().get_$1().getTime());
             tvTime2.setText(data.getForecast_24h().get_$2().getTime());
             tvTime3.setText(data.getForecast_24h().get_$3().getTime());
@@ -243,17 +224,9 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             tvTime6.setText(data.getForecast_24h().get_$6().getTime());
             tvTime7.setText(data.getForecast_24h().get_$7().getTime());
 
-            tvXiche.setText(data.getIndex().getCarwash().getInfo());
-            tvChuanyi.setText(data.getIndex().getClothes().getDetail());
-            tvShushidu.setText(data.getIndex().getClothes().getDetail());
-            tvLukuang.setText(data.getIndex().getDry().getInfo());
-            tvLiangshai.setText(data.getIndex().getDrying().getInfo());
-            tvDiaoyu.setText(data.getIndex().getFish().getDetail());
-            tvHuazhuang.setText(data.getIndex().getMakeup().getInfo() + "\n" + data.getIndex().getMakeup().getDetail());
-            tvYundong.setText(data.getIndex().getSports().getDetail());
-            tvLvyou.setText(data.getIndex().getTourism().getDetail());
-            tvXianxing.setText(data.getLimit().getTail_number());
             tvTip.setText(data.getTips().getObserve().get_$0() + "\n" + data.getTips().getObserve().get_$1());
+        } else {
+            nsv.setVisibility(View.GONE);
         }
     }
 

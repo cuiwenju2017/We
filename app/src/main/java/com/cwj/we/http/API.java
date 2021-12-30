@@ -32,7 +32,7 @@ public class API {
         Observable<MsgBean> msg(@Query("msg") String msg);
 
         //腾讯天气
-        @GET(tianqi + "common?source=xw&weather_type=forecast_24h|index|limit|tips")
+        @GET(tianqi + "common?source=xw&weather_type=forecast_24h|tips")
         Observable<WeatherBean> weather(@Query("province") String province, @Query("city") String city, @Query("county") String county);
     }
 }
