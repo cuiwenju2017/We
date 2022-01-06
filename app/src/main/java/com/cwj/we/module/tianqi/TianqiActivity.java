@@ -154,9 +154,9 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
                 // sunnyNight：晴朗的夜晚
                 // cloudyNight：多云夜晚
                 wb.changeWeather("heavyRainy");
-            } else if ("中雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
+            } else if ("中雨".equals(data.getForecast_24h().get_$1().getDay_weather()) || "中到大雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("middleRainy");
-            } else if ("小雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
+            } else if ("小雨".equals(data.getForecast_24h().get_$1().getDay_weather()) || "小到中雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("lightRainy");
             } else if ("暴雪".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("heavySnow");
@@ -227,6 +227,7 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
             tvTip.setText(data.getTips().getObserve().get_$0() + "\n" + data.getTips().getObserve().get_$1());
         } else {
             nsv.setVisibility(View.GONE);
+            wb.changeWeather("");
         }
     }
 
