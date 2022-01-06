@@ -162,7 +162,7 @@ public class TianqiActivity extends BaseActivity<TianqiPrensenter> implements Ti
                 wb.changeWeather("heavySnow");
             } else if ("中雪".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("middleSnow");
-            } else if ("小雪".equals(data.getForecast_24h().get_$1().getDay_weather())) {
+            } else if ("小雪".equals(data.getForecast_24h().get_$1().getDay_weather()) || "雨夹雪".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("lightSnow");
             } else if ("雷阵雨".equals(data.getForecast_24h().get_$1().getDay_weather()) || "阵雨".equals(data.getForecast_24h().get_$1().getDay_weather())) {
                 wb.changeWeather("thunder");
