@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -41,6 +42,7 @@ import com.cwj.we.module.fragment.QuanziFragment;
 import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
 import com.cwj.we.module.fragment.YingshiFragment;
+import com.cwj.we.utils.ReaderUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.cwj.we.view.TabView;
 import com.gyf.immersionbar.ImmersionBar;
@@ -127,7 +129,15 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
             equal(-1);//查背景图
         } else {
-            Glide.with(HomeActivity.this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
+            if (sprfMain.getString("path", "").startsWith("content://")) {
+                Uri uri = Uri.parse(sprfMain.getString("path", ""));
+                File mImageFile = new File(ReaderUtils.getPath(this, uri));
+                Uri mImageUri = FileProvider.getUriForFile(HomeActivity.this,
+                        "com.cwj.we.fileprovider", mImageFile);
+                Glide.with(HomeActivity.this).load(mImageUri).into(ivBg);
+            } else {
+                Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
+            }
         }
 
         UsFragment usFragment = new UsFragment();
@@ -224,7 +234,15 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                 equal(-1);//查背景图
                 break;
             case "EVENT_SZ_BG":
-                Glide.with(this).load(Uri.fromFile(new File(eventBG.getUserIconPath()))).into(ivBg);
+                if (eventBG.getUserIconPath().startsWith("content://")) {
+                    Uri uri = Uri.parse(eventBG.getUserIconPath());
+                    File mImageFile = new File(ReaderUtils.getPath(this, uri));
+                    Uri mImageUri = FileProvider.getUriForFile(HomeActivity.this,
+                            "com.cwj.we.fileprovider", mImageFile);
+                    Glide.with(this).load(mImageUri).into(ivBg);
+                } else {
+                    Glide.with(this).load(Uri.fromFile(new File(eventBG.getUserIconPath()))).into(ivBg);
+                }
                 break;
         }
     }

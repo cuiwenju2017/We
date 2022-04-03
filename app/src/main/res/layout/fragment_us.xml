@@ -60,6 +60,7 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
                     </LinearLayout>
 
                     <TextView
@@ -241,7 +242,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/ripple_water2"
                     android:clickable="true"
                     android:gravity="center"
                     android:paddingLeft="20dp"
@@ -255,7 +256,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/ripple_water2"
                     android:clickable="true"
                     android:gravity="center"
                     android:paddingLeft="20dp"
@@ -269,7 +270,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/ripple_water2"
                     android:clickable="true"
                     android:gravity="center"
                     android:paddingLeft="20dp"
@@ -282,7 +283,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
-                    android:background="@drawable/ripple_water"
+                    android:background="@drawable/ripple_water2"
                     android:clickable="true"
                     android:gravity="center"
                     android:paddingLeft="20dp"

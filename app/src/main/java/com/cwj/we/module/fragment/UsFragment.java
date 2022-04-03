@@ -120,6 +120,8 @@ public class UsFragment extends BaseFragment {
     RelativeLayout rl;
     @BindView(R.id.ic)
     View ic;
+    @BindView(R.id.tv)
+    TextView tv;
 
     private String togetherTime, getMarriedTime, getMarriedTime2, getMarriedTime3, thisyeargetMarriedTime, nextyeargetMarriedTime;
     SharedPreferences sprfMain;

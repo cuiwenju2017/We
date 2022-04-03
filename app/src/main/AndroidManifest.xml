@@ -40,7 +40,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.tianqi.AddressChooseActivity"></activity>
+        <activity android:name=".module.dayima.UpdateDayimaActivity"></activity>
+        <activity android:name=".module.tianqi.AddressChooseActivity" />
         <activity android:name=".module.tianqi.TianqiActivity" />
         <activity
             android:name=".module.activity.DaanzhishuActivity"
@@ -53,7 +54,7 @@
             android:name=".module.activity.SettingZhouqiActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".module.activity.DayimaActivity"
+            android:name=".module.dayima.DayimaActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.chenghu.ChengHuJiSuanQiActivity"

@@ -17,8 +17,10 @@
         app:cardElevation="0dp">
 
         <LinearLayout
+            android:id="@+id/ll_context"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -26,6 +28,7 @@
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="2022-05-20"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -34,8 +37,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
+                android:text="大姨妈来了"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/iv"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/icon_islai" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

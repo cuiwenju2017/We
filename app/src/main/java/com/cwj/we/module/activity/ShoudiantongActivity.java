@@ -100,7 +100,7 @@ public class ShoudiantongActivity extends BaseActivity {
                     bjiv.setImageResource(R.drawable.off);//关闭的图片
                     turnOffFlashLight();
                     islight = false;
-                    if(manager != null){
+                    if (manager != null) {
                         manager.cancel(1);
                     }
                 } else {
@@ -120,7 +120,7 @@ public class ShoudiantongActivity extends BaseActivity {
         public void onReceive(Context context, Intent intent) {
             bjiv.setImageResource(R.drawable.off);//关闭的图片
             turnOffFlashLight();
-            if(manager != null){
+            if (manager != null) {
                 manager.cancel(1);
             }
             islight = false;
@@ -237,7 +237,7 @@ public class ShoudiantongActivity extends BaseActivity {
      */
     public void onBackPressed() {
         if (!mBackKeyPressed) {
-            ToastUtil.showTextToast(this, "再按一次退出程序");
+            ToastUtil.showTextToast(this, "再按一次退出手电筒");
             mBackKeyPressed = true;
             new Timer().schedule(new TimerTask() {//延时两秒，如果超出则清除第一次记录
                 @Override
@@ -248,7 +248,7 @@ public class ShoudiantongActivity extends BaseActivity {
         } else {//退出程序
             //关灯
             turnOffFlashLight();
-            if(manager != null){
+            if (manager != null) {
                 manager.cancel(1);
             }
             islight = false;

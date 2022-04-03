@@ -1,7 +1,8 @@
-package com.cwj.we.module.activity;
+package com.cwj.we.module.dayima;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -20,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
+import com.bumptech.glide.Glide;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
@@ -28,12 +31,16 @@ import com.cwj.we.base.BaseRVHolder;
 import com.cwj.we.bean.JingqiTime;
 import com.cwj.we.bean.User;
 import com.cwj.we.bean.Zhouqi;
+import com.cwj.we.module.activity.LoginActivity;
+import com.cwj.we.module.activity.SettingZhouqiActivity;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
+import com.lxj.xpopup.core.BasePopupView;
+import com.lxj.xpopup.impl.PartShadowPopupView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 
 import java.text.ParseException;
@@ -43,6 +50,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
@@ -85,10 +93,13 @@ public class DayimaActivity extends BaseActivity {
     private String state;
     private int pos;
     private int zhouqiDay, jingqiDay;
-    private int ZQ_SETTING = 201;
     private String lastTime;
     private boolean lastType;
     private List<JingqiTime> jingqiTimeSize;
+    private BasePopupView basePopupView;
+    private JingqiTime dt;
+    private int ZQ_SETTING = 201;
+    private int UPDATE_DAYIMA = 202;
 
     @Override
     protected BasePresenter createPresenter() {
@@ -107,13 +118,19 @@ public class DayimaActivity extends BaseActivity {
         adapter = new BaseRVAdapter<JingqiTime>(R.layout.item_dayima) {
             @Override
             public void onBindVH(BaseRVHolder holder, JingqiTime data, int position) {
+                ImageView iv = holder.getView(R.id.iv);
+                LinearLayout ll_context = holder.getView(R.id.ll_context);
+                TextView tv_isState = holder.getView(R.id.tv_isState);
+
                 holder.setText(R.id.tv_time, data.getTime());
                 if (data.isType()) {
                     state = "大姨妈来了";
+                    Glide.with(DayimaActivity.this).load(R.drawable.icon_islai).into(iv);
                 } else {
                     state = "大姨妈走了";
+                    Glide.with(DayimaActivity.this).load(R.drawable.icon_iszou).into(iv);
                 }
-                holder.setText(R.id.tv_isState, state);
+                tv_isState.setText(state);
 
                 holder.getView(R.id.tv_delete).setOnClickListener(v -> {//删除
                     new XPopup.Builder(DayimaActivity.this).asConfirm("提示", "确定删除这条数据吗？",
@@ -123,6 +140,22 @@ public class DayimaActivity extends BaseActivity {
                                 removeJingqiTime(data.getObjectId());
                             })
                             .show();
+                });
+
+                //长按删除编辑弹窗
+                ll_context.setOnLongClickListener(v -> {
+                    pos = position;
+                    dt = data;
+                    basePopupView = new XPopup.Builder(DayimaActivity.this)
+                            .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+                            .atView(ll_context)
+                            .hasShadowBg(false) // 去掉半透明背景
+                            .isClickThrough(true)
+                            .isRequestFocus(false)
+                            .offsetX(200)
+                            .asCustom(new CustomBubbleAttachPopup(DayimaActivity.this))
+                            .show();
+                    return false;
                 });
             }
         };
@@ -146,6 +179,52 @@ public class DayimaActivity extends BaseActivity {
             skip = ++skip;
             queryJingqiList();
         });
+    }
+
+    class CustomBubbleAttachPopup extends PartShadowPopupView {
+
+        @BindView(R.id.tv_update)
+        TextView tvUpdate;
+        @BindView(R.id.tv_delect)
+        TextView tvDelect;
+
+        public CustomBubbleAttachPopup(@NonNull Context context) {
+            super(context);
+        }
+
+        @Override
+        protected int getImplLayoutId() {
+            return R.layout.custom_bubble_attach_popup;
+        }
+
+        @Override
+        protected void onCreate() {
+            super.onCreate();
+            ButterKnife.bind(this);
+        }
+
+        @OnClick({R.id.tv_update, R.id.tv_delect})
+        public void onViewClicked(View view) {
+            switch (view.getId()) {
+                case R.id.tv_update://编辑
+                    Intent intent = new Intent(DayimaActivity.this, UpdateDayimaActivity.class);
+                    intent.putExtra("objectId", dt.getObjectId());
+                    intent.putExtra("time", dt.getTime());
+                    intent.putExtra("type", dt.isType());
+                    startActivityForResult(intent, UPDATE_DAYIMA);
+                    basePopupView.dismiss();
+                    break;
+                case R.id.tv_delect://删除
+                    basePopupView.dismiss();
+                    new XPopup.Builder(DayimaActivity.this).asConfirm("提示", "确定删除这条数据吗？",
+                            () -> {
+                                loadingDialog.show();
+                                removeJingqiTime(dt.getObjectId());
+                            })
+                            .show();
+                    break;
+            }
+        }
     }
 
     /**
@@ -260,9 +339,7 @@ public class DayimaActivity extends BaseActivity {
                     loadingDialog.dismiss();
                     adapter.remove(pos);
                     ToastUtil.showTextToast(DayimaActivity.this, "删除成功");
-                    srlType = 0;
-                    skip = 1;
-                    queryJingqiList();
+                    queryZhouqi();
                 } else {
                     loadingDialog.dismiss();
                     ToastUtil.showTextToast(DayimaActivity.this, "" + e.getMessage());
@@ -336,6 +413,13 @@ public class DayimaActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ZQ_SETTING && resultCode == Activity.RESULT_OK) {
+            queryZhouqi();
+        } else if (requestCode == UPDATE_DAYIMA && resultCode == Activity.RESULT_OK) {
+            String time = data.getStringExtra("time");
+            boolean type = data.getBooleanExtra("type", false);
+            adapter.getData().get(pos).setTime(time);
+            adapter.getData().get(pos).setType(type);
+            adapter.notifyItemChanged(pos);
             queryZhouqi();
         }
     }

@@ -9,22 +9,11 @@
 
     <include layout="@layout/include_head" />
 
-    <EditText
-        android:id="@+id/et_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:hint="标题"
-        android:maxLines="2"
-        android:padding="10dp"
-        android:textColor="@color/black"
-        android:textSize="18sp" />
-
     <RelativeLayout
         android:id="@+id/rl_choose_type"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/ripple_water_more"
         android:clickable="true">
 
@@ -47,6 +36,17 @@
             android:drawableRight="@drawable/icon_in"
             android:textColor="@color/black" />
     </RelativeLayout>
+
+    <EditText
+        android:id="@+id/et_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="标题"
+        android:maxLines="2"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/et_content"

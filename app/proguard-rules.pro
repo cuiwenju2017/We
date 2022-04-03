@@ -80,3 +80,6 @@
 
 -keep public class * extends android.app.Activity
 -keep public class * extends android.app.Service
+
+-dontwarn com.lxj.xpopup.widget.**
+-keep class com.lxj.xpopup.widget.**{*;}
