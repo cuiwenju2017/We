@@ -28,12 +28,10 @@ import androidx.core.widget.NestedScrollView;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseFragment;
 import com.cwj.we.base.BasePresenter;
-import com.cwj.we.bean.Day;
 import com.cwj.we.bean.EventBG;
-import com.cwj.we.bean.User;
 import com.cwj.we.common.GlobalConstant;
+import com.cwj.we.http.API;
 import com.cwj.we.module.about.AboutActivity;
-import com.cwj.we.module.activity.LoginActivity;
 import com.cwj.we.module.activity.SetTimeActivity;
 import com.cwj.we.utils.ActivityCollector;
 import com.cwj.we.utils.LunarUtils;
@@ -51,14 +49,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.ParseException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 import me.samlss.broccoli.Broccoli;
 import me.samlss.broccoli.BroccoliGradientDrawable;
 import me.samlss.broccoli.PlaceholderParameter;
@@ -183,8 +176,9 @@ public class UsFragment extends BaseFragment {
     }
 
     /**
-     * 查询一对一关联，查询当前用户下的日期
+     * 查询日期
      */
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void queryPostAuthor() {
         tvYincang1.setVisibility(View.GONE);
         tvYincang2.setVisibility(View.GONE);
@@ -195,58 +189,35 @@ public class UsFragment extends BaseFragment {
         tvWeddingDayTip.setVisibility(View.GONE);
         initPlaceholders();
 
-        if (BmobUser.isLogin()) {
-            BmobQuery<Day> query = new BmobQuery<>();
-            query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
-            query.order("-updatedAt");
-            //包含作者信息
-            query.include("author");
-            query.findObjects(new FindListener<Day>() {
-
-                @SuppressLint("SetTextI18n")
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void done(List<Day> object, BmobException e) {
-                    popupView.smartDismiss();
-                    if (e == null && object.size() > 0) {
-                        mBroccoli.clearAllPlaceholders();
-                        tvYincang1.setVisibility(View.VISIBLE);
-                        tvYincang2.setVisibility(View.VISIBLE);
-                        tvYincang3.setVisibility(View.VISIBLE);
-                        tvYincang4.setVisibility(View.VISIBLE);
-                        tvJh.setVisibility(View.VISIBLE);
-                        tvY.setVisibility(View.VISIBLE);
-                        tvWeddingDayTip.setVisibility(View.VISIBLE);
-
-                        rl.setVisibility(View.VISIBLE);
-                        ic.setVisibility(View.GONE);
-                        togetherTime = object.get(0).getTogetherTime();
-                        getMarriedTime = object.get(0).getGetMarriedTime();
-                        getMarriedTime2 = object.get(0).getGetMarriedTime2();
-                        getMarriedTime3 = object.get(0).getGetMarriedTime3();
-                        tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
-                        update();//显示数据
-                        //开始计时
-                        handler.postDelayed(runnable, 1000);
-                        //停止计时
-                        //handler.removeCallbacks(runnable);
-                        isFrist = true;
-                        isFrist2 = true;
-                    } else if (e == null && object.size() < 1) {//无日期去设置日期
-                        startActivity(new Intent(getActivity(), SetTimeActivity.class));
-                        getActivity().finish();
-                    } else {
-                        ic.setVisibility(View.VISIBLE);
-                        rl.setVisibility(View.GONE);
-                        TextView tv = ic.findViewById(R.id.tv);
-                        tv.setText("数据获取失败，请重试");
-                    }
-                }
-            });
-        } else {
+        togetherTime = API.kv.decodeString("togetherTime");
+        getMarriedTime = API.kv.decodeString("getMarriedTime");
+        getMarriedTime2 = API.kv.decodeString("getMarriedTime2");
+        getMarriedTime3 = API.kv.decodeString("getMarriedTime3");
+        if (popupView.isShow()) {
             popupView.smartDismiss();
-            ToastUtil.showTextToast(getActivity(), "请先登录");
-            startActivity(new Intent(getActivity(), LoginActivity.class));
+        }
+        if (togetherTime != null && getMarriedTime != null && getMarriedTime2 != null && getMarriedTime3 != null) {
+            mBroccoli.clearAllPlaceholders();
+            tvYincang1.setVisibility(View.VISIBLE);
+            tvYincang2.setVisibility(View.VISIBLE);
+            tvYincang3.setVisibility(View.VISIBLE);
+            tvYincang4.setVisibility(View.VISIBLE);
+            tvJh.setVisibility(View.VISIBLE);
+            tvY.setVisibility(View.VISIBLE);
+            tvWeddingDayTip.setVisibility(View.VISIBLE);
+
+            rl.setVisibility(View.VISIBLE);
+            ic.setVisibility(View.GONE);
+            tvTime.setText(togetherTime + "我们在一起" + "\n\n" + getMarriedTime + "我们结婚");
+            update();//显示数据
+            //开始计时
+            handler.postDelayed(runnable, 1000);
+            //停止计时
+            //handler.removeCallbacks(runnable);
+            isFrist = true;
+            isFrist2 = true;
+        } else {
+            startActivity(new Intent(getActivity(), SetTimeActivity.class));
             getActivity().finish();
         }
     }
@@ -261,16 +232,18 @@ public class UsFragment extends BaseFragment {
         return R.layout.fragment_us;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void initView() {
         EventBus.getDefault().register(this);
-        queryPostAuthor();
         sprfMain = getActivity().getSharedPreferences("counter", Context.MODE_PRIVATE);
         popupView = new XPopup.Builder(getActivity())
                 .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
                 .asLoading("")
                 .show();
+        queryPostAuthor();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void initData() {
         ic.setOnClickListener(v -> {//刷新
@@ -460,8 +433,6 @@ public class UsFragment extends BaseFragment {
         if (requestCode == ABOUT && resultCode == Activity.RESULT_OK) {
             //停止计时
             handler.removeCallbacks(runnable);
-            BmobUser.logOut();//退出登录，同时清除缓存用户对象。
-            startActivity(new Intent(getActivity(), LoginActivity.class));
             //结束之前所有的Activity
             ActivityCollector.finishall();
         }

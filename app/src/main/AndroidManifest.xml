@@ -40,7 +40,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.dayima.UpdateDayimaActivity"></activity>
         <activity android:name=".module.tianqi.AddressChooseActivity" />
         <activity android:name=".module.tianqi.TianqiActivity" />
         <activity
@@ -51,12 +50,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".module.activity.SettingZhouqiActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.dayima.DayimaActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".module.chenghu.ChengHuJiSuanQiActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -64,9 +57,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.activity.ELuoSiFangKuaiActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.activity.AddTieZiActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.activity.VipJiexiActivity"
@@ -90,16 +80,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.lpclock.LPClockActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.activity.ChangePasswordActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.activity.RegisterActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.activity.LoginActivity"
-            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.activity.GobangActivity"
@@ -144,12 +124,6 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="cn.bmob.v3.util.BmobContentProvider"
-            android:authorities="com.cwj.we.BmobContentProvider" /> <!-- 设置BmobAppKey -->
-        <meta-data
-            android:name="Bmob_APP_KEY"
-            android:value="6b641f364905d608449772bae45f7b60" />
         <meta-data
             android:name="android.max_aspect"
             android:value="2.4" /> <!-- 适配华为（huawei）刘海屏 -->

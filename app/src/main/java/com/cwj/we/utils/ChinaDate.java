@@ -1,11 +1,13 @@
 package com.cwj.we.utils;
 
+import android.os.Parcel;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ChinaDate {
+public class ChinaDate{
 
     private int year;
     private int month;
@@ -35,6 +37,13 @@ public class ChinaDate {
                     0x0b273, 0x06930, 0x07337, 0x06aa0, 0x0ad50, 0x14b55, 0x04b60, 0x0a570, 0x054e4, 0x0d160,
                     0x0e968, 0x0d520, 0x0daa0, 0x16aa6, 0x056d0, 0x04ae0, 0x0a9d4, 0x0a2d0, 0x0d150, 0x0f252,
                     0x0d520};
+
+    protected ChinaDate(Parcel in) {
+        year = in.readInt();
+        month = in.readInt();
+        day = in.readInt();
+        leap = in.readByte() != 0;
+    }
 
     //====== 传回农历 y年的总天数
     final private static int yearDays(int y) {

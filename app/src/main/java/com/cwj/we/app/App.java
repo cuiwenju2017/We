@@ -21,8 +21,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import cn.bmob.v3.Bmob;
-
 public class App extends BaseApplication {
 
     private static Context context;
@@ -36,10 +34,6 @@ public class App extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Bmob重置域名
-        Bmob.resetDomain("https://open3.bmob.cn/");
-        //初始化Bmob
-        Bmob.initialize(this, "6db49e4b74caba7f1782c11002dfcfd7");
         //初始化WebViewLib
         X5WebUtils.init(this);
         //初始化MMKV

@@ -1,10 +1,7 @@
 package com.cwj.we.module.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
-
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.listener.CustomListener;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
-import com.cwj.we.bean.Day;
-import com.cwj.we.bean.User;
+import com.cwj.we.http.API;
 import com.cwj.we.module.main.HomeActivity;
 import com.cwj.we.utils.ChinaDate;
 import com.cwj.we.utils.ChinaDate2;
@@ -38,16 +32,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.bmob.v3.listener.SaveListener;
-import cn.bmob.v3.listener.UpdateListener;
 
 public class SetTimeActivity extends BaseActivity {
 
@@ -60,7 +47,7 @@ public class SetTimeActivity extends BaseActivity {
 
     private Calendar selectedDate;
     private TimePickerView pvTime, pvCustomLunar;
-    private String togetherTime, getMarriedTime, tT, gT, gT2, getMarriedTime3, objectId, userObjectId;
+    private String togetherTime, getMarriedTime, tT, gT, gT2, getMarriedTime3;
     private ChinaDate lunar;
 
     @Override
@@ -90,131 +77,79 @@ public class SetTimeActivity extends BaseActivity {
     }
 
     /**
-     * 添加一对一关联，当前用户添加日期
+     * 添加日期
      */
     private void savePost() {
-        if (BmobUser.isLogin()) {
-            Day day = new Day();
-            day.setTogetherTime(togetherTime);
-            day.setGetMarriedTime("" + lunar);
-            day.setGetMarriedTime2(getMarriedTime);
-            day.setGetMarriedTime3(getMarriedTime3);
-            //添加一对一关联，用户关联日期
-            day.setAuthor(BmobUser.getCurrentUser(User.class));
-            day.save(new SaveListener<String>() {
-                @Override
-                public void done(String s, BmobException e) {
-                    popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
-                    if (e == null) {
-                    } else {
-                        ToastUtil.showTextToast(SetTimeActivity.this, e.getMessage());
-                    }
-                }
-            });
-        } else {
-            ToastUtil.showTextToast(SetTimeActivity.this, "请先登录");
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
+        API.kv.encode("togetherTime", togetherTime);
+        API.kv.encode("getMarriedTime", String.valueOf(lunar));
+        API.kv.encode("getMarriedTime2", getMarriedTime);
+        API.kv.encode("getMarriedTime3", getMarriedTime3);
+        ToastUtil.showTextToast(SetTimeActivity.this, "设置成功");
+        popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /**
-     * 查询一对一关联，查询当前用户下的日期
+     * 查询日期
      */
     private void queryPostAuthor() {
         popupView = new XPopup.Builder(this)
                 .dismissOnTouchOutside(false) // 点击外部是否关闭弹窗，默认为true
                 .asLoading("")
                 .show();
-        if (BmobUser.isLogin()) {
-            BmobQuery<Day> query = new BmobQuery<>();
-            query.addWhereEqualTo("author", BmobUser.getCurrentUser(User.class));
-            query.order("-updatedAt");
-            //包含作者信息
-            query.include("author");
-            query.findObjects(new FindListener<Day>() {
 
-                @RequiresApi(api = Build.VERSION_CODES.O)
-                @Override
-                public void done(List<Day> object, BmobException e) {
-                    if (e == null && object.size() > 0) {
-                        objectId = object.get(0).getObjectId();
-                        tT = object.get(0).getTogetherTime();
-                        gT = object.get(0).getGetMarriedTime();
-                        gT2 = object.get(0).getGetMarriedTime2();
-                        togetherTime = tT;
-                        Calendar setMarriedTime = Calendar.getInstance();
-                        SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                        try {
-                            setMarriedTime.setTime(chineseDateFormat.parse(gT2));
-                        } catch (ParseException ex) {
-                            ex.printStackTrace();
-                        }
-                        lunar = new ChinaDate(setMarriedTime);
-                        getMarriedTime = gT2;
-                        try {
-                            getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    } else {
-                        long nowTime = TimeUtils.getTimeStame();
-                        togetherTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
-                        lunar = new ChinaDate(selectedDate);
-                        getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
-                        try {
-                            getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                        tT = togetherTime;
-                        gT2 = getMarriedTime3;
-                    }
-                    tvTogetherTime.setText(togetherTime);
-                    tvGetMarriedTime.setText("" + lunar);
-                    popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
-                }
-            });
+        tT = API.kv.decodeString("togetherTime");
+        gT = API.kv.decodeString("getMarriedTime");
+        gT2 = API.kv.decodeString("getMarriedTime2");
+        if (tT != null && gT != null && gT2 != null) {
+            togetherTime = tT;
+            Calendar setMarriedTime = Calendar.getInstance();
+            SimpleDateFormat chineseDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                setMarriedTime.setTime(chineseDateFormat.parse(gT2));
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+            lunar = new ChinaDate(setMarriedTime);
+            getMarriedTime = gT2;
+            try {
+                getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         } else {
-            popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
-            ToastUtil.showTextToast(SetTimeActivity.this, "请先登录");
-            startActivity(new Intent(SetTimeActivity.this, LoginActivity.class));
-            finish();
+            long nowTime = TimeUtils.getTimeStame();
+            togetherTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+            lunar = new ChinaDate(selectedDate);
+            getMarriedTime = TimeUtils.dateToString(nowTime, "yyyy-MM-dd");
+            try {
+                getMarriedTime3 = ChinaDate2.solarToLunar(getMarriedTime, true);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            tT = togetherTime;
+            gT2 = getMarriedTime3;
         }
+        tvTogetherTime.setText(togetherTime);
+        tvGetMarriedTime.setText("" + lunar);
+        popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
     }
 
-    SharedPreferences sprfMain;
-
     /**
-     * 修改一对一关联，修改日期
+     * 修改日期
      */
     private void updatePostAuthor() {
-        sprfMain = getSharedPreferences("counter", Context.MODE_PRIVATE);
-        userObjectId = sprfMain.getString("userObjectId", "");
-        User user = new User();
-        user.setObjectId(userObjectId);
-        Day day = new Day();
-        day.setObjectId(objectId);
-        day.setTogetherTime(togetherTime);
-        day.setGetMarriedTime("" + lunar);
-        day.setGetMarriedTime2(getMarriedTime);
-        day.setGetMarriedTime3(getMarriedTime3);
-        //修改一对一关联，修改帖子和用户的关系
-        day.setAuthor(user);
-        day.update(new UpdateListener() {
-            @Override
-            public void done(BmobException e) {
-                popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
-                if (e == null) {
-                    ToastUtil.showTextToast(SetTimeActivity.this, "修改成功");
-                    Intent intent = new Intent(SetTimeActivity.this, HomeActivity.class);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    ToastUtil.showTextToast(SetTimeActivity.this, e.getMessage());
-                }
-            }
-        });
+        API.kv.encode("togetherTime", togetherTime);
+        API.kv.encode("getMarriedTime", String.valueOf(lunar));
+        API.kv.encode("getMarriedTime2", getMarriedTime);
+        API.kv.encode("getMarriedTime3", getMarriedTime3);
+        ToastUtil.showTextToast(SetTimeActivity.this, "修改成功");
+        popupView.smartDismiss(); //会等待弹窗的开始动画执行完毕再进行消失，可以防止接口调用过快导致的动画不完整。
+        Intent intent = new Intent(SetTimeActivity.this, HomeActivity.class);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     private SimpleDateFormat chineseDateFormat;
@@ -351,10 +286,7 @@ public class SetTimeActivity extends BaseActivity {
                                     .asLoading("")
                                     .show();
                             if (TextUtils.isEmpty(tT) || TextUtils.isEmpty(gT)) {
-                                Intent intent = new Intent(this, HomeActivity.class);
                                 savePost();//新增数据
-                                startActivity(intent);
-                                finish();
                             } else {
                                 updatePostAuthor();//修改数据
                             }

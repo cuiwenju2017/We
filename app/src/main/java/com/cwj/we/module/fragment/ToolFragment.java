@@ -20,7 +20,6 @@ import com.cwj.we.module.activity.CompassActivity;
 import com.cwj.we.module.activity.ShoudiantongActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.chenghu.ChengHuJiSuanQiActivity;
-import com.cwj.we.module.dayima.DayimaActivity;
 import com.cwj.we.module.ljxj.OpenCameraActivity;
 import com.cwj.we.module.lpclock.LPClockActivity;
 import com.cwj.we.module.tianqi.TianqiActivity;
@@ -79,8 +78,6 @@ public class ToolFragment extends BaseFragment {
         gameBeans.add(ljxj);
         GameBean sys = new GameBean("扫一扫", R.drawable.icon_saoyisao);
         gameBeans.add(sys);
-        GameBean dym = new GameBean("大姨妈", R.drawable.logo);
-        gameBeans.add(dym);
         GameBean sdt = new GameBean("手电筒", R.drawable.icon_shoudiantong);
         gameBeans.add(sdt);
         GameBean tq = new GameBean("天气", R.drawable.icon_tianqi);
@@ -128,13 +125,10 @@ public class ToolFragment extends BaseFragment {
                         //小于6.0，不用申请权限，直接执行
                         doCode();
                     }
-                } else if (position == 6) {//大姨妈
-                    intent = new Intent(getActivity(), DayimaActivity.class);
-                    startActivity(intent);
-                } else if (position == 7) {//手电筒
+                } else if (position == 6) {//手电筒
                     intent = new Intent(getActivity(), ShoudiantongActivity.class);
                     startActivity(intent);
-                } else if (position == 8) {//天气
+                } else if (position == 7) {//天气
                     intent = new Intent(getActivity(), TianqiActivity.class);
                     startActivity(intent);
                 }

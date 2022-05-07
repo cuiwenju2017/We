@@ -1,6 +1,5 @@
 package com.cwj.we.module.main;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,10 +33,8 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.LatestBean;
-import com.cwj.we.bean.Post;
 import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.fragment.GamesFragment;
-import com.cwj.we.module.fragment.QuanziFragment;
 import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
 import com.cwj.we.module.fragment.YingshiFragment;
@@ -62,9 +58,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
 
 public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeView {
 
@@ -80,8 +73,6 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     LinearLayout llBottom;
     @BindView(R.id.iv_bg)
     ImageView ivBg;
-    @BindView(R.id.tab_quanzi)
-    TabView tabQuanzi;
     @BindView(R.id.tab_yingshi)
     TabView tabYingshi;
 
@@ -94,15 +85,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     private static final int INDEX_GAMES = 1;
     private static final int INDEX_TOOL = 2;
     private static final int INDEX_YINGSHI = 3;
-    private static final int INDEX_QUANZI = 4;
-    //这个是你的包名
-    private static final String apkName = "yilu";
-    private static final String[] mPermission = {Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE};
     private BasePopupView basePopupView;
     private SharedPreferences sprfMain;
-    private int skip = 1;
-    private int limit = 15;
     private NotificationManager manager;
     private NotificationChannel channel;
 
@@ -127,7 +111,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
 
         sprfMain = this.getSharedPreferences("counter", Context.MODE_PRIVATE);
         if (TextUtils.isEmpty(sprfMain.getString("path", ""))) {
-            equal(-1);//查背景图
+            Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
         } else {
             if (sprfMain.getString("path", "").startsWith("content://")) {
                 Uri uri = Uri.parse(sprfMain.getString("path", ""));
@@ -144,19 +128,16 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         GamesFragment gamesFragment = new GamesFragment();
         ToolFragment toolFragment = new ToolFragment();
         YingshiFragment yingshiFragment = new YingshiFragment();
-        QuanziFragment quanziFragment = new QuanziFragment();
 
         fragments.add(usFragment);
         fragments.add(gamesFragment);
         fragments.add(toolFragment);
         fragments.add(yingshiFragment);
-        fragments.add(quanziFragment);
 
         mTabViews.add(tabUs);
         mTabViews.add(tabGames);
         mTabViews.add(tabTool);
         mTabViews.add(tabYingshi);
-        mTabViews.add(tabQuanzi);
 
         viewpager.setOffscreenPageLimit(fragments.size() - 1);
         viewpager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragments));
@@ -206,32 +187,11 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         }
     }
 
-    private void equal(int type) {
-        BmobQuery<Post> query = new BmobQuery<>();
-        query.addWhereEqualTo("type", type);
-        query.setPage(skip, limit).order("-createdAt")
-                .findObjects(new FindListener<Post>() {
-                    @Override
-                    public void done(List<Post> object, BmobException e) {
-                        if (e == null) {
-                            if ("".equals(object.get(0).getContent()) || object.get(0).getContent() == null) {
-                                Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
-                            } else {
-                                Glide.with(HomeActivity.this).load(object.get(0).getContent()).into(ivBg);
-                            }
-                        } else {
-                            Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
-                            Log.e("BMOB", e.toString());
-                        }
-                    }
-                });
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEvent(EventBG eventBG) {
         switch (eventBG.getType()) {
             case "EVENT_CZ_BG":
-                equal(-1);//查背景图
+                Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
                 break;
             case "EVENT_SZ_BG":
                 if (eventBG.getUserIconPath().startsWith("content://")) {
@@ -351,7 +311,7 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @OnClick({R.id.tab_tool, R.id.tab_games, R.id.tab_us, R.id.tab_yingshi, R.id.tab_quanzi})
+    @OnClick({R.id.tab_tool, R.id.tab_games, R.id.tab_us, R.id.tab_yingshi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tab_tool:
@@ -369,10 +329,6 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
             case R.id.tab_yingshi:
                 viewpager.setCurrentItem(INDEX_YINGSHI, false);
                 updateCurrentTab(INDEX_YINGSHI);
-                break;
-            case R.id.tab_quanzi:
-                viewpager.setCurrentItem(INDEX_QUANZI, false);
-                updateCurrentTab(INDEX_QUANZI);
                 break;
             default:
                 break;

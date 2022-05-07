@@ -38,37 +38,10 @@
                 android:layout_marginTop="10dp" />
 
             <RelativeLayout
-                android:id="@+id/rl_username"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/ripple_water_more"
-                android:clickable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="当前用户"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/tv_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:drawableRight="@drawable/icon_in" />
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/rl_check_updates"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginTop="50dp"
                 android:background="@drawable/ripple_water_more"
                 android:clickable="true">
 
@@ -117,32 +90,6 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_change_password"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/ripple_water_more"
-                android:clickable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="修改密码"
-                    android:textColor="@android:color/black" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_in" />
-            </RelativeLayout>
-
-            <RelativeLayout
                 android:id="@+id/rl_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -157,32 +104,6 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:text="问题反馈"
-                    android:textColor="@android:color/black" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/icon_in" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_logout"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="1dp"
-                android:background="@drawable/ripple_water_more"
-                android:clickable="true">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:gravity="center"
-                    android:text="退出登录"
                     android:textColor="@android:color/black" />
 
                 <ImageView
