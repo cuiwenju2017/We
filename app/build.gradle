@@ -13,8 +13,8 @@ android {
         applicationId "com.cwj.we"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 81
-        versionName "1.5.4"
+        versionCode 82
+        versionName "1.5.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
 
@@ -104,8 +104,6 @@ dependencies {
     implementation 'com.permissionx.guolindev:permissionx:1.3.0'
     //xpopup弹窗
     implementation 'com.lxj:xpopup:2.0.8-rc5'
-    //添加阿里https+dns解析版本WebViewLib
-    implementation 'cn.yc:WebViewLib:1.4.0'
     //沉浸状态栏基础依赖包，必须要依赖
     implementation 'com.gyf.immersionbar:immersionbar:3.0.0'
     // fragment快速实现（可选）
@@ -135,4 +133,8 @@ dependencies {
     implementation 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.3.0'
     //Weather_Bg天气背景
     implementation 'com.github.Rainvvy:Weather_Bg:v1.1'
+    //tbssdk腾讯浏览器内核
+    api 'com.tencent.tbs:tbssdk:44181'
+    //litepal数据库
+    implementation 'org.litepal.guolindev:core:3.2.3'
 }

@@ -27,7 +27,6 @@ import com.azhon.appupdate.manager.DownloadManager;
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.LatestBean;
-import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.utils.LoadingDialog;
 import com.cwj.we.utils.OneClickThree;
@@ -219,9 +218,9 @@ public class AboutActivity extends BaseActivity<AboutPrensenter> implements Abou
                 //处理扫码结果
                 if (hmsScans != null && hmsScans.length > 0) {
                     //展示扫码结果
-                    Intent intent = new Intent(AboutActivity.this, VideoWebViewActivity.class);
+                    Intent intent = new Intent(AboutActivity.this, WebViewActivity.class);
                     intent.putExtra("name", "识别结果");
-                    intent.putExtra("movieUrl", hmsScans[0].getOriginalValue());
+                    intent.putExtra("url", hmsScans[0].getOriginalValue());
                     startActivity(intent);
                 }
                 return false;

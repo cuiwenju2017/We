@@ -17,6 +17,7 @@ import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.GameBean;
 import com.cwj.we.module.activity.CalculatorActivity;
 import com.cwj.we.module.activity.CompassActivity;
+import com.cwj.we.module.activity.DayimaActivity;
 import com.cwj.we.module.activity.ShoudiantongActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.chenghu.ChengHuJiSuanQiActivity;
@@ -82,6 +83,8 @@ public class ToolFragment extends BaseFragment {
         gameBeans.add(sdt);
         GameBean tq = new GameBean("天气", R.drawable.icon_tianqi);
         gameBeans.add(tq);
+        GameBean dym = new GameBean("大姨妈", R.drawable.logo);
+        gameBeans.add(dym);
     }
 
     protected void initData() {
@@ -130,6 +133,9 @@ public class ToolFragment extends BaseFragment {
                     startActivity(intent);
                 } else if (position == 7) {//天气
                     intent = new Intent(getActivity(), TianqiActivity.class);
+                    startActivity(intent);
+                }else if (position == 8) {//大姨妈
+                    intent = new Intent(getActivity(), DayimaActivity.class);
                     startActivity(intent);
                 }
             }

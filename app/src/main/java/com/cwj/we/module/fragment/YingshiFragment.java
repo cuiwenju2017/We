@@ -10,8 +10,8 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseFragment;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.GameBean;
-import com.cwj.we.module.activity.VideoWebViewActivity;
 import com.cwj.we.module.activity.VipJiexiActivity;
+import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.utils.OneClickThree;
 import com.gyf.immersionbar.ImmersionBar;
@@ -66,23 +66,23 @@ public class YingshiFragment extends BaseFragment {
         adapter.setOnclick((view1, position) -> {
             if (!OneClickThree.isFastClick()) {
                 if (position == 0) {//热影库
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://www.reyingku.cc/");
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", "http://www.reyingku.cc/");
                     startActivity(intent);
                 } else if (position == 1) {//视频解析
                     intent = new Intent(getActivity(), VipJiexiActivity.class);
                     startActivity(intent);
                 } else if (position == 2) {//人人视频
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://m.rr.tv/");
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", "http://m.rr.tv/");
                     startActivity(intent);
                 } else if (position == 3) {//电视直播
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://m.hao5.net/");
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", "http://m.hao5.net/");
                     startActivity(intent);
                 } else if (position == 4) {//武德影院
-                    intent = new Intent(getActivity(), VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "http://wudeyy.com/");
+                    intent = new Intent(getActivity(), WebViewActivity.class);
+                    intent.putExtra("url", "http://wudeyy.com/");
                     startActivity(intent);
                 }
             }

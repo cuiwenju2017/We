@@ -15,11 +15,15 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mmkv.MMKV;
-import com.ycbjie.webviewlib.utils.X5WebUtils;
+import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.sdk.QbSdk;
+
+import org.litepal.LitePal;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 public class App extends BaseApplication {
 
@@ -34,10 +38,10 @@ public class App extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        //初始化WebViewLib
-        X5WebUtils.init(this);
         //初始化MMKV
         MMKV.initialize(this);
+        //LitePal数据库初始化
+        LitePal.initialize(this);
 
         Context context = getApplicationContext();
         // 获取当前包名
@@ -49,6 +53,29 @@ public class App extends BaseApplication {
         strategy.setUploadProcess(processName == null || processName.equals(packageName));
         // 初始化Bugly
         CrashReport.initCrashReport(context, "7132a5d9a0", false, strategy);
+
+        // 在调用TBS初始化、创建WebView之前进行如下配置
+        HashMap map = new HashMap();
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+        map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+        QbSdk.initTbsSettings(map);
+        //初始化SDK环境
+        QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {
+            @Override
+            public void onCoreInitFinished() {
+                // 内核初始化完成，可能为系统内核，也可能为系统内核
+            }
+
+            /**
+             * 预初始化结束
+             * 由于X5内核体积较大，需要依赖网络动态下发，所以当内核不存在的时候，默认会回调false，此时将会使用系统内核代替
+             * @param isX5 是否使用X5内核
+             */
+            @Override
+            public void onViewInitFinished(boolean isX5) {
+
+            }
+        });
     }
 
     /**

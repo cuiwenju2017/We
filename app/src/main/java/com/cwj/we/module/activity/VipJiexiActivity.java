@@ -76,12 +76,12 @@ public class VipJiexiActivity extends BaseActivity {
                     ToastUtil.showTextToast(this, "视频地址不能为空");
                 } else {
                     if (!OneClickThree.isFastClick()) {
-                        intent = new Intent(this, VideoWebViewActivity.class);
+                        intent = new Intent(this, WebViewActivity.class);
                         if (etUrl.getText().toString().trim().startsWith("http://") || etUrl.getText().toString().trim().startsWith("https://")) {
-                            intent.putExtra("movieUrl", etUrl.getText().toString().trim());//打开网址
+                            intent.putExtra("url", etUrl.getText().toString().trim());//打开网址
                         } else {
                             try {//百多搜索
-                                intent.putExtra("movieUrl", "http://www.baidu.com/s?&ie=utf-8&oe=UTF-8&wd=" + URLEncoder.encode(etUrl.getText().toString().trim(), "UTF-8"));
+                                intent.putExtra("url", "http://www.baidu.com/s?&ie=utf-8&oe=UTF-8&wd=" + URLEncoder.encode(etUrl.getText().toString().trim(), "UTF-8"));
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -92,29 +92,29 @@ public class VipJiexiActivity extends BaseActivity {
                 break;
             case R.id.iv_tengxun://腾讯视频
                 if (!OneClickThree.isFastClick()) {
-                    intent = new Intent(this, VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "https://m.v.qq.com/");
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", "https://m.v.qq.com/");
                     startActivity(intent);
                 }
                 break;
             case R.id.iv_aiqiyi://爱奇艺
                 if (!OneClickThree.isFastClick()) {
-                    intent = new Intent(this, VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "https://m.iqiyi.com/");
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", "https://m.iqiyi.com/");
                     startActivity(intent);
                 }
                 break;
             case R.id.iv_youku://优酷
                 if (!OneClickThree.isFastClick()) {
-                    intent = new Intent(this, VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "https://youku.com/");
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", "https://youku.com/");
                     startActivity(intent);
                 }
                 break;
             case R.id.iv_mangguo://芒果tv
                 if (!OneClickThree.isFastClick()) {
-                    intent = new Intent(this, VideoWebViewActivity.class);
-                    intent.putExtra("movieUrl", "https://m.mgtv.com/channel/home");
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", "https://m.mgtv.com/channel/home");
                     startActivity(intent);
                 }
                 break;
@@ -194,8 +194,8 @@ public class VipJiexiActivity extends BaseActivity {
                                                 }
                                             } else if (position == 3) {//应用内打开
                                                 if (!OneClickThree.isFastClick()) {
-                                                    intent = new Intent(this, VideoWebViewActivity.class);
-                                                    intent.putExtra("movieUrl", API.vip5 + etUrl.getText().toString());
+                                                    intent = new Intent(this, WebViewActivity.class);
+                                                    intent.putExtra("url", API.vip5 + etUrl.getText().toString());
                                                     startActivity(intent);
                                                 }
                                             }

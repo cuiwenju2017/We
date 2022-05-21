@@ -33,7 +33,7 @@ import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
 import com.cwj.we.bean.EventBG;
 import com.cwj.we.bean.LatestBean;
-import com.cwj.we.module.activity.VideoWebViewActivity;
+import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.module.fragment.GamesFragment;
 import com.cwj.we.module.fragment.ToolFragment;
 import com.cwj.we.module.fragment.UsFragment;
@@ -286,9 +286,9 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
             HmsScan obj = data.getParcelableExtra(ScanUtil.RESULT);
             if (obj != null) {
                 //展示解码结果
-                Intent intent = new Intent(this, VideoWebViewActivity.class);
+                Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra("name", "扫码结果");
-                intent.putExtra("movieUrl", obj.getOriginalValue());
+                intent.putExtra("url", obj.getOriginalValue());
                 startActivity(intent);
             }
         }

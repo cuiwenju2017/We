@@ -40,8 +40,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.tianqi.AddressChooseActivity" />
-        <activity android:name=".module.tianqi.TianqiActivity" />
+        <activity android:name=".module.activity.AddDayimaActivity"></activity>
+        <activity
+            android:name=".module.activity.DayimaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.tianqi.AddressChooseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".module.tianqi.TianqiActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".module.activity.DaanzhishuActivity"
             android:screenOrientation="portrait" />
@@ -69,11 +77,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.jiqiren.JiqirenActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".module.activity.VideoWebViewActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|screenSize|keyboardHidden"
-            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.ljxj.OpenCameraActivity"
@@ -111,7 +114,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.activity.WebViewActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|screenSize|keyboardHidden"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboardHidden"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".module.activity.SplashActivity"
@@ -143,6 +147,11 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <service
+            android:name="com.tencent.smtt.export.external.DexClassLoaderProviderService"
+            android:label="dexopt"
+            android:process=":dexopt" />
     </application>
 
 </manifest>
