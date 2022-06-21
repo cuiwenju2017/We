@@ -137,4 +137,6 @@ dependencies {
     api 'com.tencent.tbs:tbssdk:44181'
     //litepal数据库
     implementation 'org.litepal.guolindev:core:3.2.3'
+    //背景图片颜色识别库
+    implementation 'androidx.palette:palette:1.0.0'
 }

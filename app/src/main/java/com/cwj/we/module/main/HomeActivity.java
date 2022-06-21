@@ -7,10 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,9 +24,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.FileProvider;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
 import com.azhon.appupdate.config.UpdateConfiguration;
@@ -53,7 +58,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -119,8 +126,12 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                 Uri mImageUri = FileProvider.getUriForFile(HomeActivity.this,
                         "com.cwj.we.fileprovider", mImageFile);
                 Glide.with(HomeActivity.this).load(mImageUri).into(ivBg);
+
+                setBgImageByResource(mImageUri);
             } else {
                 Glide.with(this).load(Uri.fromFile(new File(sprfMain.getString("path", "")))).into(ivBg);
+
+                setBgImageByResource(Uri.fromFile(new File(sprfMain.getString("path", ""))));
             }
         }
 
@@ -164,6 +175,90 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         }
     }
 
+    //----------状态栏字体动态变色start----------//
+    private void setBgImageByResource(int imageResource) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResource);
+        ivBg.setImageBitmap(bitmap);
+        detectBitmapColor(bitmap);
+    }
+
+    private void setBgImageByResource(Uri mImageUri) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(mImageUri));
+            ivBg.setImageBitmap(bitmap);
+            detectBitmapColor(bitmap);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private final void detectBitmapColor(Bitmap bitmap) {
+        int colorCount = 5;
+        int left = 0;
+        int top = 0;
+        int right = this.getScreenWidth();
+        int bottom = this.getStatusBarHeight();
+        Palette.from(bitmap)
+                .maximumColorCount(colorCount)
+                .setRegion(left, top, right, bottom)
+                .generate(palette -> {
+                    if (palette != null) {
+                        Palette.Swatch mostPopularSwatch = null;
+                        Iterator iterator = palette.getSwatches().iterator();
+                        while (true) {
+                            Palette.Swatch swatch;
+                            do {
+                                if (!iterator.hasNext()) {
+                                    if (mostPopularSwatch != null) {
+                                        double luminance = ColorUtils.calculateLuminance(mostPopularSwatch.getRgb());
+                                        if (luminance < 0.5D) {
+                                            setDarkStatusBar();
+                                        } else {
+                                            setLightStatusBar();
+                                        }
+                                        return;
+                                    } else {
+                                        return;
+                                    }
+                                }
+                                swatch = (Palette.Swatch) iterator.next();
+                                if (mostPopularSwatch == null) {
+                                    break;
+                                }
+                            } while (swatch.getPopulation() <= mostPopularSwatch.getPopulation());
+                            mostPopularSwatch = swatch;
+                        }
+                    }
+                });
+    }
+
+    private final void setLightStatusBar() {
+        int flags = getWindow().getDecorView().getSystemUiVisibility();
+        getWindow().getDecorView().setSystemUiVisibility(flags | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
+
+    private final void setDarkStatusBar() {
+        int flags = getWindow().getDecorView().getSystemUiVisibility() | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        getWindow().getDecorView().setSystemUiVisibility(flags ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
+
+    private final int getScreenWidth() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics.widthPixels;
+    }
+
+    private final int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = this.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = this.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+    //----------状态栏字体动态变色end----------//
+
     private void showNotify() {
         //通知用户开启通知
         NotificationManagerCompat notification = NotificationManagerCompat.from(this);
@@ -192,6 +287,8 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
         switch (eventBG.getType()) {
             case "EVENT_CZ_BG":
                 Glide.with(HomeActivity.this).load(R.drawable.we_bg).into(ivBg);
+
+                setBgImageByResource(R.drawable.we_bg);
                 break;
             case "EVENT_SZ_BG":
                 if (eventBG.getUserIconPath().startsWith("content://")) {
@@ -200,8 +297,12 @@ public class HomeActivity extends BaseActivity<HomePrensenter> implements HomeVi
                     Uri mImageUri = FileProvider.getUriForFile(HomeActivity.this,
                             "com.cwj.we.fileprovider", mImageFile);
                     Glide.with(this).load(mImageUri).into(ivBg);
+
+                    setBgImageByResource(mImageUri);
                 } else {
                     Glide.with(this).load(Uri.fromFile(new File(eventBG.getUserIconPath()))).into(ivBg);
+
+                    setBgImageByResource(Uri.fromFile(new File(eventBG.getUserIconPath())));
                 }
                 break;
         }

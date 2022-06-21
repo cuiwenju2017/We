@@ -2,11 +2,13 @@ package com.cwj.we.module.activity;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.cwj.we.R;
 import com.cwj.we.base.BaseActivity;
@@ -20,8 +22,11 @@ import com.lxj.xpopup.XPopup;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -43,6 +48,8 @@ public class VipJiexiActivity extends BaseActivity {
     ImageView ivMangguo;
     @BindView(R.id.btn_open)
     Button btnOpen;
+    @BindView(R.id.ll_context)
+    LinearLayout llContext;
 
     private Intent intent;
 
@@ -68,9 +75,27 @@ public class VipJiexiActivity extends BaseActivity {
                 .init();
     }
 
-    @OnClick({R.id.btn_jiexi, R.id.iv_tengxun, R.id.iv_aiqiyi, R.id.iv_youku, R.id.iv_mangguo, R.id.btn_open})
+    private int num = 0;
+
+    @OnClick({R.id.btn_jiexi, R.id.iv_tengxun, R.id.iv_aiqiyi, R.id.iv_youku, R.id.iv_mangguo,
+            R.id.btn_open, R.id.ll_context})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.ll_context:
+                num = num + 1;
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        num = 0;
+                    }
+                }, 1000);
+
+                if (num > 3) {
+                    intent = new Intent(this, WebViewActivity.class);
+                    intent.putExtra("url", "https://64maoee.com/");
+                    startActivity(intent);
+                }
+                break;
             case R.id.btn_open://直接打开网址
                 if (TextUtils.isEmpty(etUrl.getText().toString())) {
                     ToastUtil.showTextToast(this, "视频地址不能为空");
@@ -80,7 +105,7 @@ public class VipJiexiActivity extends BaseActivity {
                         if (etUrl.getText().toString().trim().startsWith("http://") || etUrl.getText().toString().trim().startsWith("https://")) {
                             intent.putExtra("url", etUrl.getText().toString().trim());//打开网址
                         } else {
-                            try {//百多搜索
+                            try {//百度搜索
                                 intent.putExtra("url", "http://www.baidu.com/s?&ie=utf-8&oe=UTF-8&wd=" + URLEncoder.encode(etUrl.getText().toString().trim(), "UTF-8"));
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
@@ -207,5 +232,11 @@ public class VipJiexiActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ButterKnife.bind(this);
     }
 }
