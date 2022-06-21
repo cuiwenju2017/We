@@ -40,7 +40,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".module.activity.AddDayimaActivity"></activity>
+        <activity android:name=".module.activity.AdultActivity"></activity>
+        <activity android:name=".module.activity.AddDayimaActivity" />
         <activity
             android:name=".module.activity.DayimaActivity"
             android:screenOrientation="portrait" />

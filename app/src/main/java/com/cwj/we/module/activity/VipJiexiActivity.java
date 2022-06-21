@@ -91,9 +91,11 @@ public class VipJiexiActivity extends BaseActivity {
                 }, 1000);
 
                 if (num > 3) {
-                    intent = new Intent(this, WebViewActivity.class);
-                    intent.putExtra("url", "https://64maoee.com/");
-                    startActivity(intent);
+                    if (!OneClickThree.isFastClick()) {
+                        //成人影视
+                        intent = new Intent(this, AdultActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 break;
             case R.id.btn_open://直接打开网址

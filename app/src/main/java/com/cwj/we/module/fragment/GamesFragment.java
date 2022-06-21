@@ -19,7 +19,6 @@ import com.cwj.we.module.activity.WebViewActivity;
 import com.cwj.we.module.adapter.GameAdapter;
 import com.cwj.we.module.jiqiren.JiqirenActivity;
 import com.cwj.we.utils.OneClickThree;
-import com.gyf.immersionbar.ImmersionBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -99,10 +98,10 @@ public class GamesFragment extends BaseFragment {
         });
     }
 
-    @Override
+    /*@Override
     public void initImmersionBar() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(false)  //状态栏字体是深色，不写默认为亮色
                 .init();
-    }
+    }*/
 }

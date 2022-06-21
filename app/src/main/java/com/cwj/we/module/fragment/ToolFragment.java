@@ -26,7 +26,6 @@ import com.cwj.we.module.lpclock.LPClockActivity;
 import com.cwj.we.module.tianqi.TianqiActivity;
 import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.ToastUtil;
-import com.gyf.immersionbar.ImmersionBar;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.permissionx.guolindev.PermissionX;
@@ -142,10 +141,10 @@ public class ToolFragment extends BaseFragment {
         });
     }
 
-    @Override
+   /* @Override
     public void initImmersionBar() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(false)  //状态栏字体是深色，不写默认为亮色
                 .init();
-    }
+    }*/
 }

@@ -40,7 +40,6 @@ import com.cwj.we.utils.OneClickThree;
 import com.cwj.we.utils.PictureSelectorUtils;
 import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
-import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
 import com.lxj.xpopup.core.BasePopupView;
 
@@ -522,10 +521,10 @@ public class UsFragment extends BaseFragment {
         super.onResume();
     }
 
-    @Override
+    /*@Override
     public void initImmersionBar() {
         ImmersionBar.with(this)
                 .statusBarDarkFont(false)  //状态栏字体是深色，不写默认为亮色
                 .init();
-    }
+    }*/
 }
