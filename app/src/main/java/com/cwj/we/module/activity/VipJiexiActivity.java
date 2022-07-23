@@ -106,6 +106,8 @@ public class VipJiexiActivity extends BaseActivity {
                         intent = new Intent(this, WebViewActivity.class);
                         if (etUrl.getText().toString().trim().startsWith("http://") || etUrl.getText().toString().trim().startsWith("https://")) {
                             intent.putExtra("url", etUrl.getText().toString().trim());//打开网址
+                        } else if (etUrl.getText().toString().trim().startsWith("www")) {
+                            intent.putExtra("url", "https://" + etUrl.getText().toString().trim());//打开网址
                         } else {
                             try {//百度搜索
                                 intent.putExtra("url", "http://www.baidu.com/s?&ie=utf-8&oe=UTF-8&wd=" + URLEncoder.encode(etUrl.getText().toString().trim(), "UTF-8"));
@@ -152,7 +154,8 @@ public class VipJiexiActivity extends BaseActivity {
                     if (!OneClickThree.isFastClick()) {
                         // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
                         new XPopup.Builder(this)
-                                .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开", "UC浏览器打开", "应用内打开"},
+                                .asBottomList("请选择一项", new String[]{"本地浏览器打开", "夸克浏览器打开",
+                                                "QQ浏览器打开", "UC浏览器打开", "应用内打开"},
                                         (position, text) -> {
                                             if (position == 0) {//本地浏览器打开
                                                 // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
@@ -175,7 +178,29 @@ public class VipJiexiActivity extends BaseActivity {
                                                                     startActivity(intent);
                                                                 })
                                                         .show();
-                                            } else if (position == 1) {//QQ浏览器打开
+                                            } else if (position == 1) {//夸克浏览器打开
+                                                if (MarketUtils.getTools().isAppInstalled(this, "com.quark.browser")) {//已安装
+                                                    new XPopup.Builder(this)
+                                                            .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
+                                                                    (position1, text1) -> {
+                                                                        if (position1 == 0) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip1 + etUrl.getText().toString());
+                                                                        } else if (position1 == 1) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip2 + etUrl.getText().toString());
+                                                                        } else if (position1 == 2) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip3 + etUrl.getText().toString());
+                                                                        } else if (position1 == 3) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip4 + etUrl.getText().toString());
+                                                                        } else if (position1 == 4) {
+                                                                            MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip5 + etUrl.getText().toString());
+                                                                        }
+                                                                    })
+                                                            .show();
+                                                } else {
+                                                    //没有安装通过应用包名到应用市场搜索下载安装
+                                                    MarketUtils.getTools().openMarket(this, "com.quark.browser");
+                                                }
+                                            } else if (position == 2) {//QQ浏览器打开
                                                 if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
                                                     new XPopup.Builder(VipJiexiActivity.this)
                                                             .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
@@ -197,7 +222,7 @@ public class VipJiexiActivity extends BaseActivity {
                                                     //没有安装通过应用包名到应用市场搜索下载安装
                                                     MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
                                                 }
-                                            } else if (position == 2) {//UC浏览器打开
+                                            } else if (position == 3) {//UC浏览器打开
                                                 if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
                                                     new XPopup.Builder(VipJiexiActivity.this)
                                                             .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
@@ -219,7 +244,7 @@ public class VipJiexiActivity extends BaseActivity {
                                                     //没有安装通过应用包名到应用市场搜索下载安装
                                                     MarketUtils.getTools().openMarket(this, "com.UCMobile");
                                                 }
-                                            } else if (position == 3) {//应用内打开
+                                            } else if (position == 4) {//应用内打开
                                                 if (!OneClickThree.isFastClick()) {
                                                     intent = new Intent(this, WebViewActivity.class);
                                                     intent.putExtra("url", API.vip5 + etUrl.getText().toString());

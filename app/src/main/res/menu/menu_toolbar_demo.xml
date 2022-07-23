@@ -10,6 +10,12 @@
         tools:ignore="DuplicateIds" />
 
     <item
+        android:id="@+id/toolbar6"
+        android:title="夸克浏览器打开"
+        app:showAsAction="never"
+        tools:ignore="DuplicateIds" />
+
+    <item
         android:id="@+id/toolbar2"
         android:title="QQ浏览器打开"
         app:showAsAction="never"

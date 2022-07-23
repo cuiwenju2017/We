@@ -110,11 +110,12 @@ public class WebViewActivity extends BaseActivity {
         webSettings.setUseWideViewPort(true); // 关键点
         webSettings.setAllowFileAccess(true); // 允许访问文件
         webSettings.setSupportZoom(true); // 支持缩放
-        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setLoadWithOverviewMode(true);//设置支持负载
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 不加载缓存内容
         webSettings.setJavaScriptEnabled(true);// 设置WebView属性，能够执行Javascript脚本
         webSettings.setDomStorageEnabled(true);//腾讯兔小巢反馈加入
         webSettings.setDefaultTextEncodingName("GBK");//设置编码格式
+        webSettings.setPluginsEnabled(true);//设置webview支持插件
         wv.setWebChromeClient(wvcc);
 
         //使网页用WebView打开
@@ -222,13 +223,23 @@ public class WebViewActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.toolbar6://夸克浏览器打开
+                if (MarketUtils.getTools().isAppInstalled(this, "com.quark.browser")) {//已安装
+                    MarketUtils.getTools().openInstalledAppInURL(this,
+                            "com.quark.browser", "com.ucpro.MainActivity",
+                            (!wv.getUrl().startsWith("http://") && !wv.getUrl().startsWith("https://")) ? url : wv.getUrl());
+                } else {
+                    //没有安装通过应用包名到应用市场搜索下载安装
+                    MarketUtils.getTools().openMarket(this, "com.quark.browser");
+                }
+                break;
             case R.id.toolbar5://解析
                 // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
                 new XPopup.Builder(this)
-                        .asBottomList("请选择一项", new String[]{"本地浏览器打开", "QQ浏览器打开",
-                                        "UC浏览器打开", "应用内打开"},
+                        .asBottomList("请选择一项", new String[]{"本地浏览器打开", "夸克浏览器打开",
+                                        "QQ浏览器打开", "UC浏览器打开", "应用内打开"},
                                 (position, text) -> {
-                                    if (position == 0) {
+                                    if (position == 0) {//本地浏览器打开
                                         // 这种弹窗从 1.0.0版本开始实现了优雅的手势交互和智能嵌套滚动
                                         new XPopup.Builder(this)
                                                 .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
@@ -249,7 +260,29 @@ public class WebViewActivity extends BaseActivity {
                                                             startActivity(intent);
                                                         })
                                                 .show();
-                                    } else if (position == 1) {
+                                    } else if (position == 1) {//夸克浏览器打开
+                                        if (MarketUtils.getTools().isAppInstalled(this, "com.quark.browser")) {//已安装
+                                            new XPopup.Builder(this)
+                                                    .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
+                                                            (position1, text1) -> {
+                                                                if (position1 == 0) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip1 + wv.getUrl());
+                                                                } else if (position1 == 1) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip2 + wv.getUrl());
+                                                                } else if (position1 == 2) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip3 + wv.getUrl());
+                                                                } else if (position1 == 3) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip4 + wv.getUrl());
+                                                                } else if (position1 == 4) {
+                                                                    MarketUtils.getTools().openInstalledAppInURL(this, "com.quark.browser", "com.ucpro.MainActivity", API.vip5 + wv.getUrl());
+                                                                }
+                                                            })
+                                                    .show();
+                                        } else {
+                                            //没有安装通过应用包名到应用市场搜索下载安装
+                                            MarketUtils.getTools().openMarket(this, "com.quark.browser");
+                                        }
+                                    } else if (position == 2) {//QQ浏览器打开
                                         if (MarketUtils.getTools().isAppInstalled(this, "com.tencent.mtt")) {//已安装
                                             new XPopup.Builder(this)
                                                     .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
@@ -271,7 +304,7 @@ public class WebViewActivity extends BaseActivity {
                                             //没有安装通过应用包名到应用市场搜索下载安装
                                             MarketUtils.getTools().openMarket(this, "com.tencent.mtt");
                                         }
-                                    } else if (position == 2) {
+                                    } else if (position == 3) {//UC浏览器打开
                                         if (MarketUtils.getTools().isAppInstalled(this, "com.UCMobile")) {//已安装
                                             new XPopup.Builder(this)
                                                     .asBottomList("请选择一项", new String[]{"无名小站解析1", "无名小站解析2", "无名小站解析3", "无名小站解析4", "万能命令解析"},
@@ -293,7 +326,7 @@ public class WebViewActivity extends BaseActivity {
                                             //没有安装通过应用包名到应用市场搜索下载安装
                                             MarketUtils.getTools().openMarket(this, "com.UCMobile");
                                         }
-                                    } else if (position == 3) {//应用内打开
+                                    } else if (position == 4) {//应用内打开
                                         if (!OneClickThree.isFastClick()) {
                                             intent = new Intent(this, WebViewActivity.class);
                                             intent.putExtra("url", API.vip5 + wv.getUrl());
