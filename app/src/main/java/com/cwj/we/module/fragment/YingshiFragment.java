@@ -48,8 +48,6 @@ public class YingshiFragment extends BaseFragment {
         gameBeans.add(spjx);
         GameBean rrsp = new GameBean("人人视频", R.drawable.icon_byj);
         gameBeans.add(rrsp);
-        GameBean dszb = new GameBean("电视直播", R.drawable.icon_byj);
-        gameBeans.add(dszb);
         GameBean wdyy = new GameBean("武德影院", R.drawable.icon_byj);
         gameBeans.add(wdyy);
     }
@@ -75,13 +73,9 @@ public class YingshiFragment extends BaseFragment {
                     intent = new Intent(getActivity(), WebViewActivity.class);
                     intent.putExtra("url", "http://m.rr.tv/");
                     startActivity(intent);
-                } else if (position == 3) {//电视直播
+                } else if (position == 3) {//武德影院
                     intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url", "http://m.hao5.net/");
-                    startActivity(intent);
-                } else if (position == 4) {//武德影院
-                    intent = new Intent(getActivity(), WebViewActivity.class);
-                    intent.putExtra("url", "http://wudeyy.com/");
+                    intent.putExtra("url", "http://m.wudeyy.com/");
                     startActivity(intent);
                 }
             }

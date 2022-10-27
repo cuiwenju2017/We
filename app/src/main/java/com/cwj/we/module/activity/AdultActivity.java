@@ -52,21 +52,17 @@ public class AdultActivity extends BaseActivity {
 
         adapter.setOnclick((view1, position) -> {
             if (!OneClickThree.isFastClick()) {
-                if (position == 0) {//56maoee.com
+                if (position == 0) {//https://56maoee.com/
                     intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra("url", "https://56maoee.com/");
                     startActivity(intent);
-                } else if (position == 1) {//11caoff.com
+                } else if (position == 1) {//https://11caoff.com/
                     intent = new Intent(this, WebViewActivity.class);
                     intent.putExtra("url", "https://11caoff.com/");
                     startActivity(intent);
-                } else if (position == 2) {//sebb11.com
+                } else if (position == 2) {//https://99bbb.xyz/
                     intent = new Intent(this, WebViewActivity.class);
-                    intent.putExtra("url", "https://sebb11.com/");
-                    startActivity(intent);
-                } else if (position == 3) {//twav5.xyz
-                    intent = new Intent(this, WebViewActivity.class);
-                    intent.putExtra("url", "https://twav5.xyz/");
+                    intent.putExtra("url", "https://99bbb.xyz");
                     startActivity(intent);
                 }
             }
@@ -79,14 +75,12 @@ public class AdultActivity extends BaseActivity {
                 .statusBarDarkFont(true)  //状态栏字体是深色，不写默认为亮色
                 .init();
 
-        GameBean maoee = new GameBean("56maoee.com", R.drawable.icon_byj);
+        GameBean maoee = new GameBean("https://56maoee.com/", R.drawable.icon_byj);
         gameBeans.add(maoee);
-        GameBean caoff = new GameBean("11caoff.com", R.drawable.icon_byj);
+        GameBean caoff = new GameBean("https://11caoff.com/", R.drawable.icon_byj);
         gameBeans.add(caoff);
-        GameBean sebb = new GameBean("sebb11.com", R.drawable.icon_byj);
+        GameBean sebb = new GameBean("https://99bbb.xyz/", R.drawable.icon_byj);
         gameBeans.add(sebb);
-        GameBean twav = new GameBean("twav5.xyz", R.drawable.icon_byj);
-        gameBeans.add(twav);
     }
 
     @Override
