@@ -13,8 +13,8 @@ android {
         applicationId "com.cwj.we"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 83
-        versionName "1.5.6"
+        versionCode 84
+        versionName "1.5.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true//解决65535必须
 

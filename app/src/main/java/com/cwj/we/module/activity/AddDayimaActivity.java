@@ -21,6 +21,7 @@ import com.cwj.we.base.BaseActivity;
 import com.cwj.we.base.BasePresenter;
 import com.cwj.we.bean.DayimaZhouqiBean;
 import com.cwj.we.http.API;
+import com.cwj.we.utils.TimeUtils;
 import com.cwj.we.utils.ToastUtil;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
@@ -93,6 +94,7 @@ public class AddDayimaActivity extends BaseActivity {
             tvTime.setText(time);
         } else {
             tvTitle.setText("新增");
+            tvTime.setText(TimeUtils.dateToString(TimeUtils.getTimeStame(), "yyyy-MM-dd"));
         }
 
         if (isDayima) {
@@ -255,7 +257,7 @@ public class AddDayimaActivity extends BaseActivity {
                     dayimaZhouqiBean.setTime(tvTime.getText().toString().trim());
                     dayimaZhouqiBean.setDayima(isDayima);
                     if (id > 0) {
-                        dayimaZhouqiBean.saveOrUpdate();
+                        dayimaZhouqiBean.saveOrUpdate("id = ?", "" + id);
                         ToastUtil.showTextToast(this, "修改成功");
                         Intent intent = new Intent();
                         intent.putExtra("time", tvTime.getText().toString().trim());

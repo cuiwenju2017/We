@@ -23,6 +23,7 @@ import com.cwj.we.base.BaseRVHolder;
 import com.cwj.we.bean.DayimaZhouqiBean;
 import com.cwj.we.http.API;
 import com.cwj.we.utils.TimeUtils;
+import com.cwj.we.utils.ToastUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.gyf.immersionbar.ImmersionBar;
 import com.lxj.xpopup.XPopup;
@@ -102,13 +103,17 @@ public class DayimaActivity extends BaseActivity {
                     return false;
                 });
 
-                ll_context.setOnClickListener(v -> { //修改
+                ll_context.setOnClickListener(v -> { //只允许修改第一条数据
                     pos = position;
-                    Intent intent = new Intent(DayimaActivity.this, AddDayimaActivity.class);
-                    intent.putExtra("id", data.getId());
-                    intent.putExtra("time", data.getTime());
-                    intent.putExtra("isDayima", data.isDayima());
-                    startActivityForResult(intent, UPDATE_DAYIMA);
+                    if (pos == 0) {
+                        Intent intent = new Intent(DayimaActivity.this, AddDayimaActivity.class);
+                        intent.putExtra("id", data.getId());
+                        intent.putExtra("time", data.getTime());
+                        intent.putExtra("isDayima", data.isDayima());
+                        startActivityForResult(intent, UPDATE_DAYIMA);
+                    } else {
+                        ToastUtil.showTextToast(DayimaActivity.this, "只允许修改第一条数据");
+                    }
                 });
             }
         };
@@ -134,6 +139,8 @@ public class DayimaActivity extends BaseActivity {
         update();
     }
 
+    private long time;
+
     @SuppressLint("SetTextI18n")
     private void update() {
         if (list != null && list.size() > 0) {
@@ -158,7 +165,13 @@ public class DayimaActivity extends BaseActivity {
                 }
             } else {
                 try {
-                    long time = Long.parseLong(TimeUtils.dateToStamp2(list.get(0).getTime()));
+                    if (list.size() > 1) {
+                        time = Long.parseLong(TimeUtils.dateToStamp2(list.get(1).getTime()));
+                    } else {
+                        long tianshu = Long.parseLong(API.kv.decodeString("tianshu")) * 24 * 60 * 60 * 1000;
+                        time = Long.parseLong(TimeUtils.dateToStamp2(list.get(0).getTime())) - tianshu;
+                    }
+
                     long zhoqi = Long.parseLong(API.kv.decodeString("zhouqi")) * 24 * 60 * 60 * 1000;
 
                     long timeLai = Long.parseLong(TimeUtils.dateToStamp2(TimeUtils.dateToString((time + zhoqi))));
